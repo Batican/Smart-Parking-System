@@ -8,16 +8,13 @@ require('./bootstrap');
 
 window.Vue = require('vue').default;
 
-import router from './router';
+import router from './plugins/router';
+import store from './plugins/store';
+import vuetify from './plugins/vuetify';
+import Axios from './plugins/axios';
+
 import App from './layouts/App.vue';
-import Axios from './axios';
 Vue.prototype.$admin = Axios
-import VModal from 'vue-js-modal/dist/index.nocss.js'
-import 'vue-js-modal/dist/styles.css'
-Vue.use(VModal)
-import Vue from 'vue'
-import Vuetify from 'vuetify'
-Vue.use(Vuetify)
 
 /**
  * The following block of code may be used to automatically register your
@@ -30,7 +27,6 @@ Vue.use(Vuetify)
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -39,8 +35,9 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  */
 
 const app = new Vue({
-    
     router,
+    store,
+    vuetify,
     el: '#app',
     render: h => h(App)
 

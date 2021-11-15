@@ -13,10 +13,7 @@ class LoginController extends Controller
 {
     public function userDashboard()
     {
-        $users = User::all();
-        $success =  $users;
-
-        return response()->json($success, 200);
+        return Auth::user();
     }
 
     public function adminDashboard()

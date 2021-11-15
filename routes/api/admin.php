@@ -22,7 +22,7 @@ use App\Http\Controllers\user\UserController;
 Route::post('/login',[LoginController::class, 'adminLogin']);
 Route::group( ['prefix' => '/v1','middleware' => ['auth:admin-api','scopes:admin'] ],function(){
    // authenticated staff routes here 
-    Route::get('dashboard',[LoginController::class, 'adminDashboard']);
+    Route::get('details',[LoginController::class, 'details']);
 
     Route::get('index',[AdminController::class, 'index']);
     Route::post('create',[AdminController::class, 'store']);
