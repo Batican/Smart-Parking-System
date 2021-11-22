@@ -1,14 +1,23 @@
 <template>
   <v-navigation-drawer
         app
-        v-model="drawer"
-        :mini-variant.sync="mini_status"
-        permanent
+        v-model="drawerStatus"
+        persistent
     >
-        <v-list-item class="px-2 pt-2">
-            <v-img class="at-logo" src="/images/lenzy_logo_small.png"></v-img>
-        </v-list-item>
-        <v-list >
+        <v-img src="https://image.freepik.com/free-photo/3d-grunge-room-interior-with-spotlight-smoky-atmosphere-background_1048-11333.jpg" class="pa-4">
+            <div class="text-center mt-4">
+                <v-avatar class="mb-4" color="grey darken-1" size="64">
+                    <v-img aspect-ratio="30" src="https://www.pngitem.com/pimgs/m/380-3801971_no-parking-car-bike-hd-png-download.png">
+
+                    </v-img>
+                </v-avatar>
+
+                <h2 class="white--text">Admin</h2>
+            </div>
+        </v-img>
+
+        <v-divider></v-divider>
+        <v-list>
             <v-list-item
                 v-for="item in items"
                 :key="item.title"
@@ -35,7 +44,7 @@
                 </v-list-item-icon>
 
                 <v-list-item-content>
-                    <v-list-item-title>Log-out</v-list-item-title>
+                    <v-list-item-title>Logout</v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
         </template>
@@ -44,32 +53,35 @@
 <script>
 export default {
     data: () => ({
-        drawer: true,
         items: [
-            { title: 'Admin', icon: 'mdi-account-supervisor', route: '/admin' },
             { title: 'Dashboard', icon: 'mdi-view-dashboard', route: '/dashboard' },
+            { title: 'Users', icon: 'mdi-account-supervisor', route: '/user' },
+            { title: 'Departments', icon: 'mdi-office-building', route: '/departments' },
+            { title: 'Parking Slots', icon: 'mdi-bus-stop', route: '/parking_slots' },
+            { title: 'Logs', icon: 'mdi-clipboard-text-clock', route: '/' },
+
         ],
     }),
     props : {
-        mini : {
+        is_open : {
             require: true,
             type : Boolean
         }
     },
-    computed : {
-        mini_status: {
-            get: function() {
-                return this.mini
+
+    computed: {
+       drawerStatus: {
+            get: function () {
+                return this.is_open
             },
-            set: function(value) {
-                console.log(value,"status")
-                this.$emit('changeStatusDrawer')
+            set: function (newValue) {
+
             }
-        }
+        },
     },
     methods : {
         logoutAdmin(){
-            this.$admin.post('/logout').then(({data}) => {
+            this.$admin.post('admin/v1/logout').then(({data}) => {
                 localStorage.removeItem("token")
                 this.$router.push('/login')
             })

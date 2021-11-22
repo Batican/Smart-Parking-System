@@ -12,7 +12,7 @@ import Backoffice from '../pages/Backoffice.vue';
     import ParkingSlot from '../pages/Backoffice/ParkingSlots.vue';
     import User from '../pages/Backoffice/Users.vue';
     import QrCode from '../pages/Backoffice/QrCode.vue';
-
+    import Dashboard from '../pages/Backoffice/Dashboard.vue'
 
 Vue.use(VueRouter);
 Vue.use(Vuetify);
@@ -38,6 +38,11 @@ const router = new VueRouter({
                 requiresAuth: true
             },
             children : [
+                {
+                    path: '/dashboard',
+                    name: 'dashboard',
+                    component: Dashboard
+                },
                 {
                     path: '/user',
                     name: 'user',

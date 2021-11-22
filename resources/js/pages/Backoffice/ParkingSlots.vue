@@ -1,76 +1,106 @@
 <template>
-    <div class="products">
-        <modal name="show" @closed ="slotInitialState()"  height = 'auto'> 
-            <div class="container"> 
-                <form @submit.prevent="slot.id ? updateSlot(): addSlot()" >
-                    <!-- <div class="form-group">
-                        <label>QR Code</label>
-                        <input type="text" class="form-control" v-model="slot.qr_code">
-                    </div> -->
-                    <div class="form-group">
-                        <label>Parking Number</label>
-                        <input type="text" class="form-control" v-model="slot.parking_number">
-                    </div>
-                    <div class="form-group" >
-                        <label>Department ID</label>
-                        <input type="text" class="form-control" v-model="slot.department_id">
-                    </div>
-                    <button type="submit" class="btn btn-primary mb-2" >{{slot.id ? 'Update': 'Add'}} Parking Slot</button>
-                </form>
-            </div>
-        </modal>
-        <h3 class="text-center">Parking Slots</h3>
-        <button class="btn btn-primary" @click="modalShow()">Add</button>
-        <div class="card mt-5">
-            <div class="card-header">
-            Parking Slot List
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table ">
-                        <thead>
-                        <tr class="text-center">
-                            <th>ID</th>
-                            <th>QR Code</th>
-                            <th>Parking Number</th>
-                            <th>Department</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="text-center" v-for="slot in slots" :key="slot.id">
-                            <td>{{ slot.id }}</td>
-                            <td>
-                                <router-link :to="{name: 'qr_code', params: { id: slot.id }}" class="btn btn-primary">Generate
-                                </router-link>
-                            </td>
-                            <td>{{ slot.parking_number }}</td>
-                            <td>{{ slot.department.name }}</td>
-                            <td>
-                                <div class="btn-group" role="group" style="gap: 5px">
-                                    <button class="btn btn-primary" @click="modalShow(slot)">Edit</button>
-                                    <button class="btn btn-danger" @click="deleteSlot(slot.id)">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+    <div class="mx-2 my-2">
+        <v-card class="mx-auto px-5 pxy-5" outlined>
+            <v-card-title class="font-weight-bold">
+                Parking Slots List
+                <v-spacer></v-spacer>
+                <v-icon
+                    x-large 
+                    @click="addSlot"
+                >
+                    mdi-plus
+                </v-icon>
+            </v-card-title>
+                <v-data-table
+                        :headers="headers"
+                        :items="slots"
+                        :items-per-page="5"
+                        :loading="loading"
+                        class="elevation-1"
+                >   
+                   
+                    <template v-slot:item.generate ="{ item }">
+                        <v-btn class="btn btn-primary" @click="$router.push('/qr_code/'+ item.id)">Generate</v-btn>
+                    </template>
+                    
+                    <template v-slot:item.action ="{ item }">
+                        <v-icon small class="mr-2" @click="editSlot(item)">mdi-pencil</v-icon>
+                        <v-icon small @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
+                    </template>
+                </v-data-table>
+        </v-card>
+        <SlotForm :form="slotForm" :dialogState="addition_edition_dailog" @close="addition_edition_dailog = false" @save="addition_edition_dailog = false,updateSlot()" />
+        <v-row justify="center">
+            <v-dialog
+                v-model="deleteDialog"
+                persistent
+                max-width="290"
+            >
+                <v-card>
+                    <v-card-title class="error headline" style="font-weight:bold; color:white;">
+                        Confirm Delete
+                    </v-card-title>
+                    <v-card-text class="mt-4">Are you sure you want to delete this?</v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            text
+                            @click="deleteDialog = false, delete_id= null"
+                        >
+                            Cancel
+                        </v-btn>
+                        <v-btn
+                            color="error"
+                            text
+                            @click="deleteSlot(delete_id), delete_id = null"
+                        >
+                            Delete
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-row>
     </div>
 </template>
 
 <script>
+  import SlotForm from '../../components/adminForms/ParkingSlot.vue'
+
     export default {
+        components: {
+            SlotForm
+        },
         data() {
             return {
+                delete_id: null,
+                deleteDialog: false,
+                loading: true,
                 slots: [],
+                title:'',
+                headers: [
+                    {
+                        text: 'ID',
+                        align: 'center',
+                        sortable: false,
+                        value: 'id',
+                    },
+                    {text: 'QR Code', align: 'center', value: 'generate'},
+                    {text: 'Parking Number',  align: 'center',value: 'parking_number'},
+                    {text: 'Department', align: 'center', value: 'department.name'},
+                    {text: 'Actions',  align: 'center', value: 'action'},
+
+                ],
                 slot:{
-                    // qr_code:'',
-                    parking_number:'',
-                    department_id:''
+                    parking_number: '',
+                    department_id:'',
+                   
                 },
+                addition_edition_dailog: false,
+                slotForm: {
+                id:null,
+                parking_number:'',
+                department_id: '',
+                }
 
             }
         },
@@ -80,50 +110,54 @@
 
         methods: {
             initialize(){
+                this.slotForm = {
+                id:null,
+                parking_number:'',
+                department_id: '',
+                }
                 this.$admin.get('/admin/v1/parking_slot/index').then(({data})=> {
                     this.slots = data
+                    this.loading = false;
                 })
             },  
 
             deleteSlot(id) {
-                this.$admin.delete(`/admin/v1/parking_slot/delete/${id}`).then(({id}) => {
+                this.$admin.delete(`/admin/v1/parking_slot/delete/${id}`).then(({data}) => {
+                        this.deleteDialog = false;
                         this.initialize()
                     });
                 
             },
 
             addSlot() {
-                this.$admin.post('/admin/v1/parking_slot/create', this.slot).then(({data}) => {
-                    this.initialize()
-                })
+                this.slotForm = {
+                id:null,
+                parking_number:'',
+                department_id: '',
+                }
+                this.addition_edition_dailog = true
             },
+
+            editSlot(slot){
+            this.slotForm = {
+                id:slot.id,
+                parking_number:slot.parking_number,
+                department_id:slot.department_id,
+            }
+            this.addition_edition_dailog = true
+             },
 
             updateSlot() {
-                this.$admin.post(`/admin/v1/parking_slot/update/${this.slot.id}`, this.slot).then(({data}) => {
+                if(this.slotForm.id){
+                    this.$admin.post('admin/v1/parking_slot/update/'+this.slotForm.id,this.slotForm).then(({data}) => {
                         this.initialize()
-                        this.$modal.hide('show')
-                    });
-                
-            },
-
-            modalShow(slot = null) {
-                this.$modal.show('show')
-                if (slot != null){
-                     this.slot = {
-                        id: slot.id,
-                        // qr_code: slot.qr_code,
-                        parking_number: slot.parking_number,
-                        department_id: slot.department_id
-                    }
+                    })
                 }
-            },
-
-            slotInitialState() {
-                this.slot = {
-                    // qr_code: '',
-                    parking_number:'',
-                    department_id:'',
-                }
+                else{
+                    this.$admin.post('admin/v1/parking_slot/create',this.slotForm).then(({data}) =>{
+                        this.initialize()
+                    })
+                }      
             },
 
         }
@@ -132,15 +166,10 @@
 </script>
 
 <style scoped>
-h3{
-  text-align: center;
-  margin-top: 30px;
-  margin-bottom: 20px;
-}
-.icon{
-  margin-right: 10px;
-}
-.icon i{
-  cursor: pointer;
-}
+    .overlap-icon {
+        position: absolute;
+        top: -33px;
+        text-align: center;
+        padding-top: 12px;
+    }
 </style>

@@ -1,78 +1,105 @@
 <template>
-    <div class="products">
-        <modal name="show" @closed ="userInitialState()"  height = 'auto'> 
-            <div class="container"> 
-                <form @submit.prevent="user.id ? updateUser(): addUser()" >
-                    <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" class="form-control" v-model="user.name">
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="text" class="form-control" v-model="user.email">
-                    </div>
-                    <div class="form-group" v-if="!user.id">
-                        <label>Password</label>
-                        <input type="text" class="form-control" v-model="user.password">
-                    </div>
-                    <div class="form-group">
-                        <label>RFID Number</label>
-                        <input type="text" class="form-control" v-model="user.rfid_number">
-                    </div>
-                    <button type="submit" class="btn btn-primary mb-2" >{{user.id ? 'Update': 'Add'}} User</button>
-                </form>
-            </div>
-        </modal>
-        <h3 class="text-center">Users</h3>
-        <button class="btn btn-primary" @click="modalShow()">Add</button>
-        <div class="card mt-5">
-            <div class="card-header">
-                User List
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table ">
-                        <thead>
-                            <tr class="text-center">
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>RFID Number</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="text-center" v-for="user in users" :key="user.id">
-                                <td>{{ user.id }}</td>
-                                <td>{{ user.name }}</td>
-                                <td>{{ user.email }}</td>
-                                <td>{{ user.rfid_number }}</td>
-                                <td>
-                                    <div class="btn-group" role="group" style="gap: 5px">
-                                        <button class="btn btn-primary" @click="modalShow(user)">Edit</button>
-                                        <button class="btn btn-danger" @click="deleteUser(user.id)">Delete</button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+    <div class="mx-2 my-2">
+        <v-card class="mx-auto px-5 pxy-5" outlined>
+            <v-card-title class="font-weight-bold">
+                Users List
+                <v-spacer></v-spacer>
+                <v-icon
+                    x-large 
+                    @click="addUser"
+                >
+                    mdi-account-plus
+                </v-icon>
+            </v-card-title>
+                <v-data-table
+                        :headers="headers"
+                        :items="users"
+                        :items-per-page="5"
+                        :loading="loading"
+                        class="elevation-1"
+                >
+                    <template v-slot:item.action ="{ item }">
+                        <v-icon small class="mr-2" @click="editUser(item)">mdi-pencil</v-icon>
+                        <v-icon small @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
+                    </template>
+                </v-data-table>
+        </v-card>
+        <UserForm :form="userForm" :dialogState="addition_edition_dailog" @close="addition_edition_dailog = false" @save="addition_edition_dailog = false,updateUser()" />
+        <v-row justify="center">
+            <v-dialog
+                v-model="deleteDialog"
+                persistent
+                max-width="290"
+            >
+                <v-card>
+                    <v-card-title class="error headline" style="font-weight:bold; color:white;">
+                        Confirm Delete
+                    </v-card-title>
+                    <v-card-text class="mt-4">Are you sure you want to delete this?</v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            text
+                            @click="deleteDialog = false, delete_id = null"
+                        >
+                            Cancel
+                        </v-btn>
+                        <v-btn
+                            color="error"
+                            text
+                            @click="deleteUser(delete_id), delete_id = null"
+                            
+                        >
+                            Delete
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-row>
     </div>
 </template>
 
 <script>
+  import UserForm from '../../components/adminForms/User.vue'
+
     export default {
+        components: {
+            UserForm
+        },
         data() {
             return {
+                deleteDialog: false,
+                loading: true,
                 users: [],
+                delete_id: null,
+                title:'',
+                headers: [
+                    {
+                        text: 'ID',
+                        align: 'center',
+                        sortable: false,
+                        value: 'id',
+                    },
+                    {text: 'Name', value: 'name'},
+                    {text: 'Email', value: 'email'},
+                    {text: 'RFID Number', value: 'rfid_number'},
+                    {text: 'Actions', value: 'action'},
+
+                ],
                 user:{
                     name: '',
                     email:'',
                     password:'',
                     rfid_number:''
                 },
+                addition_edition_dailog: false,
+                userForm: {
+                id:null,
+                name:'',
+                email: '',
+                rfid_number: '',
+                password: '',
+                }
 
             }
         },
@@ -82,52 +109,59 @@
 
         methods: {
             initialize(){
+                this.userForm = {
+                id:null,
+                name:'',
+                email: '',
+                rfid_number: '',
+                password: '',
+                }
                 this.$admin.get('/admin/v1/user/index').then(({data})=> {
                     this.users = data
+                    this.loading = false;
                 })
             },  
 
             deleteUser(id) {
-                this.$admin.delete(`/admin/v1/user/delete/${id}`).then(({id}) => {
+                this.$admin.delete(`/admin/v1/user/delete/${id}`).then(({data}) => {
+                        this.deleteDialog = false;
                         this.initialize()
                     });
                 
             },
 
             addUser() {
-                this.$admin.post('/admin/v1/user/create', this.user).then(({data}) => {
-                    this.initialize()
-                    this.$modal.hide('show')
-                })
+                this.userForm = {
+                id:null,
+                name:'',
+                email: '',
+                rfid_number: '',
+                password: '',
+                }
+                this.addition_edition_dailog = true
             },
+
+            editUser(user){
+            this.userForm = {
+                id:user.id,
+                name:user.name,
+                email:user.email ,
+                rfid_number:user.rfid_number ,
+            }
+            this.addition_edition_dailog = true
+             },
 
             updateUser() {
-                this.$admin.post(`/admin/v1/user/update/${this.user.id}`, this.user).then(({data}) => {
+                if(this.userForm.id){
+                    this.$admin.post('admin/v1/user/update/'+this.userForm.id,this.userForm).then(({data}) => {
                         this.initialize()
-                        this.$modal.hide('show')
-                    });
-                
-            },
-
-            modalShow(user = null) {
-                this.$modal.show('show')
-                if (user != null){
-                     this.user = {
-                        id: user.id,
-                        name: user.name,
-                        email: user.email,
-                        rfid_number: user.rfid_number
-                    }
+                    })
                 }
-            },
-
-            userInitialState() {
-                this.user = {
-                    name: '',
-                    email:'',
-                    password:'',
-                    rfid_number:''
-                }
+                else{
+                    this.$admin.post('admin/v1/user/create',this.userForm).then(({data}) =>{
+                        this.initialize()
+                    })
+                }      
             },
 
         }
@@ -136,15 +170,10 @@
 </script>
 
 <style scoped>
-h3{
-  text-align: center;
-  margin-top: 30px;
-  margin-bottom: 20px;
-}
-.icon{
-  margin-right: 10px;
-}
-.icon i{
-  cursor: pointer;
-}
+    .overlap-icon {
+        position: absolute;
+        top: -33px;
+        text-align: center;
+        padding-top: 12px;
+    }
 </style>

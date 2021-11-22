@@ -1,68 +1,103 @@
 <template>
-    <div class="products">
-        <modal name="show" @closed ="departmentInitialState()"  height = 'auto'> 
-            <div class="container"> 
-                <form @submit.prevent="department.id ? updateDepartment(): addDepartment()" >
-                    <div class="form-group">
-                        <label>Name</label>
-                        <input type="text" class="form-control" v-model="department.name">
-                    </div>
-                    <div class="form-group">
-                        <label>Color</label>
-                        <input type="text" class="form-control" v-model="department.color">
-                    </div>
-                    <button type="submit" class="btn btn-primary mb-2" >{{department.id ? 'Update': 'Add'}} Department</button>
-                </form>
-            </div>
-        </modal>
-        <h3 class="text-center">Departments</h3>
-        <button class="btn btn-primary" @click="modalShow()">Add</button>
-        <div class="card mt-5">
-            <div class="card-header">
-            Department List
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table ">
-                        <thead>
-                        <tr class="text-center">
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Color</th>
-                            <th>Number of Slots</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr class="text-center" v-for="department in departments" :key="department.id">
-                            <td>{{ department.id }}</td>
-                            <td>{{ department.name }}</td>
-                            <td>{{ department.color }}</td>
-                            <td>{{ department.parking_slots_count}}</td>
-                            <td>
-                                <div class="btn-group" role="group" style="gap: 5px">
-                                    <button class="btn btn-primary" @click="modalShow(department)">Edit</button>
-                                    <button class="btn btn-danger" @click="deleteDepartment(department.id)">Delete</button>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
+    <div class="mx-2 my-2">
+        <v-card class="mx-auto px-5 pxy-5" outlined>
+            <v-card-title class="font-weight-bold">
+                Departments List
+                <v-spacer></v-spacer>
+                <v-icon
+                    x-large 
+                    @click="addDepartment"
+                >
+                    mdi-plus
+                </v-icon>
+            </v-card-title>
+                <v-data-table
+                        :headers="headers"
+                        :items="departments"
+                        :items-per-page="5"
+                        :loading="loading"
+                        class="elevation-1"
+                >   
+                   
+                    
+                    <template v-slot:item.action ="{ item }">
+                        <v-icon small class="mr-2" @click="editDepartment(item)">mdi-pencil</v-icon>
+                        <v-icon small @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
+                    </template>
+                </v-data-table>
+        </v-card>
+        <DepartmentForm :form="departmentForm" :dialogState="addition_edition_dailog" @close="addition_edition_dailog = false" @save="addition_edition_dailog = false,updateDepartment()" />
+        <v-row justify="center">
+            <v-dialog
+                v-model="deleteDialog"
+                persistent
+                max-width="290"
+            >
+                <v-card>
+                    <v-card-title class="error headline" style="font-weight:bold; color:white;">
+                        Confirm Delete
+                    </v-card-title>
+                    <v-card-text class="mt-4">Are you sure you want to delete this?</v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn
+                            text
+                            @click="deleteDialog = false, delete_id = null"
+                        >
+                            Cancel
+                        </v-btn>
+                        <v-btn
+                            color="error"
+                            text
+                            @click="deleteDepartment(delete_id), delete_id = null"
+                        >
+                            Delete
+                        </v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-row>
     </div>
 </template>
 
 <script>
+  import DepartmentForm from '../../components/adminForms/Department.vue'
+
     export default {
+        components: {
+            DepartmentForm
+        },
         data() {
             return {
+                deleteDialog: false,
+                delete_id: null,
+                loading: true,
                 departments: [],
+                title:'',
+                headers: [
+                    {
+                        text: 'ID',
+                        align: 'center',
+                        sortable: false,
+                        value: 'id',
+                    },
+                    {text: 'Name',  align: 'center',value: 'name'},
+                    {text: 'Color', align: 'center', value: 'color'},
+                    {text: 'Number of Slots', align: 'center', value: 'parking_slots_count'},
+                    {text: 'Actions',  align: 'center', value: 'action'},
+
+                ],
                 department:{
                     name: '',
                     color:'',
+                   
                 },
+                addition_edition_dailog: false,
+                departmentForm: {
+                id:null,
+                name:'',
+                color: '',
+                }
 
             }
         },
@@ -72,50 +107,54 @@
 
         methods: {
             initialize(){
+                this.departmentForm = {
+                id:null,
+                name:'',
+                color: '',
+                }
                 this.$admin.get('/admin/v1/department/index').then(({data})=> {
                     this.departments = data
+                    this.loading = false;
                 })
             },  
 
             deleteDepartment(id) {
-                this.$admin.delete(`/admin/v1/department/delete/${id}`).then(({id}) => {
+                this.$admin.delete(`/admin/v1/department/delete/${id}`).then(({data}) => {
+                        this.deleteDialog = false;
                         this.initialize()
                     });
                 
             },
 
             addDepartment() {
-                this.$admin.post('/admin/v1/department/create', this.department).then(({data}) => {
-                    this.initialize()
-                    this.$modal.hide('show')
-
-                })
+                this.departmentForm = {
+                id:null,
+                name:'',
+                color: '',
+                }
+                this.addition_edition_dailog = true
             },
-            
+
+            editDepartment(department){
+            this.departmentForm = {
+                id:department.id,
+                name:department.name,
+                color:department.color ,
+            }
+            this.addition_edition_dailog = true
+             },
+
             updateDepartment() {
-                this.$admin.post(`/admin/v1/department/update/${this.department.id}`, this.department).then(({data}) => {
+                if(this.departmentForm.id){
+                    this.$admin.post('admin/v1/department/update/'+this.departmentForm.id,this.departmentForm).then(({data}) => {
                         this.initialize()
-                        this.$modal.hide('show')
-                    });
-                
-            },
-
-            modalShow(department = null) {
-                this.$modal.show('show')
-                if (department != null){
-                     this.department = {
-                        id: department.id,
-                        name: department.name,
-                        color: department.color,
-                    }
+                    })
                 }
-            },
-
-            departmentInitialState() {
-                this.department = {
-                    name: '',
-                    color:'',
-                }
+                else{
+                    this.$admin.post('admin/v1/department/create',this.departmentForm).then(({data}) =>{
+                        this.initialize()
+                    })
+                }      
             },
 
         }
@@ -124,15 +163,10 @@
 </script>
 
 <style scoped>
-h3{
-  text-align: center;
-  margin-top: 30px;
-  margin-bottom: 20px;
-}
-.icon{
-  margin-right: 10px;
-}
-.icon i{
-  cursor: pointer;
-}
+    .overlap-icon {
+        position: absolute;
+        top: -33px;
+        text-align: center;
+        padding-top: 12px;
+    }
 </style>

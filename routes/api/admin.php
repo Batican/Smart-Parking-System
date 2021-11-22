@@ -52,4 +52,7 @@ Route::group( ['prefix' => '/v1','middleware' => ['auth:admin-api','scopes:admin
     Route::post('user/update/{id}',[UserController::class, 'update']);
     Route::delete('user/delete/{user}',[UserController::class, 'destroy']);
 
+
+    Route::post('/logout',[LoginController::class, 'logout']);
+
 });

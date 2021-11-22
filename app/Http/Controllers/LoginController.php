@@ -66,4 +66,13 @@ class LoginController extends Controller
             return response()->json(['error' => ['Email and Password are Wrong.']], 200);
         }
     }
+
+    public function logout(Request $request)
+    {
+        auth()->guard('admin')->logout();
+
+        $request->user()->token()->revoke();
+
+        return "sucess";
+    }
 }

@@ -8,10 +8,12 @@ require('./bootstrap');
 
 window.Vue = require('vue').default;
 
+import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import router from './plugins/router';
 import store from './plugins/store';
 import vuetify from './plugins/vuetify';
 import Axios from './plugins/axios';
+
 
 import App from './layouts/App.vue';
 Vue.prototype.$admin = Axios

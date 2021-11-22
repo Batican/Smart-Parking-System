@@ -1,8 +1,8 @@
 <template>
   <v-app id="inspire" >
-    <app-nav-bar :mini="mini" @changeStatusDrawer="mini = !mini"></app-nav-bar>
+    <app-nav-bar :is_open="drawer"></app-nav-bar>
 
-    <app-bar @changeStatusDrawer="mini = !mini"></app-bar>
+    <app-bar @changeStatusDrawer="drawer = !drawer"></app-bar>
 
     <app-main></app-main>
   </v-app>
@@ -15,7 +15,7 @@
 
   export default {
     data: () => ({ 
-      mini: true,
+      drawer: true,
     }),
     components : {
       AppBar,
