@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\DepartmentController;
 use App\Http\Controllers\admin\ParkingSlotController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
@@ -54,5 +56,8 @@ Route::group( ['prefix' => '/v1','middleware' => ['auth:admin-api','scopes:admin
 
 
     Route::post('/logout',[LoginController::class, 'logout']);
+
+    Route::get('dashboard/getData',[DashboardController::class, 'getData']);
+
 
 });
