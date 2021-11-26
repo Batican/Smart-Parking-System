@@ -13,6 +13,7 @@ import Backoffice from '../pages/Backoffice.vue';
     import User from '../pages/Backoffice/Users.vue';
     import QrCode from '../pages/Backoffice/QrCode.vue';
     import Dashboard from '../pages/Backoffice/Dashboard.vue'
+    import departmentView from '../pages/view/Department.vue'
 
 Vue.use(VueRouter);
 Vue.use(Vuetify);
@@ -63,6 +64,11 @@ const router = new VueRouter({
                     path: '/qr_code/:id',
                     name: 'qr_code',
                     component: QrCode
+                },
+                {
+                    path: '/department-view/:id',
+                    name: 'department-view',
+                    component: departmentView
                 },
             ]
         },

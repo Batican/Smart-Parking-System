@@ -19,8 +19,8 @@
                         class="elevation-1"
                 >
                     <template v-slot:item.action ="{ item }">
-                        <v-icon small class="mr-2" @click="editUser(item)">mdi-pencil</v-icon>
-                        <v-icon small @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
+                        <v-icon class="mr-2" @click="editUser(item)">mdi-pencil</v-icon>
+                        <v-icon @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
                     </template>
                 </v-data-table>
         </v-card>
@@ -81,6 +81,7 @@
                         value: 'id',
                     },
                     {text: 'Name', value: 'name'},
+                    {text: 'Type of User', value: 'type'},
                     {text: 'Email', value: 'email'},
                     {text: 'RFID Number', value: 'rfid_number'},
                     {text: 'Actions', value: 'action'},
@@ -96,6 +97,7 @@
                 userForm: {
                 id:null,
                 name:'',
+                type:'',
                 email: '',
                 rfid_number: '',
                 password: '',
@@ -112,6 +114,7 @@
                 this.userForm = {
                 id:null,
                 name:'',
+                type:'',
                 email: '',
                 rfid_number: '',
                 password: '',
@@ -134,6 +137,7 @@
                 this.userForm = {
                 id:null,
                 name:'',
+                type:'',
                 email: '',
                 rfid_number: '',
                 password: '',
@@ -142,13 +146,16 @@
             },
 
             editUser(user){
-            this.userForm = {
-                id:user.id,
-                name:user.name,
-                email:user.email ,
-                rfid_number:user.rfid_number ,
-            }
-            this.addition_edition_dailog = true
+                this.userForm = {
+                    id:user.id,
+                    name:user.name,
+                    type:user.type,
+                    email:user.email ,
+                    rfid_number:user.rfid_number ,
+                    password: ''
+                    
+                }
+                this.addition_edition_dailog = true
              },
 
             updateUser() {

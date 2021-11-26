@@ -21,8 +21,9 @@
                    
                     
                     <template v-slot:item.action ="{ item }">
-                        <v-icon small class="mr-2" @click="editDepartment(item)">mdi-pencil</v-icon>
-                        <v-icon small @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
+                        <v-icon class="mr-2" @click="$router.push('/department-view/'+item.id)">mdi-eye</v-icon>
+                        <v-icon class="mr-2" @click="editDepartment(item)">mdi-pencil</v-icon>
+                        <v-icon @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
                     </template>
                 </v-data-table>
         </v-card>

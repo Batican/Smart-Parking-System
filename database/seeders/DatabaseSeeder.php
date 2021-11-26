@@ -5,6 +5,10 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Admin;
+use Illuminate\Support\Facades\Artisan;
+
+use function PHPSTORM_META\type;
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -17,6 +21,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'dan',
             'email' => 'dan@gmail.com',
+            'type' => 'student',
             'password' => bcrypt(1234),
             'rfid_number' => '010101'
         ]);
@@ -26,5 +31,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'admin@gmail.com',
             'password' => bcrypt(1234)
         ]);
+
+        Artisan::call('passport:install');
     }
 }
+

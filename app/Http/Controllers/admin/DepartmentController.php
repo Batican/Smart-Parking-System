@@ -35,7 +35,7 @@ class DepartmentController extends Controller
     
     public function show($id)
     {
-        $department = Department::find($id);
+        $department = Department::with('parkingSlots')->withCount('parkingSlots')->find($id);
 
         return $department;
     }

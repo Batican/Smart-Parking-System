@@ -20,12 +20,16 @@
                 >   
                    
                     <template v-slot:item.generate ="{ item }">
-                        <v-btn class="btn btn-primary" @click="$router.push('/qr_code/'+ item.id)">Generate</v-btn>
+                        <v-btn x-small class="btn btn-primary" @click="$router.push('/qr_code/'+ item.id)">Show</v-btn>
+                    </template>
+
+                    <template v-slot:item.status ="{ item }">
+                        {{item.status == 1 ? 'AVAILABLE' : item.status == 2 ? 'OCCUPIED': 'RESERVED'}}
                     </template>
                     
                     <template v-slot:item.action ="{ item }">
-                        <v-icon small class="mr-2" @click="editSlot(item)">mdi-pencil</v-icon>
-                        <v-icon small @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
+                        <v-icon class="mr-2" @click="editSlot(item)">mdi-pencil</v-icon>
+                        <v-icon @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
                     </template>
                 </v-data-table>
         </v-card>
@@ -87,6 +91,7 @@
                     {text: 'QR Code', align: 'center', value: 'generate'},
                     {text: 'Parking Number',  align: 'center',value: 'parking_number'},
                     {text: 'Department', align: 'center', value: 'department.name'},
+                    {text: 'Status', align: 'center', value: 'status'},
                     {text: 'Actions',  align: 'center', value: 'action'},
 
                 ],
@@ -143,6 +148,7 @@
                 id:slot.id,
                 parking_number:slot.parking_number,
                 department_id:slot.department_id,
+                status:slot.status,
             }
             this.addition_edition_dailog = true
              },

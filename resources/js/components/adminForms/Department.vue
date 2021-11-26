@@ -7,7 +7,7 @@
     >
       <v-card>
         <v-card-title>
-          <span class="text-h5">{{form.id ?'Edit' :'Add'}} User</span>
+          <span class="text-h5">{{form.id ?'Edit' :'Add'}} Department</span>
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -23,11 +23,12 @@
                             sm="6"
                             md="6"
                         >
-                            <v-text-field
-                                label="Name"
-                                required
-                                v-model="form.name"
-                            ></v-text-field>
+                            <v-select
+                              :items="['College of Art and Science (CAS)','College of Education (COE)','College of Engineering and Technology (CET)','College of Information Technology (CIT)','College of Management (COM)' ]"
+                              label="Name"
+                              v-model="form.name"
+                            >
+                            </v-select>
 
                             <v-text-field
                                 label="Color"

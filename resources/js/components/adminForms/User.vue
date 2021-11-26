@@ -34,6 +34,13 @@
                                 required
                                 v-model="form.email"
                             ></v-text-field>
+
+                            <v-select
+                              :items="['student','teacher']"
+                              label="Type of User"
+                              v-model="form.type"
+                            >
+                            </v-select>
                         </v-col>
                         <v-col
                             cols="6"
@@ -48,7 +55,6 @@
                             ></v-text-field>
 
                             <v-text-field
-                                v-if="form.id == '' || form.id == null"
                                 label="Password"
                                 required
                                 v-model="form.password"

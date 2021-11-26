@@ -21,13 +21,16 @@ class ParkingSlotController extends Controller
         $request->validate([
             // 'qr_code'=>'required',
             'parking_number'=>'required',
-            'department_id' =>'required'
+            'department_id' =>'required',
+            
+            
         ]);
 
         $slot = ParkingSlot::create([
             // 'qr_code'=> $request->qr_code,
             'parking_number'=> $request->parking_number,
-            'department_id'=>$request->department_id
+            'department_id'=>$request->department_id,
+            'status'=>ParkingSlot::AVAILABLE,
         ]);
 
         return $slot;
@@ -54,7 +57,8 @@ class ParkingSlotController extends Controller
         $request->validate([
             // 'qr_code'=>'required',
             'parking_number'=>'required',
-            'department_id' =>'required'
+            'department_id' =>'required',
+            'status' =>'required',
             
         ]);
 
@@ -62,7 +66,8 @@ class ParkingSlotController extends Controller
             ->update([
                 // 'qr_code'=> $request->qr_code,
                 'parking_number'=> $request->parking_number,
-                'department_id'=>$request->department_id
+                'department_id'=>$request->department_id,
+                'status'=>$request->status,
 
             ]);
 

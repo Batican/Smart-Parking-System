@@ -8,11 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class ParkingSlot extends Model
 {
     use HasFactory;
+    
+    const AVAILABLE = 1;
+    const OCCUPIED = 2;
+    const RESERVED = 3;
 
     protected $fillable = [
         'qr_code', 
         'parking_number', 
         'department_id',
+        'status',
         'user_id'
     ];
 

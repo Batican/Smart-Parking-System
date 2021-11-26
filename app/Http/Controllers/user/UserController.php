@@ -21,6 +21,7 @@ class UserController extends Controller
     {
         $request->validate([
             'name'=>'required',
+            'type'=>'required',
             'email'=>'required|email',
             'password'=>'required',
             'rfid_number'=>'required'
@@ -28,6 +29,7 @@ class UserController extends Controller
 
         $user = User::create([
             'name'=> $request->name,
+            'type'=> $request->type,
             'email'=> $request->email,
             'password'=> bcrypt($request->password),
             'rfid_number'=> $request->rfid_number
@@ -51,16 +53,25 @@ class UserController extends Controller
     {
         $request->validate([
             'name'=>'required',
+            'type'=>'required',
             'email'=>'required|email',
             'rfid_number'=>'required'
         ]);
 
+        $userUpdate = [
+            'name'=> $request->name,
+            'type'=> $request->type,
+            'email'=> $request->email,
+            'rfid_number'=> $request->rfid_number
+        ];
+
+        if($request->password){
+            $userUpdate["password"] = bcrypt($request->password);
+            return $userUpdate;
+        }
+
         $user = User::where('id', $id)
-            ->update([
-                'name'=> $request->name,
-                'email'=> $request->email,
-                'rfid_number'=> $request->rfid_number
-            ]);
+            ->update($userUpdate);
 
         return $user;
     }
