@@ -3,7 +3,7 @@
     <v-dialog
       v-model="adminManDialog"
       persistent
-      max-width="600px"
+      max-width="25%"
     >
       <v-card>
         <v-card-title>
@@ -20,8 +20,8 @@
                     <v-row>
                         <v-col
                             cols="6"
-                            sm="6"
-                            md="6"
+                            sm="12"
+                            md="12"
                         >
                             <v-select
                               :items="['College of Art and Science (CAS)','College of Education (COE)','College of Engineering and Technology (CET)','College of Information Technology (CIT)','College of Management (COM)' ]"

@@ -24,7 +24,7 @@
                     </template>
 
                     <template v-slot:item.status ="{ item }">
-                        {{item.status == 1 ? 'AVAILABLE' : item.status == 2 ? 'OCCUPIED': 'RESERVED'}}
+                        {{item.status == 1 ? 'Available' : item.status == 2 ? 'Occupied': 'Reserved'}}
                     </template>
                     
                     <template v-slot:item.action ="{ item }">

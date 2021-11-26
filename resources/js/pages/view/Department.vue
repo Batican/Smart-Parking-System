@@ -28,7 +28,7 @@
             icon
             x-large
           >
-            <v-icon dark class="ma-2">
+            <v-icon dark color="black">
               mdi-pencil
             </v-icon>
           </v-btn>
@@ -37,8 +37,8 @@
           <v-card-title class="font-weight-bold">
             Parking Slots
             <v-spacer></v-spacer>
-            <v-btn  class="white--text ma-2" dark small>
-              <v-icon @click="addSlot(department)">mdi-plus</v-icon>
+            <v-btn  @click="addSlot(department)" class="white--text ma-2" dark small>
+              <v-icon>mdi-plus</v-icon>
               Add Parking Slot
             </v-btn>
           </v-card-title>
@@ -51,7 +51,10 @@
               item-key="name"
               class="elevation-1"
             >
-            
+              <template v-slot:item.status ="{ item }">
+                        {{item.status == 1 ? 'Available' : item.status == 2 ? 'Occupied': 'Reserved'}}
+              </template>
+
               <template v-slot:item.action ="{ item }">
                   <v-icon class="mr-2">mdi-pencil</v-icon>
                   <v-icon>mdi-delete</v-icon>
@@ -91,8 +94,9 @@
               value: 'id',
             },
             {text: 'QR Code', align: 'center', value: 'generate'},
-            {text: 'Parking Number',  align: 'center',value: 'parking_number'},
+            {text: 'Parking Number',  align: 'center',value: 'parking_number'},           
             {text: 'Status', align: 'center', value: 'status'},
+            {text: 'Actions', align: 'center', value: 'action'},
           ],
         }
       },
@@ -105,6 +109,7 @@
               console.log(this.$route.params.id);
               this.$admin.get('/admin/v1/department/show/'+this.$route.params.id).then(({data}) => {
                   this.department = data
+                  this.slots = data.parking_slots
 
                   this.departmentForm = { 
                       id: department.id,
@@ -112,15 +117,6 @@
                       color: department.color,
                       parking_slots_count: department.parking_slots_count,
                   }
-
-                  this.slots = data.parkingSlots.map(function (parkingSlots) {
-                    return {
-                      'id' : parkingSlots.id,
-                      'parking_number' : parkingSlots.parking_number,
-                      'status': parkingSlots.status,
-                    }
-                  })
-
 
               })
           },
@@ -144,13 +140,13 @@
             },
 
           updateSlot(){
-            this.$admin.post('admin/v1/parking_slot/create',this.slotForm).then(({data}) =>{
+            this.$admin.post('/admin/v1/parking_slot/create',this.slotForm).then(({data}) =>{
                 this.initialize()
             })
           },
 
           updateDepartment() {
-            this.$admin.post('admin/v1/department/update/'+this.$route.params.id,this.departmentForm).then(({data}) => {
+            this.$admin.post('/admin/v1/department/update/'+this.$route.params.id,this.departmentForm).then(({data}) => {
                 this.initialize()
             })
                 
