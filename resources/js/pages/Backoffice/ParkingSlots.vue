@@ -144,14 +144,14 @@
             },
 
             editSlot(slot){
-            this.slotForm = {
-                id:slot.id,
-                parking_number:slot.parking_number,
-                department_id:slot.department_id,
-                status:slot.status,
-            }
-            this.addition_edition_dailog = true
-             },
+                this.slotForm = {
+                    id:slot.id,
+                    parking_number:slot.parking_number,
+                    department_id:slot.department_id,
+                    status:slot.status,
+                }
+                this.addition_edition_dailog = true
+            },
 
             updateSlot() {
                 if(this.slotForm.id){

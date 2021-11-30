@@ -29,11 +29,25 @@
                                 v-model="form.parking_number"
                             ></v-text-field>
 
-                            <v-text-field
-                                label="Department ID"
-                                required
-                                v-model="form.department_id"
-                            ></v-text-field>
+                            <v-select
+                              :items="items"
+                              label="Department "
+                              item-text= "name"
+                              item-value= "id"
+                              v-model="form.department_id"
+                              v-if="!form.department_id"
+                              
+                            >
+                            </v-select>
+
+                            <v-select
+                              :items="status"
+                              item-text="text"
+                              item-value="id"
+                              v-model="form.status"
+                              v-if="form.id"
+                            >
+                            </v-select>
                         </v-col>
                    </v-row>
                 </v-col>
@@ -83,12 +97,41 @@
     data: () => ({
         show_pass : false,
         dialog: false,
+        items:[],
+        status:[
+          { 
+            id: 1,
+            text: 'Available'
+          },
+          { 
+            id: 2,
+            text: 'Occupied'
+          },
+          { 
+            id: 3,
+            text: 'Reserved'
+          },
+
+        ]
     }),
+
     computed : {
         adminManDialog(){
             return this.dialogState
         }
-    }
+    },
+
+    mounted() {
+      this.initialize()
+    },
+
+    methods: {
+        initialize(){    
+            this.$admin.get('/admin/v1/department/index').then(({data})=> {
+                this.items = data
     
+            })
+        },
+    }  
   }
 </script>

@@ -1,11 +1,8 @@
 <template>
     <div class="dashboard">
         <v-subheader class="py-0 d-flex justify-space-between rounded-lg">
-            <h3>Dashboard</h3>
-            <v-btn color="success">
-                <v-icon>mdi-view-sequential-outline</v-icon>
-                View Orders
-            </v-btn>
+            <h3 class="black--text">Dashboard</h3>
+            
         </v-subheader>
         <br>
         <v-row>

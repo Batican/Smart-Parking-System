@@ -30,17 +30,17 @@
                 </v-list-item>
                 <v-divider />
                 <v-list-item
-                color="secondary"
-                @click="logoutAdmin"
-            >
-                <v-list-item-icon>
-                    <v-icon>mdi-logout</v-icon>
-                </v-list-item-icon>
+                    color="secondary"
+                    @click="logoutAdmin"
+                >
+                    <v-list-item-icon>
+                        <v-icon>mdi-logout</v-icon>
+                    </v-list-item-icon>
 
-                <v-list-item-content>
-                    <v-list-item-title>Logout</v-list-item-title>
-                </v-list-item-content>
-            </v-list-item>
+                    <v-list-item-content>
+                        <v-list-item-title>Logout</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
             </v-list>
         </v-menu>
     </v-app-bar>

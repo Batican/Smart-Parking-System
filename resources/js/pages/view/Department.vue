@@ -51,13 +51,18 @@
               item-key="name"
               class="elevation-1"
             >
+
+              <template v-slot:item.generate ="{ item }">
+                <v-btn x-small class="btn btn-primary" @click="$router.push('/qr_code/'+ item.id)">Show</v-btn>
+              </template>
+
               <template v-slot:item.status ="{ item }">
                         {{item.status == 1 ? 'Available' : item.status == 2 ? 'Occupied': 'Reserved'}}
               </template>
 
               <template v-slot:item.action ="{ item }">
-                  <v-icon class="mr-2">mdi-pencil</v-icon>
-                  <v-icon>mdi-delete</v-icon>
+                  <v-icon class="mr-2"  @click="editSlot(item)">mdi-pencil</v-icon>
+                  <v-icon @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
               </template>
             </v-data-table>
           </v-card-text>
@@ -66,6 +71,37 @@
     </v-row>
     <SlotForm :form="slotForm" :dialogState="addDialog" @close="addDialog = false" @save="addDialog = false,updateSlot()" />
     <DepartmentForm :form="departmentForm" :dialogState="updateDialog" @close="updateDialog = false" @save="updateDialog = false,updateDepartment()" />
+
+    <v-row justify="center">
+      <v-dialog
+          v-model="deleteDialog"
+          persistent
+          max-width="290"
+      >
+          <v-card>
+              <v-card-title class="error headline" style="font-weight:bold; color:white;">
+                  Confirm Delete
+              </v-card-title>
+              <v-card-text class="mt-4">Are you sure you want to delete this?</v-card-text>
+              <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                      text
+                      @click="deleteDialog = false, delete_id= null"
+                  >
+                      Cancel
+                  </v-btn>
+                  <v-btn
+                      color="error"
+                      text
+                      @click="deleteSlot(delete_id), delete_id = null"
+                  >
+                      Delete
+                  </v-btn>
+              </v-card-actions>
+          </v-card>
+      </v-dialog>
+    </v-row>
   </v-container>
 </template>
 <script>
@@ -79,6 +115,8 @@
       },
       data() {
         return {
+          delete_id: null,
+          deleteDialog: false,
           department: {},
           departmentForm : {},
           slotForm:{},
@@ -137,12 +175,37 @@
                 department_id: department.id,
                 }
                 this.addDialog = true
+          },
+
+          editSlot(slot){
+            this.slotForm = {
+                id:slot.id,
+                parking_number:slot.parking_number,
+                department_id:slot.department_id,
+                status:slot.status,
+            }
+            this.addDialog = true
+          },
+
+          deleteSlot(id) {
+                this.$admin.delete(`/admin/v1/parking_slot/delete/${id}`).then(({data}) => {
+                        this.deleteDialog = false;
+                        this.initialize()
+                    });
+                
             },
 
           updateSlot(){
-            this.$admin.post('/admin/v1/parking_slot/create',this.slotForm).then(({data}) =>{
-                this.initialize()
-            })
+            if(this.slotForm.id){
+              this.$admin.post('/admin/v1/parking_slot/update/'+this.slotForm.id,this.slotForm).then(({data}) => {
+                  this.initialize()
+              })
+            }
+            else{
+              this.$admin.post('/admin/v1/parking_slot/create',this.slotForm).then(({data}) =>{
+                  this.initialize()
+              })
+            }     
           },
 
           updateDepartment() {

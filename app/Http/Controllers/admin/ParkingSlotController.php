@@ -40,13 +40,13 @@ class ParkingSlotController extends Controller
     {
         $slot = ParkingSlot::findOrFail($id);
         $qrcode = QrCode::size(400)
-                    ->generate($slot->parking_number);
+                    ->generate($slot->department_id.'_'.$slot->parking_number);
         return $qrcode;
     }
 
     public function show($id)
     {
-        $slot = ParkingSlot::find($id);
+        $slot = ParkingSlot::with('department')->find($id);
 
         return $slot;
     }
