@@ -75,4 +75,13 @@ class LoginController extends Controller
 
         return "sucess";
     }
+
+    public function logoutUser(Request $request)
+    {
+        auth()->guard('user')->logout();
+
+        $request->user()->token()->revoke();
+
+        return "sucess";
+    }
 }

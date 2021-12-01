@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\user\DepartmentController;
+use App\Http\Controllers\user\ParkingSlotController;
+use App\Http\Controllers\user\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,5 +23,16 @@ Route::post('/login',[LoginController::class, 'userLogin']);
 Route::group( ['prefix' => '/v2','middleware' => ['auth:user-api','scopes:user'] ],function(){
    // authenticated staff routes here 
     Route::get('dashboard',[LoginController::class, 'userDashboard']);
+    Route::post('/logout',[LoginController::class, 'logoutUser']);
 
+    Route::get('user/show/{id}',[UserController::class, 'show']);
+    Route::post('user/update/{id}',[UserController::class, 'update']);
+
+    Route::get('department/all',[DepartmentController::class, 'index']);
+    Route::get('department/show/{id}',[DepartmentController::class, 'show']);
+
+
+    Route::get('parking_slot/all',[ParkingSlotController::class, 'index']);
+
+    
 });   

@@ -6,7 +6,7 @@
 
           <div class="black--text d-flex  mt-5">
             <v-avatar size="100" >
-                <v-icon size="200" color="red" dark>mdi-alpha-a-box</v-icon>
+                <v-icon size="200" :color="department.color" dark>mdi-office-building</v-icon>
             </v-avatar>
             <div>
                 <div class="d-flex ">
@@ -53,7 +53,9 @@
             >
 
               <template v-slot:item.generate ="{ item }">
-                <v-btn x-small class="btn btn-primary" @click="$router.push('/qr_code/'+ item.id)">Show</v-btn>
+                <v-btn x-small class="btn btn-primary mr-2" @click="$router.push('/qr_code/'+ item.id)">Show</v-btn>
+                <v-btn v-if="!item.qrCode_path" x-small color="teal"  outlined @click="generate(item.id)">Generate</v-btn>
+
               </template>
 
               <template v-slot:item.status ="{ item }">
@@ -66,7 +68,12 @@
               </template>
             </v-data-table>
           </v-card-text>
-          
+            <v-spacer></v-spacer>
+              <div class="d-flex justify-end mb-5 mr-5">
+              <v-btn color="black" outlined @click="$router.back()"> 
+                <v-icon left dark>mdi-logout</v-icon>
+                Back</v-btn>
+              </div>
       </v-card>
     </v-row>
     <SlotForm :form="slotForm" :dialogState="addDialog" @close="addDialog = false" @save="addDialog = false,updateSlot()" />
@@ -213,7 +220,13 @@
                 this.initialize()
             })
                 
-          }
+          },
+
+          generate(id){
+                this.$admin.get(`/admin/v1/parking_slot/qrImage/${id}`).then(({data}) => {
+                    this.initialize()
+                });
+            },
       }
   }
 </script>

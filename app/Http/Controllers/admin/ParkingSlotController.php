@@ -19,7 +19,6 @@ class ParkingSlotController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            // 'qr_code'=>'required',
             'parking_number'=>'required',
             'department_id' =>'required',
             
@@ -27,7 +26,6 @@ class ParkingSlotController extends Controller
         ]);
 
         $slot = ParkingSlot::create([
-            // 'qr_code'=> $request->qr_code,
             'parking_number'=> $request->parking_number,
             'department_id'=>$request->department_id,
             'status'=>ParkingSlot::AVAILABLE,
@@ -44,6 +42,25 @@ class ParkingSlotController extends Controller
         return $qrcode;
     }
 
+    public function qrImage($id)
+    {   
+        $slot = ParkingSlot::findOrFail($id);
+        $qrcode = QrCode::size(400)
+                    ->generate($slot->department_id.'_'.$slot->parking_number, public_path('images/qrImage_'.$slot->parking_number.'.svg'));
+        
+        
+        $img_url = '/images/qrImage_'.$slot->parking_number.'.svg';
+        $img_value = $slot->department_id.'_'.$slot->parking_number;
+    
+        $slot = ParkingSlot::where('id', $id)
+        ->update([
+            'qrCode_path'=> $img_url,
+            'qrCode_value'=> $img_value,
+        ]);
+
+        return $qrcode;
+    }
+
     public function show($id)
     {
         $slot = ParkingSlot::with('department')->find($id);
@@ -55,7 +72,7 @@ class ParkingSlotController extends Controller
     {
 
         $request->validate([
-            // 'qr_code'=>'required',
+
             'parking_number'=>'required',
             'department_id' =>'required',
             'status' =>'required',
@@ -64,7 +81,6 @@ class ParkingSlotController extends Controller
 
         $slot = ParkingSlot::where('id', $id)
             ->update([
-                // 'qr_code'=> $request->qr_code,
                 'parking_number'=> $request->parking_number,
                 'department_id'=>$request->department_id,
                 'status'=>$request->status,

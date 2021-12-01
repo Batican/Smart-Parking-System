@@ -14,7 +14,13 @@
                             sm="6"
                             md="6"
                         >
-                            <div class="mt-10 mb-10 ml-10" v-html="qr_code"></div>
+                            <div class="mt-10 mb-10 ml-15" v-html="qr_code"></div>
+                            <v-spacer />
+                                <div
+                                    class="d-flex justify-center mb-6 mr-15"
+                                >
+                                    <a :href="slot.qrCode_path" class="btn btn-primary black--text" download>Download</a>
+                                </div>
                         </v-col>
                         <v-col
                             cols="6"
@@ -33,6 +39,9 @@
                             </p>
                             <p class="ml-5 font-weight-bold">
                                 DEPARTMENT: {{slot.department.name}}
+                            </p>
+                            <p class="ml-5 font-weight-bold">
+                                QR CODE VALUE: {{slot.qrCode_value}}
                             </p>
                             <p class="ml-5 font-weight-bold">
                                 STATUS: {{slot.status == 1 ? 'Available' : slot.status == 2 ? 'Occupied' : 'Reserved'}}
@@ -81,6 +90,7 @@
                 this.$admin.get(`/admin/v1/parking_slot/qrcode/${this.$route.params.id}`).then(({data}) => {
                     this.qr_code = data
                 });
+                
             },
 
             initialize(){

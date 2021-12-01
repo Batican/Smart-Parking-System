@@ -14,7 +14,8 @@ class ParkingSlot extends Model
     const RESERVED = 3;
 
     protected $fillable = [
-        'qr_code', 
+        'qrCode_path',
+        'qrCode_value',
         'parking_number', 
         'department_id',
         'status',

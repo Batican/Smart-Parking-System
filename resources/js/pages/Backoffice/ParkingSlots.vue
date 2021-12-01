@@ -20,7 +20,9 @@
                 >   
                    
                     <template v-slot:item.generate ="{ item }">
-                        <v-btn x-small class="btn btn-primary" @click="$router.push('/qr_code/'+ item.id)">Show</v-btn>
+                        <v-btn x-small class="btn btn-primary mr-2" @click="$router.push('/qr_code/'+ item.id)">Show</v-btn>
+                        <v-btn v-if="!item.qrCode_path" x-small color="teal" outlined @click="generate(item.id)">Generate</v-btn>
+
                     </template>
 
                     <template v-slot:item.status ="{ item }">
@@ -132,6 +134,12 @@
                         this.initialize()
                     });
                 
+            },
+
+            generate(id){
+                this.$admin.get(`/admin/v1/parking_slot/qrImage/${id}`).then(({data}) => {
+                    this.initialize()
+                });
             },
 
             addSlot() {

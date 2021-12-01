@@ -8,7 +8,7 @@ use App\Http\Controllers\admin\ParkingSlotController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\user\UserController;
+use App\Http\Controllers\admin\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +46,7 @@ Route::group( ['prefix' => '/v1','middleware' => ['auth:admin-api','scopes:admin
     Route::post('parking_slot/update/{id}',[ParkingSlotController::class, 'update']);
     Route::delete('parking_slot/delete/{slot}',[ParkingSlotController::class, 'destroy']);
     Route::get('parking_slot/qrcode/{id}', [ParkingSlotController::class, 'generate']);
+    Route::get('parking_slot/qrImage/{id}', [ParkingSlotController::class, 'qrImage']);
 
 
     Route::get('user/index',[UserController::class, 'index']);

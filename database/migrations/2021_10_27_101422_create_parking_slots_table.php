@@ -15,7 +15,8 @@ class CreateParkingSlotsTable extends Migration
     {
         Schema::create('parking_slots', function (Blueprint $table) {
             $table->increments('id');
-            //$table->string('qr_code');
+            $table->string('qrCode_path')->nullable();
+            $table->string('qrCode_value')->nullable();
             $table->string('parking_number');
             $table->unsignedInteger('department_id');
             $table->integer('status'); // 1 = AVAILABLE, 2 = OCCUPIED, 3 = RESERVED 
