@@ -25,7 +25,7 @@ class UserController extends Controller
 
   
    
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         $request->validate([
             'name'=>'required',
@@ -44,7 +44,7 @@ class UserController extends Controller
             return $userUpdate;
         }
 
-        $user = User::where('id', $id)
+        $user = $request->user()
             ->update($userUpdate);
 
         return $user;

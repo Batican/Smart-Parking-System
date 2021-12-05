@@ -20,14 +20,12 @@ use App\Http\Controllers\user\UserController;
 
 
 Route::post('/login',[LoginController::class, 'userLogin']);
-Route::group( ['prefix' => '/v2','middleware' => ['auth:user-api','scopes:user'] ],function(){
+Route::group( ['prefix' => '/v1','middleware' => ['auth:user-api','scopes:user'] ],function(){
    // authenticated staff routes here 
     Route::get('dashboard',[LoginController::class, 'userDashboard']);
     Route::post('/logout',[LoginController::class, 'logoutUser']);
 
-    Route::get('user/all',[UserController::class, 'index']);
-    Route::get('user/show/{id}',[UserController::class, 'show']);
-    Route::post('user/update/{id}',[UserController::class, 'update']);
+    Route::post('user/update',[UserController::class, 'update']);
 
     Route::get('department/all',[DepartmentController::class, 'index']);
     Route::get('department/show/{id}',[DepartmentController::class, 'show']);
