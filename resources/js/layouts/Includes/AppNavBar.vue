@@ -58,6 +58,7 @@ export default {
             { title: 'Users', icon: 'mdi-account-supervisor', route: '/user' },
             { title: 'Departments', icon: 'mdi-office-building', route: '/departments' },
             { title: 'Parking Slots', icon: 'mdi-bus-stop', route: '/parking_slots' },
+            { title: 'Reservations', icon: 'mdi-book-edit', route: '/' },
             { title: 'Logs', icon: 'mdi-clipboard-text-clock', route: '/' },
 
         ],

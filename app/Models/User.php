@@ -20,6 +20,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'image',
         'type',
         'password',
         'rfid_number'
@@ -40,6 +41,14 @@ class User extends Authenticatable
     {
         return $this->hasOne(
             ParkingSlot::class, 
+            'user_id'
+        );
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(
+            Reservation::class, 
             'user_id'
         );
     }

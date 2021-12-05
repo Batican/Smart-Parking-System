@@ -4,7 +4,7 @@ use App\Http\Controllers\admin\AdminController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\DepartmentController;
 use App\Http\Controllers\admin\ParkingSlotController;
-
+use App\Http\Controllers\admin\ReservationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
@@ -54,6 +54,13 @@ Route::group( ['prefix' => '/v1','middleware' => ['auth:admin-api','scopes:admin
     Route::get('user/show/{id}',[UserController::class, 'show']);
     Route::post('user/update/{id}',[UserController::class, 'update']);
     Route::delete('user/delete/{user}',[UserController::class, 'destroy']);
+
+
+    Route::get('reservation/index',[ReservationController::class, 'index']);
+    Route::post('reservation/create',[ReservationController::class, 'store']);
+    Route::get('reservation/show/{id}',[ReservationController::class, 'show']);
+    Route::post('reservation/update/{id}',[ReservationController::class, 'update']);
+    Route::delete('reservation/delete/{reservation}',[ReservationController::class, 'destroy']);
 
 
     Route::post('/logout',[LoginController::class, 'logout']);

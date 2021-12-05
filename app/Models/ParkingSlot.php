@@ -32,6 +32,14 @@ class ParkingSlot extends Model
         return $this->belongsTo(Department::class);
     }
 
+    public function reservations()
+    {
+        return $this->hasMany(
+            Reservation::class, 
+            'slot_id'
+        );
+    }
+
     public function logs()
     {
         return $this->hasMany(Log::class);
