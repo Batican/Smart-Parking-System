@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\user\DepartmentController;
 use App\Http\Controllers\user\ParkingSlotController;
+use App\Http\Controllers\user\ReservationController;
 use App\Http\Controllers\user\UserController;
 
 /*
@@ -33,5 +34,9 @@ Route::group( ['prefix' => '/v1','middleware' => ['auth:user-api','scopes:user']
 
     Route::get('parking_slot/all',[ParkingSlotController::class, 'index']);
 
+
+    Route::get('reservation/show/{id}',[ReservationController::class, 'show']);
+    Route::post('reservation/update/{id}',[ReservationController::class, 'update']);
+    Route::delete('reservation/delete/{reservation}',[ReservationController::class, 'destroy']);
     
 });   

@@ -11,7 +11,7 @@ class ParkingSlotController extends Controller
 {
     public function index()
     {
-        $slot = ParkingSlot::with('department')->get();
+        $slot = ParkingSlot::with('department')->withCount('reservations')->get();
 
         return $slot;
     }
@@ -20,6 +20,7 @@ class ParkingSlotController extends Controller
     {
         $request->validate([
             'parking_number'=>'required',
+            'type'=>'required',
             'department_id' =>'required',
             
             
@@ -27,6 +28,7 @@ class ParkingSlotController extends Controller
 
         $slot = ParkingSlot::create([
             'parking_number'=> $request->parking_number,
+            'type'=>$request->type,
             'department_id'=>$request->department_id,
             'status'=>ParkingSlot::AVAILABLE,
         ]);
@@ -63,7 +65,7 @@ class ParkingSlotController extends Controller
 
     public function show($id)
     {
-        $slot = ParkingSlot::with('department')->find($id);
+        $slot = ParkingSlot::with('department', 'reservations')->withCount('reservations')->find($id);
 
         return $slot;
     }
@@ -75,6 +77,7 @@ class ParkingSlotController extends Controller
 
             'parking_number'=>'required',
             'department_id' =>'required',
+            'type'=>'required',
             'status' =>'required',
             
         ]);
@@ -83,6 +86,7 @@ class ParkingSlotController extends Controller
             ->update([
                 'parking_number'=> $request->parking_number,
                 'department_id'=>$request->department_id,
+                'type'=>$request->type,
                 'status'=>$request->status,
 
             ]);

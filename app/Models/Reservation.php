@@ -10,13 +10,15 @@ class Reservation extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
+        'slot_id',
         'date', 
 
     ];
 
     public function parkingSlot()
     {
-        return $this->belongsTo(ParkingSlot::class);
+        return $this->belongsTo(ParkingSlot::class,"slot_id");
     }
 
     public function user()

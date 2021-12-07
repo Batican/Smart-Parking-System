@@ -2,18 +2,18 @@
     <div class="mx-2 my-2">
         <v-card class="mx-auto px-5 pxy-5" outlined>
             <v-card-title class="font-weight-bold">
-                Parking Slots List
+                Reservation List
                 <v-spacer></v-spacer>
                 <v-icon
                     x-large 
-                    @click="addSlot"
+                    @click="addReservation"
                 >
                     mdi-plus
                 </v-icon>
             </v-card-title>
                 <v-data-table
                         :headers="headers"
-                        :items="slots"
+                        :items="reservations"
                         :items-per-page="5"
                         :loading="loading"
                         class="elevation-1"
@@ -30,12 +30,12 @@
                     </template>
                     
                     <template v-slot:item.action ="{ item }">
-                        <v-icon class="mr-2" @click="editSlot(item)">mdi-pencil</v-icon>
+                        <v-icon class="mr-2" @click="editReservation(item)">mdi-pencil</v-icon>
                         <v-icon @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
                     </template>
                 </v-data-table>
         </v-card>
-        <SlotForm :form="slotForm" :dialogState="addition_edition_dailog" @close="addition_edition_dailog = false" @save="addition_edition_dailog = false,updateSlot()" />
+        <ReservationForm :form="reservationForm" :dialogState="addition_edition_dailog" @close="addition_edition_dailog = false" @save="addition_edition_dailog = false,updateReservation()" />
         <v-row justify="center">
             <v-dialog
                 v-model="deleteDialog"
@@ -58,7 +58,7 @@
                         <v-btn
                             color="error"
                             text
-                            @click="deleteSlot(delete_id), delete_id = null"
+                            @click="deleteReservation(delete_id), delete_id = null"
                         >
                             Delete
                         </v-btn>
@@ -70,18 +70,18 @@
 </template>
 
 <script>
-  import SlotForm from '../../components/adminForms/ParkingSlot.vue'
+  import ReservationForm from '../../components/adminForms/Reservation.vue'
 
     export default {
         components: {
-            SlotForm
+            ReservationForm
         },
         data() {
             return {
                 delete_id: null,
                 deleteDialog: false,
                 loading: true,
-                slots: [],
+                reservations: [],
                 title:'',
                 headers: [
                     {
@@ -90,23 +90,24 @@
                         sortable: false,
                         value: 'id',
                     },
-                    {text: 'QR Code', align: 'center', value: 'generate'},
-                    {text: 'Parking Number',  align: 'center',value: 'parking_number'},
-                    {text: 'Department', align: 'center', value: 'department.name'},
-                    {text: 'Status', align: 'center', value: 'status'},
+                    {text: 'User Name', align: 'center', value: 'user.name'},
+                    {text: 'Parking Number',  align: 'center',value: 'parking_slot.parking_number'},
+                    {text: 'Date', align: 'center', value: 'date'},
                     {text: 'Actions',  align: 'center', value: 'action'},
 
                 ],
-                slot:{
-                    parking_number: '',
-                    department_id:'',
+                reservation:{
+                    user_id: '',
+                    slot_id:'',
+                    date:'',
                    
                 },
                 addition_edition_dailog: false,
-                slotForm: {
-                id:null,
-                parking_number:'',
-                department_id: '',
+                reservationForm: {
+                    id:null,
+                    user_id: '',
+                    slot_id:'',
+                    date:'',
                 }
 
             }
@@ -117,58 +118,54 @@
 
         methods: {
             initialize(){
-                this.slotForm = {
-                id:null,
-                parking_number:'',
-                department_id: '',
+                this.reservationForm = {
+                    id:null,
+                    user_id: '',
+                    slot_id:'',
+                    date:'',
                 }
-                this.$admin.get('/admin/v1/parking_slot/index').then(({data})=> {
-                    this.slots = data
+                this.$admin.get('/admin/v1/reservation/index').then(({data})=> {
+                    this.reservations = data
                     this.loading = false;
                 })
             },  
 
-            deleteSlot(id) {
-                this.$admin.delete(`/admin/v1/parking_slot/delete/${id}`).then(({data}) => {
+            deleteReservation(id) {
+                this.$admin.delete(`/admin/v1/reservation/delete/${id}`).then(({data}) => {
                         this.deleteDialog = false;
                         this.initialize()
                     });
                 
             },
 
-            generate(id){
-                this.$admin.get(`/admin/v1/parking_slot/qrImage/${id}`).then(({data}) => {
-                    this.initialize()
-                });
-            },
-
-            addSlot() {
-                this.slotForm = {
-                id:null,
-                parking_number:'',
-                department_id: '',
+            addReservation() {
+                this.reservationForm = {
+                    id:null,
+                    user_id: '',
+                    slot_id:'',
+                    date:(new Date()).toISOString().split('T')[0],
                 }
                 this.addition_edition_dailog = true
             },
 
-            editSlot(slot){
-                this.slotForm = {
-                    id:slot.id,
-                    parking_number:slot.parking_number,
-                    department_id:slot.department_id,
-                    status:slot.status,
+            editReservation(reservation){
+                this.reservationForm = {
+                    id:reservation.id,
+                    user_idr:reservation.user_id,
+                    slot_id:reservation.slot_id,
+                   date:reservation.date,
                 }
                 this.addition_edition_dailog = true
             },
 
-            updateSlot() {
-                if(this.slotForm.id){
-                    this.$admin.post('admin/v1/parking_slot/update/'+this.slotForm.id,this.slotForm).then(({data}) => {
+            updateReservation() {
+                if(this.reservationForm.id){
+                    this.$admin.post('admin/v1/reservation/update/'+this.reservationForm.id,this.reservationForm).then(({data}) => {
                         this.initialize()
                     })
                 }
                 else{
-                    this.$admin.post('admin/v1/parking_slot/create',this.slotForm).then(({data}) =>{
+                    this.$admin.post('admin/v1/reservation/create',this.reservationForm).then(({data}) =>{
                         this.initialize()
                     })
                 }      

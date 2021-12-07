@@ -18,6 +18,7 @@ class CreateParkingSlotsTable extends Migration
             $table->string('qrCode_path')->nullable();
             $table->string('qrCode_value')->nullable();
             $table->string('parking_number');
+            $table->string('type');
             $table->unsignedInteger('department_id');
             $table->integer('status'); // 1 = AVAILABLE, 2 = OCCUPIED, 3 = RESERVED 
             $table->unsignedInteger('user_id')->nullable();

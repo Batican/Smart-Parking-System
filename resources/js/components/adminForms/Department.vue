@@ -23,18 +23,29 @@
                             sm="12"
                             md="12"
                         >
-                            <v-select
-                              :items="['College of Art and Science (CAS)','College of Education (COE)','College of Engineering and Technology (CET)','College of Information Technology (CIT)','College of Management (COM)' ]"
-                              label="Name"
-                              v-model="form.name"
-                            >
-                            </v-select>
+                      
+                          <v-autocomplete
+                            v-model="form.name"
+                            :items="departments"
+                            :filter="customFilter"
+                            item-text="name"
+                            label="Department Name"
+                            hide-no-data
+                            @change="(event)=>change(event)"
+                            return-object
+                          ></v-autocomplete>
 
-                            <v-text-field
-                                label="Color"
-                                required
-                                v-model="form.color"
-                            ></v-text-field>
+                          <v-text-field
+                              label="Abbreviation"
+                              required
+                              v-model="form.abbreviation"
+                          ></v-text-field>
+
+                          <v-text-field
+                              label="Color"
+                              required
+                              v-model="form.color"
+                          ></v-text-field>
                         </v-col>
                    </v-row>
                 </v-col>
@@ -83,12 +94,42 @@
     data: () => ({
         show_pass : false,
         dialog: false,
+        loading: false,
+        departments: [
+          {name:'College of Art and Science ', abbr:'CAS'},
+          {name:'College of Education ', abbr:'COE'},
+          {name:'College of Engineering and Technology ', abbr:'CET'},
+          {name:'College of Information Technology ', abbr:'CIT'},
+          {name:'College of Tourism', abbr:'C=OT'},
+          {name:'College of Management ', abbr:'COM'},
+          
+          
+          
+
+          
+        ]
     }),
     computed : {
         adminManDialog(){
             return this.dialogState
         }
-    }
+    },
     
+
+    methods: {
+      customFilter (item, queryText, itemText) {
+        const textOne = item.name.toLowerCase()
+        const textTwo = item.abbr.toLowerCase()
+        const searchText = queryText.toLowerCase()
+
+        return textOne.indexOf(searchText) > -1 ||
+          textTwo.indexOf(searchText) > -1
+      },
+      change(department){
+        this.form.abbreviation = department.abbr
+        this.form.name = department.name
+      }
+
+    },
   }
 </script>

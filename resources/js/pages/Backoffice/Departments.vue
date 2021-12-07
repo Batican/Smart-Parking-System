@@ -83,6 +83,7 @@
                         value: 'id',
                     },
                     {text: 'Name',  align: 'center',value: 'name'},
+                    {text: 'Abbreviation of Name',  align: 'center',value: 'abbreviation'},
                     {text: 'Color', align: 'center', value: 'color'},
                     {text: 'Number of Slots', align: 'center', value: 'parking_slots_count'},
                     {text: 'Actions',  align: 'center', value: 'action'},

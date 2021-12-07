@@ -11,9 +11,11 @@ import Backoffice from '../pages/Backoffice.vue';
     import Department from '../pages/Backoffice/Departments.vue';
     import ParkingSlot from '../pages/Backoffice/ParkingSlots.vue';
     import User from '../pages/Backoffice/Users.vue';
+    import Reservation from '../pages/Backoffice/Reservations.vue';
     import QrCode from '../pages/Backoffice/QrCode.vue';
     import Dashboard from '../pages/Backoffice/Dashboard.vue'
     import departmentView from '../pages/view/Department.vue'
+    import parkingSlotView from '../pages/view/ParkingSlot.vue'
 
 Vue.use(VueRouter);
 Vue.use(Vuetify);
@@ -61,6 +63,11 @@ const router = new VueRouter({
                     component: ParkingSlot
                 },
                 {
+                    path: '/reservation',
+                    name: 'Reservation',
+                    component: Reservation
+                },
+                {
                     path: '/qr_code/:id',
                     name: 'qr_code',
                     component: QrCode
@@ -69,6 +76,11 @@ const router = new VueRouter({
                     path: '/department-view/:id',
                     name: 'department-view',
                     component: departmentView
+                },
+                {
+                    path: '/parkingSlot-view/:id',
+                    name: 'parkingSlot-view',
+                    component: parkingSlotView
                 },
             ]
         },

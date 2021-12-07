@@ -30,12 +30,13 @@
                     </template>
                     
                     <template v-slot:item.action ="{ item }">
+                        <v-icon class="mr-2" @click="$router.push('/parkingSlot-view/'+item.id)">mdi-eye</v-icon>
                         <v-icon class="mr-2" @click="editSlot(item)">mdi-pencil</v-icon>
                         <v-icon @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
                     </template>
                 </v-data-table>
         </v-card>
-        <SlotForm :form="slotForm" :dialogState="addition_edition_dailog" @close="addition_edition_dailog = false" @save="addition_edition_dailog = false,updateSlot()" />
+        <SlotForm :fromDepartment ="false" :form="slotForm" :dialogState="addition_edition_dailog" @close="addition_edition_dailog = false" @save="addition_edition_dailog = false,updateSlot()" />
         <v-row justify="center">
             <v-dialog
                 v-model="deleteDialog"
@@ -93,6 +94,8 @@
                     {text: 'QR Code', align: 'center', value: 'generate'},
                     {text: 'Parking Number',  align: 'center',value: 'parking_number'},
                     {text: 'Department', align: 'center', value: 'department.name'},
+                    {text: 'Type', align: 'center', value: 'type'},
+                    {text: 'Number of Reservations', align: 'center', value: 'reservations_count'},
                     {text: 'Status', align: 'center', value: 'status'},
                     {text: 'Actions',  align: 'center', value: 'action'},
 
@@ -100,6 +103,7 @@
                 slot:{
                     parking_number: '',
                     department_id:'',
+                    type:''
                    
                 },
                 addition_edition_dailog: false,
@@ -107,6 +111,7 @@
                 id:null,
                 parking_number:'',
                 department_id: '',
+                type:''
                 }
 
             }
@@ -121,6 +126,7 @@
                 id:null,
                 parking_number:'',
                 department_id: '',
+                type:''
                 }
                 this.$admin.get('/admin/v1/parking_slot/index').then(({data})=> {
                     this.slots = data
@@ -156,6 +162,7 @@
                     id:slot.id,
                     parking_number:slot.parking_number,
                     department_id:slot.department_id,
+                    type:slot.type,
                     status:slot.status,
                 }
                 this.addition_edition_dailog = true

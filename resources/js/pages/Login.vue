@@ -88,7 +88,7 @@ export default {
 </script>
 <style>
  #app {
-    background: url('/images/bg_img.png')
+    /* background: url('/images/bg_img.png')
         no-repeat center center !important;
     background-size: cover;
     width: 100%;
@@ -96,6 +96,12 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    transform: scale(1.1);
+    transform: scale(1.1); */
+    display: block;
+    background: url(/images/bg_img.png) no-repeat;
+    background-size: cover;
  }
+ .v-application .mt-12 {
+    padding: 40px 20px;
+}
  </style>

@@ -6,7 +6,7 @@
 
           <div class="black--text d-flex  mt-5">
             <v-avatar size="100" >
-                <v-icon size="200" :color="department.color" dark>mdi-office-building</v-icon>
+                <v-icon size="100" :color="department.color" dark>mdi-office-building</v-icon>
             </v-avatar>
             <div>
                 <div class="d-flex ">
@@ -76,7 +76,7 @@
               </div>
       </v-card>
     </v-row>
-    <SlotForm :form="slotForm" :dialogState="addDialog" @close="addDialog = false" @save="addDialog = false,updateSlot()" />
+    <SlotForm :fromDepartment ="true" :form ="slotForm" :dialogState="addDialog" @close="addDialog = false" @save="addDialog = false,updateSlot()" />
     <DepartmentForm :form="departmentForm" :dialogState="updateDialog" @close="updateDialog = false" @save="updateDialog = false,updateDepartment()" />
 
     <v-row justify="center">
@@ -151,7 +151,6 @@
       },
       methods : { 
           initialize(){
-              console.log(this.$route.params.id);
               this.$admin.get('/admin/v1/department/show/'+this.$route.params.id).then(({data}) => {
                   this.department = data
                   this.slots = data.parking_slots

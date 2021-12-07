@@ -19,12 +19,13 @@ class ParkingSlot extends Model
         'parking_number', 
         'department_id',
         'status',
-        'user_id'
+        'user_id',
+        'type'
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function department()

@@ -35,7 +35,15 @@
                               item-text= "name"
                               item-value= "id"
                               v-model="form.department_id"
-                              v-if="!form.department_id"
+                              v-if="!fromDepartment"
+                              
+                            >
+                            </v-select>
+
+                            <v-select
+                              :items="['Car', 'Motor']"
+                              label="Type"
+                              v-model="form.type"
                               
                             >
                             </v-select>
@@ -90,9 +98,14 @@
                 id:null,
                 parking_number:'',
                 department_id: '',
+                type: ''
                
             }
-        }
+        },
+        fromDepartment: {
+            type: Boolean,
+            required: false
+        },
     },
     data: () => ({
         show_pass : false,

@@ -20,12 +20,15 @@ class DepartmentController extends Controller
     {
         $request->validate([
             'name'=>'required',
+            'abbreviation'=>'required',
             'color'=>'required'
         ]);
 
         $department = Department::create([
             'name'=> $request->name,
-            'color'=> $request->color
+            'abbreviation' => $request->abbreviation,
+            'color'=> $request->color,
+            
 
         ]);
 
@@ -46,12 +49,14 @@ class DepartmentController extends Controller
     {
         $request->validate([
             'name'=>'required',
+            'abbreviation'=>'required',
             'color'=>'required'
         ]);
 
         $department = Department::where('id', $id)
             ->update([
                 'name'=> $request->name,
+                'abbreviation' => $request->abbreviation,
                 'color'=>$request->color
             ]);
 
