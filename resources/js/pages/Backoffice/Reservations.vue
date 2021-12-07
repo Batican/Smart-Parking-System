@@ -30,7 +30,6 @@
                     </template>
                     
                     <template v-slot:item.action ="{ item }">
-                        <v-icon class="mr-2" @click="editReservation(item)">mdi-pencil</v-icon>
                         <v-icon @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
                     </template>
                 </v-data-table>
@@ -148,27 +147,11 @@
                 this.addition_edition_dailog = true
             },
 
-            editReservation(reservation){
-                this.reservationForm = {
-                    id:reservation.id,
-                    user_idr:reservation.user_id,
-                    slot_id:reservation.slot_id,
-                   date:reservation.date,
-                }
-                this.addition_edition_dailog = true
-            },
-
             updateReservation() {
-                if(this.reservationForm.id){
-                    this.$admin.post('admin/v1/reservation/update/'+this.reservationForm.id,this.reservationForm).then(({data}) => {
-                        this.initialize()
-                    })
-                }
-                else{
                     this.$admin.post('admin/v1/reservation/create',this.reservationForm).then(({data}) =>{
                         this.initialize()
                     })
-                }      
+                    
             },
 
         }

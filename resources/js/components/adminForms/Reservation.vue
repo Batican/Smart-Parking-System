@@ -26,7 +26,6 @@
                         <v-autocomplete
                           v-model="form.user_id"
                           :items="users"
-                          :filter="customFilter"
                           item-text="name"
                           item-value="id"
                           label="User"
@@ -39,7 +38,7 @@
                           item-text= "parking_number"
                           item-value= "id"
                           v-model="form.slot_id"
-                          v-if="!form.slot_id"
+                          v-if="!fromReservation"
                         >
                         </v-select>
 
@@ -113,7 +112,11 @@
                 date: '',
                
             }
-        }
+        },
+        fromReservation: {
+            type: Boolean,
+            required: false
+        },
     },
     data: () => ({
         show_pass : false,

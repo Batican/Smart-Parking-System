@@ -10,8 +10,8 @@
                 <v-alert dense text type="success">
                     Login Successfully! Welcome to <strong>Smart Parking System</strong>
                 </v-alert>
-                <v-row>
-                    <v-col cols="4" v-for="(item,index) in activityLog" :key="index">
+                <v-row >
+                    <v-col cols="3" v-for="(item,index) in activityLog" :key="index">
                         <v-card elevation="2" class="rounded-lg">
                             <v-card-text class="d-flex justify-space-between align-center">
                                 <div>
@@ -33,16 +33,17 @@
             </v-col>
             <v-col>
                 <v-card>
+                    <v-card-title class="font-weight-bold">
+                        Reservation Lists
+                    </v-card-title>
                     <v-data-table
-                            caption="Recent Order list"
-                            :headers="headers"
-                            :items="desserts"
-                            :items-per-page="5"
-                            class="elevation-1"
+                        :items-per-page='5'
+                        dense
+                        :headers="headers"
+                        :items="reserve"
+                        item-key="name"
+                        class="elevation-1"
                     >
-                        <template v-slot:item.action="">
-                            <v-btn color="success" outlined small shaped >View</v-btn>
-                        </template>
                     </v-data-table>
                 </v-card>
             </v-col>
@@ -59,102 +60,20 @@
                     {title: 'Users', description: 'Total current users', value: 0, icon: 'mdi-account-group', color: 'cyan lighten-3'},
                     {title: 'Departments',description: 'Total current departments',value: 0,icon: 'mdi-office-building', color: 'green darken-2'},
                     {title: 'Parking Slots',description: 'Total current parking slots',value: 0, icon: 'mdi-bus-stop', color: 'blue-grey darken-1'},
+                    {title: 'Reservations',description: 'Total current reservations',value: 0, icon: 'mdi-book-edit', color: 'blue'},
                 ],
+                reserve:[],
+                loading: true,
                 headers: [
                     {
-                        text: 'Dessert (100g serving)',
-                        align: 'start',
+                        text: 'ID',
+                        align: 'center',
                         sortable: false,
-                        value: 'name',
+                        value: 'id',
                     },
-                    {text: 'Calories', value: 'calories'},
-                    {text: 'Fat (g)', value: 'fat'},
-                    {text: 'Carbs (g)', value: 'carbs'},
-                    {text: 'Protein (g)', value: 'protein'},
-                    {text: 'Iron (%)', value: 'iron'},
-                    {text: 'Actions', value: 'action'},
-                ],
-                desserts: [
-                    {
-                        name: 'Frozen Yogurt',
-                        calories: 159,
-                        fat: 6.0,
-                        carbs: 24,
-                        protein: 4.0,
-                        iron: '1%',
-                    },
-                    {
-                        name: 'Ice cream sandwich',
-                        calories: 237,
-                        fat: 9.0,
-                        carbs: 37,
-                        protein: 4.3,
-                        iron: '1%',
-                    },
-                    {
-                        name: 'Eclair',
-                        calories: 262,
-                        fat: 16.0,
-                        carbs: 23,
-                        protein: 6.0,
-                        iron: '7%',
-                    },
-                    {
-                        name: 'Cupcake',
-                        calories: 305,
-                        fat: 3.7,
-                        carbs: 67,
-                        protein: 4.3,
-                        iron: '8%',
-                    },
-                    {
-                        name: 'Gingerbread',
-                        calories: 356,
-                        fat: 16.0,
-                        carbs: 49,
-                        protein: 3.9,
-                        iron: '16%',
-                    },
-                    {
-                        name: 'Jelly bean',
-                        calories: 375,
-                        fat: 0.0,
-                        carbs: 94,
-                        protein: 0.0,
-                        iron: '0%',
-                    },
-                    {
-                        name: 'Lollipop',
-                        calories: 392,
-                        fat: 0.2,
-                        carbs: 98,
-                        protein: 0,
-                        iron: '2%',
-                    },
-                    {
-                        name: 'Honeycomb',
-                        calories: 408,
-                        fat: 3.2,
-                        carbs: 87,
-                        protein: 6.5,
-                        iron: '45%',
-                    },
-                    {
-                        name: 'Donut',
-                        calories: 452,
-                        fat: 25.0,
-                        carbs: 51,
-                        protein: 4.9,
-                        iron: '22%',
-                    },
-                    {
-                        name: 'KitKat',
-                        calories: 518,
-                        fat: 26.0,
-                        carbs: 65,
-                        protein: 7,
-                        iron: '6%',
-                    },
+                    {text: 'User ID', align: 'center', value: 'user_id'},
+                    {text: 'Parking Number',  align: 'center',value: 'parking_slot.parking_number'},
+                    {text: 'Date', align: 'center', value: 'date'},
                 ],
             }
         },
@@ -169,7 +88,14 @@
                     this.activityLog[0].value= data.users
                     this.activityLog[1].value= data.departments
                     this.activityLog[2].value= data.parking_slots
+                    this.activityLog[3].value= data.reservations
+                    
 
+                })
+
+                this.$admin.get('/admin/v1/reservation/index').then(({data})=> {
+                    this.reserve = data
+                    this.loading = false;
                 })
             },  
         }

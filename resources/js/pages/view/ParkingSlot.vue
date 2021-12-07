@@ -41,7 +41,7 @@
         </div>
         <v-divider elevation="10"></v-divider>
           <v-card-title class="font-weight-bold">
-            Parking Slots
+            Reservations
             <v-spacer></v-spacer>
             <v-btn  @click="addReservation(slot)" class="white--text ma-2" dark small>
               <v-icon>mdi-plus</v-icon>
@@ -58,7 +58,6 @@
               class="elevation-1"
             >
               <template v-slot:item.action ="{ item }">
-                  <v-icon class="mr-2"  @click="editSlot(item)">mdi-pencil</v-icon>
                   <v-icon @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
               </template>
             </v-data-table>
@@ -72,7 +71,7 @@
       </v-card>
     </v-row>
     <SlotForm :fromDepartment="true" :form="slotForm" :dialogState="updateDialog" @close="updateDialog = false" @save="updateDialog = false,updateSlot()" />
-    <ReservationForm :form="reservationForm" :dialogState="addDialog" @close="addDialog = false" @save="addDialog = false,updateReservation()" />
+    <ReservationForm :fromReservation='true' :form="reservationForm" :dialogState="addDialog" @close="addDialog = false" @save="addDialog = false,updateReservation()" />
 
     <v-row justify="center">
       <v-dialog
@@ -177,16 +176,6 @@
                 this.addDialog = true
           },
 
-          editReservation(reservation){
-            this.reservationForm = {
-                id:reservation.id,
-                user_id:reservation.user_id,
-                slot_id:reservation.slot_id,
-                date:reservation.date,
-            }
-            this.addDialog = true
-          },
-
           deleteReservation(id) {
                 this.$admin.delete(`/admin/v1/reservation/delete/${id}`).then(({data}) => {
                         this.deleteDialog = false;
@@ -196,16 +185,10 @@
             },
 
           updateReservation(){
-            if(this.slotForm.id){
-              this.$admin.post('/admin/v1/reservation/update/'+this.reservationForm.id,this.reservationForm).then(({data}) => {
-                  this.initialize()
-              })
-            }
-            else{
               this.$admin.post('/admin/v1/reservaion/create',this.reservationForm).then(({data}) =>{
                   this.initialize()
               })
-            }     
+               
           },
 
           updateSlot() {

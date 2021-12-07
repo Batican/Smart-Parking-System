@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ReservationController extends Controller
@@ -23,6 +24,13 @@ class ReservationController extends Controller
             'date' => 'required'
             
         ]);
+
+        $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($request->date))->exists();
+        if($exists){
+            return [
+                "error"=>"Parking Slot is already reserve on this date"
+            ];
+        }
 
         $reservation = Reservation::create([
             'slot_id'=> $request->slot_id,
@@ -50,7 +58,14 @@ class ReservationController extends Controller
             'date' => 'required'
             
         ]);
-
+        
+        $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($request->date))->exists();
+        if($exists){
+            return [
+                "error"=>"Parking Slot is already reserve on this date"
+            ];
+        }
+        
         $reservation= Reservation::where('id', $id)
             ->update([
                 'slot_id'=> $request->slot_id,

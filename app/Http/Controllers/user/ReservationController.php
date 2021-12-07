@@ -4,10 +4,36 @@ namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class ReservationController extends Controller
-{
+{   
+    public function store(Request $request)
+    {
+        $request->validate([
+            'slot_id'=>'required',
+            'user_id' =>'required',
+            'date' => 'required'
+            
+        ]);
+
+        $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($request->date))->exists();
+        if($exists){
+            return [
+                "error"=>"Parking Slot is already reserve on this date"
+            ];
+        }
+
+        $reservation = Reservation::create([
+            'slot_id'=> $request->slot_id,
+            'user_id'=>$request->user_id,
+            'date'=>$request->date
+        ]);
+
+        return $reservation;
+    }
+
     public function show($id)
     {
         $reservation = Reservation::with('parkingSlot', 'user')->find($id);
@@ -25,6 +51,13 @@ class ReservationController extends Controller
             'date' => 'required'
             
         ]);
+
+        $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($request->date))->exists();
+        if($exists){
+            return [
+                "error"=>"Parking Slot is already reserve on this date"
+            ];
+        }
 
         $reservation= Reservation::where('id', $id)
             ->update([
