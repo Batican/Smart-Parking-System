@@ -35,6 +35,8 @@ Route::group( ['prefix' => '/v1','middleware' => ['auth:user-api','scopes:user']
     Route::get('parking_slot/all',[ParkingSlotController::class, 'index']);
 
 
+
+    Route::post('reservation/create',[ReservationController::class, 'store']);
     Route::get('reservation/show/{id}',[ReservationController::class, 'show']);
     Route::post('reservation/update/{id}',[ReservationController::class, 'update']);
     Route::delete('reservation/delete/{reservation}',[ReservationController::class, 'destroy']);
