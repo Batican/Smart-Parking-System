@@ -32,7 +32,7 @@ class UserController extends Controller
             'type'=> $request->type,
             'email'=> $request->email,
             'password'=> bcrypt($request->password),
-            'rfid_number'=> $request->rfid_number
+            'rfid_number'=> (int)$request->rfid_number
 
         ]);
 
@@ -62,7 +62,7 @@ class UserController extends Controller
             'name'=> $request->name,
             'type'=> $request->type,
             'email'=> $request->email,
-            'rfid_number'=> $request->rfid_number
+            'rfid_number'=> (int)$request->rfid_number
         ];
 
         if($request->password){

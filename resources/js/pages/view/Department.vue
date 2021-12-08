@@ -140,6 +140,7 @@
             },
             {text: 'QR Code', align: 'center', value: 'generate'},
             {text: 'Parking Number',  align: 'center',value: 'parking_number'},           
+            {text: 'Type', align: 'center', value: 'type'},
             {text: 'Status', align: 'center', value: 'status'},
             {text: 'Actions', align: 'center', value: 'action'},
           ],
