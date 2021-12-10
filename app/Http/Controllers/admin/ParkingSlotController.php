@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\ParkingSlot;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
+
 
 class ParkingSlotController extends Controller
 {
@@ -51,7 +54,7 @@ class ParkingSlotController extends Controller
                     ->generate($slot->department_id.'_'.$slot->parking_number, public_path('images/qrImage_'.$slot->parking_number.'.svg'));
         
         
-        $img_url = '/images/qrImage_'.$slot->parking_number.'.svg';
+        $img_url = 'qrImage_'.$slot->parking_number.'.svg';
         $img_value = $slot->department_id.'_'.$slot->parking_number;
     
         $slot = ParkingSlot::where('id', $id)
@@ -97,6 +100,10 @@ class ParkingSlotController extends Controller
 
     public function destroy(ParkingSlot $slot)
     {
+        $image_path = "app/public/images/".$slot->qrCode_path;  // Value is not URL but directory file path
+        if(File::exists($image_path)) {
+            File::delete($image_path);
+    }
 
         $slot->delete();
 

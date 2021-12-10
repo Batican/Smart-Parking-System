@@ -41,12 +41,7 @@
                               v-model="form.type"
                             >
                             </v-select>
-                        </v-col>
-                        <v-col
-                            cols="6"
-                            sm="6"
-                            md="6"
-                        >
+
                             <v-text-field
                                 label="RFID Number"
                                 required
@@ -62,6 +57,28 @@
                                 :append-icon="show_pass ? 'mdi-eye' : 'mdi-eye-off'"
                                 @click:append="show_pass = !show_pass"
                             ></v-text-field>
+                        </v-col>
+                        <v-col
+                            cols="6"
+                            sm="6"
+                            md="6"
+                        >   
+                            <v-img
+                                lazy-src="https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg"
+                                max-height="250"
+                                max-width="250"
+                                height="200"
+                                :src="form.image ? form.image : 'https://cdn.vuetifyjs.com/images/parallax/material2.jpg'"
+                            ></v-img>
+                            <v-btn 
+                                icon 
+                                large
+                                color="light-black" 
+                                @click="$refs.inputUpload.click()"  
+                            > 
+                                <v-icon left >mdi-image-plus</v-icon>
+                            </v-btn>
+                            <input v-show="false" ref="inputUpload" type="file" @change="processImage" >
                         </v-col>
                    </v-row>
                 </v-col>
@@ -106,6 +123,8 @@
                 email: '',
                 password: '',
                 rfid_number: '',
+                image: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.iconfinder.com%2Ficons%2F2180657%2Fadd_add_photo_upload_plus_icon&psig=AOvVaw2bCaC6AsrefFBHZ3Id8IAP&ust=1632066273765000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCIC3-ejuiPMCFQAAAAAdAAAAABAD',
+
             }
         }
     },
@@ -113,6 +132,17 @@
         show_pass : false,
         dialog: false,
     }),
+
+    methods : {
+      processImage(e){
+    
+        var fileReader = new FileReader()
+        fileReader.readAsDataURL(e.target.files[0])
+        fileReader.onload = (e) => {
+          this.form.image = e.target.result
+        }
+      },
+    },
     computed : {
         adminManDialog(){
             return this.dialogState

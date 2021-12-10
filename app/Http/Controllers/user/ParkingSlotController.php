@@ -21,4 +21,6 @@ class ParkingSlotController extends Controller
 
         return $parkingslots;
     }
+
+    
 }

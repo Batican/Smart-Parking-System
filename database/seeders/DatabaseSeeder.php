@@ -33,6 +33,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Artisan::call('passport:install');
+        Artisan::call('storage:link');
+        Artisan::call('key:generate');
     }
 }
 

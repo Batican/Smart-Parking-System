@@ -17,7 +17,17 @@
                         :items-per-page="5"
                         :loading="loading"
                         class="elevation-1"
-                >
+                >   
+                    <template v-slot:item.image="{ item }">
+                        <v-avatar color="#e1ad01">
+                            <img v-if="item.image"
+                                :src="'/storage/' + item.image"
+                            >
+                            <v-icon v-else dark>
+                                mdi-account-tie
+                            </v-icon>
+                        </v-avatar>
+                    </template>
                     <template v-slot:item.action ="{ item }">
                         <v-icon class="mr-2" @click="editUser(item)">mdi-pencil</v-icon>
                         <v-icon @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
@@ -80,6 +90,7 @@
                         sortable: false,
                         value: 'id',
                     },
+                    { text: "Image", value: "image" },
                     {text: 'Name', value: 'name'},
                     {text: 'Type of User', value: 'type'},
                     {text: 'Email', value: 'email'},
@@ -91,7 +102,8 @@
                     name: '',
                     email:'',
                     password:'',
-                    rfid_number:''
+                    rfid_number:'',
+                    image:''
                 },
                 addition_edition_dailog: false,
                 userForm: {
@@ -101,6 +113,8 @@
                 email: '',
                 rfid_number: '',
                 password: '',
+                image: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.iconfinder.com%2Ficons%2F2180657%2Fadd_add_photo_upload_plus_icon&psig=AOvVaw2bCaC6AsrefFBHZ3Id8IAP&ust=1632066273765000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCIC3-ejuiPMCFQAAAAAdAAAAABAD',
+
                 }
 
             }
@@ -118,6 +132,8 @@
                 email: '',
                 rfid_number: '',
                 password: '',
+                image: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.iconfinder.com%2Ficons%2F2180657%2Fadd_add_photo_upload_plus_icon&psig=AOvVaw2bCaC6AsrefFBHZ3Id8IAP&ust=1632066273765000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCIC3-ejuiPMCFQAAAAAdAAAAABAD',
+
                 }
                 this.$admin.get('/admin/v1/user/index').then(({data})=> {
                     this.users = data
@@ -141,6 +157,8 @@
                 email: '',
                 rfid_number: '',
                 password: '',
+                image: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.iconfinder.com%2Ficons%2F2180657%2Fadd_add_photo_upload_plus_icon&psig=AOvVaw2bCaC6AsrefFBHZ3Id8IAP&ust=1632066273765000&source=images&cd=vfe&ved=0CAsQjRxqFwoTCIC3-ejuiPMCFQAAAAAdAAAAABAD',
+
                 }
                 this.addition_edition_dailog = true
             },
@@ -152,7 +170,8 @@
                     type:user.type,
                     email:user.email ,
                     rfid_number:user.rfid_number ,
-                    password: ''
+                    password: '',
+                    image: '/storage/'+user.image,
                     
                 }
                 this.addition_edition_dailog = true
