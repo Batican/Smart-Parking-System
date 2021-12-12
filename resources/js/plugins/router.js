@@ -16,6 +16,7 @@ import Backoffice from '../pages/Backoffice.vue';
     import Dashboard from '../pages/Backoffice/Dashboard.vue'
     import departmentView from '../pages/view/Department.vue'
     import parkingSlotView from '../pages/view/ParkingSlot.vue'
+    import userView from '../pages/view/User.vue'
 
 Vue.use(VueRouter);
 Vue.use(Vuetify);
@@ -81,6 +82,11 @@ const router = new VueRouter({
                     path: '/parkingSlot-view/:id',
                     name: 'parkingSlot-view',
                     component: parkingSlotView
+                },
+                {
+                    path: '/user-view/:id',
+                    name: 'user-view',
+                    component: userView
                 },
             ]
         },

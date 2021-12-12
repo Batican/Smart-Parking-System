@@ -29,6 +29,7 @@
                         </v-avatar>
                     </template>
                     <template v-slot:item.action ="{ item }">
+                        <v-icon class="mr-2" @click="$router.push('/user-view/'+item.id)">mdi-eye</v-icon>
                         <v-icon class="mr-2" @click="editUser(item)">mdi-pencil</v-icon>
                         <v-icon @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
                     </template>

@@ -89,7 +89,7 @@
                         sortable: false,
                         value: 'id',
                     },
-                    {text: 'User Name', align: 'center', value: 'user.name'},
+                    {text: 'Name of User', align: 'center', value: 'user.name'},
                     {text: 'Parking Number',  align: 'center',value: 'parking_slot.parking_number'},
                     {text: 'Date', align: 'center', value: 'date'},
                     {text: 'Actions',  align: 'center', value: 'action'},

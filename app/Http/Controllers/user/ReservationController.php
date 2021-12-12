@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
+use App\Models\ParkingSlot;
 use App\Models\Reservation;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -22,6 +23,12 @@ class ReservationController extends Controller
         if($exists){
             return [
                 "error"=>"Parking Slot is already reserve on this date"
+            ];
+        }
+        $date = Reservation::whereDate('date',Carbon::now());
+        if($date){
+            return[
+                'status' => ParkingSlot::RESERVED,
             ];
         }
 

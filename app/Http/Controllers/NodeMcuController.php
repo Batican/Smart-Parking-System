@@ -18,7 +18,7 @@ class NodeMcuController extends Controller
             ParkingSlot::where('user_id', $user->id)
             ->update([
                 'user_id' => null,
-                'status'=>ParkingSlot::AVAILABLE,
+                'status' => ParkingSlot::AVAILABLE,
             ]);
 
             Reservation::whereDate('date',Carbon::now())->where('user_id', $user->id)->delete();

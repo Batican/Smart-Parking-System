@@ -13,7 +13,7 @@
                         <v-img src= "https://cdn.vuetifyjs.com/images/lists/1.jpg" />
                     </v-avatar>
                     </v-badge>
-                    <span class="ml-3">Daniel Matsunaga</span>
+                    <span class="ml-3">Admin</span>
                 </v-chip>
                 </span>
             </template>
@@ -24,7 +24,7 @@
                 </v-list-item-avatar>
 
                 <v-list-item-content>
-                    <v-list-item-title>Daniel Matsunaga</v-list-item-title>
+                    <v-list-item-title>Admin</v-list-item-title>
                     <v-list-item-subtitle>Logged In</v-list-item-subtitle>
                 </v-list-item-content>
                 </v-list-item>

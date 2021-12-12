@@ -51,11 +51,11 @@ class ParkingSlotController extends Controller
     {   
         $slot = ParkingSlot::findOrFail($id);
         $qrcode = QrCode::size(400)
-                    ->generate($slot->department_id.'_'.$slot->parking_number, public_path('images/qrImage_'.$slot->parking_number.'.svg'));
+                    ->generate($slot->department->abbreviation.'_'.$slot->parking_number, public_path('images/qrImage_'.$slot->parking_number.'.svg'));
         
         
         $img_url = 'qrImage_'.$slot->parking_number.'.svg';
-        $img_value = $slot->department_id.'_'.$slot->parking_number;
+        $img_value = $slot->department->abbreviation.'_'.$slot->parking_number;
     
         $slot = ParkingSlot::where('id', $id)
         ->update([
