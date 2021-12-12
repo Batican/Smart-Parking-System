@@ -132,7 +132,7 @@
               sortable: false,
               value: 'id',
             },
-            {text: 'User ID', align: 'center', value: 'user_id'},
+            {text: 'Parking Slot ID', align: 'center', value: 'slot_id'},
             {text: 'Date', align: 'center', value: 'date'},
             {text: 'Actions',  align: 'center', value: 'action'},
           ],
