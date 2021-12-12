@@ -5,6 +5,7 @@ namespace App\Http\Controllers\user;
 use App\Http\Controllers\Controller;
 use App\Models\ParkingSlot;
 use App\Models\Reservation;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -46,6 +47,20 @@ class ReservationController extends Controller
         $reservation = Reservation::with('parkingSlot', 'user')->find($id);
 
         return $reservation;
+    }
+
+    public function done($id)
+    {
+        $reservation = Reservation::find($id);
+        $reservation->parkingSlot()->update([
+            'status' => ParkingSlot::OCCUPIED,
+            'user_id' => $reservation->user_id,
+        ]);
+        Reservation::whereDate('date',Carbon::now())->where('user_id', $reservation->user_id)->delete();
+
+        return [
+            "Success"=>"Reservation Done!"
+        ];
     }
 
     public function update(Request $request, $id)

@@ -42,5 +42,6 @@ Route::group( ['prefix' => '/v1','middleware' => ['auth:user-api','scopes:user']
     Route::get('reservation/show/{id}',[ReservationController::class, 'show']);
     Route::post('reservation/update/{id}',[ReservationController::class, 'update']);
     Route::delete('reservation/delete/{reservation}',[ReservationController::class, 'destroy']);
-    
+    Route::get('reservation-done/{id}',[ReservationController::class, 'done']);
+
 });   
