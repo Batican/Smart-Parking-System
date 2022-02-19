@@ -16,36 +16,41 @@ class ReservationController extends Controller
         $request->validate([
             'slot_id'=>'required',
             'user_id' =>'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
+            'date' => 'required',
             'start_time' => 'required',
             'end_time' => 'required',
             
         ]);
-
-        $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($request->date))->exists();
-        if($exists){
-            return [
-                "error"=>"Parking Slot is already reserve on this date"
-            ];
+        $message = [];
+        $startDate = Carbon::parse($request->start_date);
+        $endDate = Carbon::parse($request->end_date);
+        
+        for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
         }
-        $date = Reservation::whereDate('date',Carbon::now());
+
+        $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date ',Carbon::parse($request->date))->exists();
+        if($exists){
+            $messages[] = "Parking slot is already reserved on this ".$date;
+        }
+        else{
+            $date = Reservation::whereDate('date',Carbon::now());
+        }
+      
         if($date){
             return[
                 'status' => ParkingSlot::RESERVED,
             ];
         }
 
-        $reservation = Reservation::create([
+        Reservation::create([
             'slot_id'=> $request->slot_id,
             'user_id'=>$request->user_id,
-            'start_date'=>$request->start_date,
-            'end_date'=>$request->end_date,
+            'date'=>$request->date,
             'start_time'=>$request->start_time,
             'end_time'=>$request->end_time,
         ]);
 
-        return $reservation;
+        return $messages;
     }
 
     public function show($id)
@@ -76,8 +81,7 @@ class ReservationController extends Controller
 
             'slot_id'=>'required',
             'user_id' =>'required',
-            'start_date' => 'required',
-            'end_date' => 'required',
+            'date' => 'required',
             'start_time' => 'required',
             'end_time' => 'required',
         ]);
@@ -93,8 +97,7 @@ class ReservationController extends Controller
             ->update([
                 'slot_id'=> $request->slot_id,
                 'user_id'=>$request->user_id,
-                'start_date'=>$request->start_date,
-                'end_date'=>$request->end_date,
+                'date'=>$request->date,
                 'start_time'=>$request->start_time,
                 'end_time'=>$request->end_time,
             ]);
