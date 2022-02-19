@@ -3,25 +3,20 @@
         app
         v-model="drawerStatus"
         persistent
-    >
-        <v-img src="https://image.freepik.com/free-photo/3d-grunge-room-interior-with-spotlight-smoky-atmosphere-background_1048-11333.jpg" class="pa-4">
-            <div class="text-center mt-4">
-                <v-avatar class="mb-4" color="grey darken-1" size="64">
-                    <v-img aspect-ratio="30" src="https://www.pngitem.com/pimgs/m/380-3801971_no-parking-car-bike-hd-png-download.png">
-
-                    </v-img>
-                </v-avatar>
-
-                <h2 class="white--text">Admin</h2>
-            </div>
-        </v-img>
-
+        color="primary"
+    >   
+        <v-container>
+            <img src="/images/nwssu.png" alt="logo">
+            <!-- <v-img src="/images/nwssu.png" class="pa-4" dark>
+            </v-img> -->
+        </v-container>
+        
         <v-divider></v-divider>
         <v-list>
             <v-list-item
                 v-for="item in items"
                 :key="item.title"
-                color="secondary"
+                color="black"
                 link
                 :to="item.route"
             >
@@ -51,43 +46,44 @@
     </v-navigation-drawer>
 </template>
 <script>
-export default {
-    data: () => ({
-        items: [
-            { title: 'Dashboard', icon: 'mdi-view-dashboard', route: '/dashboard' },
-            { title: 'Users', icon: 'mdi-account-supervisor', route: '/user' },
-            { title: 'Departments', icon: 'mdi-office-building', route: '/departments' },
-            { title: 'Parking Slots', icon: 'mdi-bus-stop', route: '/parking_slots' },
-            { title: 'Reservations', icon: 'mdi-book-edit', route: '/reservation' },
-            { title: 'Logs', icon: 'mdi-clipboard-text-clock', route: '/' },
+    export default { 
+        
+        data: () => ({
+            items: [
+                { title: 'Dashboard', icon: 'mdi-view-dashboard', route: '/dashboard' },
+                { title: 'Users', icon: 'mdi-account-supervisor', route: '/user' },
+                { title: 'Departments', icon: 'mdi-office-building', route: '/departments' },
+                { title: 'Parking Slots', icon: 'mdi-bus-stop', route: '/parking_slots' },
+                { title: 'Reservations', icon: 'mdi-book-edit', route: '/reservation' },
+                { title: 'Logs', icon: 'mdi-clipboard-text-clock', route: '/' },
 
-        ],
-    }),
-    props : {
-        is_open : {
-            require: true,
-            type : Boolean
-        }
-    },
-
-    computed: {
-       drawerStatus: {
-            get: function () {
-                return this.is_open
-            },
-            set: function (newValue) {
-
+            ],
+        }),
+        props : {
+            is_open : {
+                require: true,
+                type : Boolean
             }
         },
-    },
-    methods : {
-        logoutAdmin(){
-            this.$admin.post('admin/v1/logout').then(({data}) => {
-                localStorage.removeItem("token")
-                this.$router.push('/login')
-            })
-        }
-    },
-    
-}
+
+        computed: {
+        drawerStatus: {
+                get: function () {
+                    return this.is_open
+                },
+                set: function (newValue) {
+
+                }
+            },
+        },
+        methods : {
+            logoutAdmin(){
+                this.$admin.post('admin/v1/logout').then(({data}) => {
+                    localStorage.removeItem("token")
+                    this.$router.push('/login')
+                })
+            }
+        },
+        
+    }
 </script>

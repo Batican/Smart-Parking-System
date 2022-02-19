@@ -7,9 +7,6 @@
         <br>
         <v-row>
             <v-col lg="12" cols="12">
-                <v-alert dense text type="success">
-                    Login Successfully! Welcome to <strong>Smart Parking System</strong>
-                </v-alert>
                 <v-row >
                     <v-col cols="3" v-for="(item,index) in activityLog" :key="index">
                         <v-card elevation="2" class="rounded-lg">

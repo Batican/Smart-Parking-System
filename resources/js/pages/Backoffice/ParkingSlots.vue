@@ -138,6 +138,7 @@
                 this.$admin.delete(`/admin/v1/parking_slot/delete/${id}`).then(({data}) => {
                         this.deleteDialog = false;
                         this.initialize()
+                        this.successNotify('Deleted');
                     });
                 
             },
@@ -172,11 +173,13 @@
                 if(this.slotForm.id){
                     this.$admin.post('admin/v1/parking_slot/update/'+this.slotForm.id,this.slotForm).then(({data}) => {
                         this.initialize()
+                        this.successNotify('Updated');
                     })
                 }
                 else{
                     this.$admin.post('admin/v1/parking_slot/create',this.slotForm).then(({data}) =>{
                         this.initialize()
+                        this.successNotify('Created');
                     })
                 }      
             },

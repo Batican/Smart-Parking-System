@@ -124,6 +124,7 @@
                 this.$admin.delete(`/admin/v1/department/delete/${id}`).then(({data}) => {
                         this.deleteDialog = false;
                         this.initialize()
+                        this.successNotify('Deleted');
                     });
                 
             },
@@ -150,11 +151,13 @@
                 if(this.departmentForm.id){
                     this.$admin.post('admin/v1/department/update/'+this.departmentForm.id,this.departmentForm).then(({data}) => {
                         this.initialize()
+                        this.successNotify('Updated');
                     })
                 }
                 else{
                     this.$admin.post('admin/v1/department/create',this.departmentForm).then(({data}) =>{
                         this.initialize()
+                        this.successNotify('Created');
                     })
                 }      
             },

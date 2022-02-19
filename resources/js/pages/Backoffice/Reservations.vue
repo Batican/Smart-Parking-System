@@ -133,6 +133,7 @@
                 this.$admin.delete(`/admin/v1/reservation/delete/${id}`).then(({data}) => {
                         this.deleteDialog = false;
                         this.initialize()
+                        this.successNotify('Deleted');
                     });
                 
             },
@@ -148,9 +149,18 @@
             },
 
             updateReservation() {
+                if(this.userForm.id){
+                    this.$admin.post('admin/v1/reservation/update/'+this.reservationForm.id,this.reservationForm).then(({data}) => {
+                        this.initialize()
+                        this.successNotify('Updated');
+                    })
+                }
+                else{
                     this.$admin.post('admin/v1/reservation/create',this.reservationForm).then(({data}) =>{
                         this.initialize()
+                        this.successNotify('Created');
                     })
+                }      
                     
             },
 

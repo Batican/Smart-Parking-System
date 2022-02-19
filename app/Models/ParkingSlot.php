@@ -18,7 +18,7 @@ class ParkingSlot extends Model
         'qrCode_value',
         'parking_number', 
         'department_id',
-        'status',
+        'status', 
         'user_id',
         'type'
     ];

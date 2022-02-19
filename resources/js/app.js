@@ -8,6 +8,10 @@ require('./bootstrap');
 
 window.Vue = require('vue').default;
 
+import Notification from "./Mixins/Snackbar.vue";
+
+Vue.mixin(Notification);
+
 import 'material-design-icons-iconfont/dist/material-design-icons.css';
 import router from './plugins/router';
 import store from './plugins/store';

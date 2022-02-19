@@ -1,7 +1,7 @@
 <template>
     <v-app-bar app absolute  color="primary" class="text-white">
         <v-app-bar-nav-icon @click="$emit('changeStatusDrawer')" color="white"></v-app-bar-nav-icon>
-        <v-toolbar-title class=" black--text">Smart Parking System</v-toolbar-title>
+        <v-toolbar-title class=" black--text">NwSSU Smart Parking System</v-toolbar-title>
         <v-col />
         <v-spacer />
         <v-menu offset-y>
@@ -10,7 +10,7 @@
                 <v-chip link>
                     <v-badge dot bottom color="green" offset-y="10" offset-x="10">
                     <v-avatar size="40">
-                        <v-img src= "https://cdn.vuetifyjs.com/images/lists/1.jpg" />
+                        <v-img src= "/images/nwssu.png" />
                     </v-avatar>
                     </v-badge>
                     <span class="ml-3">Admin</span>
@@ -20,7 +20,7 @@
             <v-list width="250" class="py-0">
                 <v-list-item two-line>
                 <v-list-item-avatar>
-                    <img src= "https://cdn.vuetifyjs.com/images/lists/1.jpg" />
+                    <img src= "/images/nwssu.png" />
                 </v-list-item-avatar>
 
                 <v-list-item-content>

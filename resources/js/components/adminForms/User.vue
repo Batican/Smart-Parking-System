@@ -75,8 +75,9 @@
                                 large
                                 color="light-black" 
                                 @click="$refs.inputUpload.click()"  
-                            > 
-                                <v-icon left >mdi-image-plus</v-icon>
+                            >
+                                <v-icon>mdi-image-plus</v-icon>
+                                Add Image
                             </v-btn>
                             <input v-show="false" ref="inputUpload" type="file" @change="processImage" >
                         </v-col>

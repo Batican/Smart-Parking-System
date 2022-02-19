@@ -110,7 +110,6 @@ class UserController extends Controller
 
         if($request->password){
             $userUpdate["password"] = bcrypt($request->password);
-            return $userUpdate;
         }
 
         $user->update($userUpdate);

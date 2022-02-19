@@ -146,6 +146,7 @@
                 this.$admin.delete(`/admin/v1/user/delete/${id}`).then(({data}) => {
                         this.deleteDialog = false;
                         this.initialize()
+                        this.successNotify('Deleted');
                     });
                 
             },
@@ -182,11 +183,13 @@
                 if(this.userForm.id){
                     this.$admin.post('admin/v1/user/update/'+this.userForm.id,this.userForm).then(({data}) => {
                         this.initialize()
+                        this.successNotify('Updated');
                     })
                 }
                 else{
                     this.$admin.post('admin/v1/user/create',this.userForm).then(({data}) =>{
                         this.initialize()
+                        this.successNotify('Created');
                     })
                 }      
             },

@@ -180,6 +180,7 @@
                 this.$admin.delete(`/admin/v1/reservation/delete/${id}`).then(({data}) => {
                         this.deleteDialog = false;
                         this.initialize()
+                        this.successNotify('Deleted');
                     });
                 
             },
@@ -187,6 +188,7 @@
           updateReservation(){
               this.$admin.post('/admin/v1/reservaion/create',this.reservationForm).then(({data}) =>{
                   this.initialize()
+                  this.successNotify('Created');
               })
                
           },
@@ -194,6 +196,8 @@
           updateSlot() {
             this.$admin.post('/admin/v1/parking_slot/update/'+this.$route.params.id,this.slotForm).then(({data}) => {
                 this.initialize()
+                this.successNotify('Updated');
+
             })
                 
           },

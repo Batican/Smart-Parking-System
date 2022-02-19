@@ -79,6 +79,7 @@ export default {
             axios.post('admin/login', this.form).then(({data}) => {
                 if(data.token){
                     localStorage.setItem('token',data.token)
+                    this.successNotify('Login');
                     this.$router.push('/dashboard')  
                 }
             })

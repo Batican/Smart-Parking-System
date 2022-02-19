@@ -1,5 +1,5 @@
 <template>
-     <v-main>
+     <v-main> 
         <v-container fluid >
             <v-row justify="start" align="start">
                 <v-col >
