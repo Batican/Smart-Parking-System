@@ -4,6 +4,7 @@ export default {
     methods: {
       
         successNotify(event) {
+            console.log("asdasd")
             this.$root.$notify(
                 event+" successfully",
                 {

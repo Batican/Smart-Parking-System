@@ -16,7 +16,10 @@ class ReservationController extends Controller
         $request->validate([
             'slot_id'=>'required',
             'user_id' =>'required',
-            'date' => 'required'
+            'start_date' => 'required',
+            'end_date' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
             
         ]);
 
@@ -36,7 +39,10 @@ class ReservationController extends Controller
         $reservation = Reservation::create([
             'slot_id'=> $request->slot_id,
             'user_id'=>$request->user_id,
-            'date'=>$request->date
+            'start_date'=>$request->start_date,
+            'end_date'=>$request->end_date,
+            'start_time'=>$request->start_time,
+            'end_time'=>$request->end_time,
         ]);
 
         return $reservation;
@@ -70,8 +76,10 @@ class ReservationController extends Controller
 
             'slot_id'=>'required',
             'user_id' =>'required',
-            'date' => 'required'
-            
+            'start_date' => 'required',
+            'end_date' => 'required',
+            'start_time' => 'required',
+            'end_time' => 'required',
         ]);
 
         $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($request->date))->exists();
@@ -85,8 +93,10 @@ class ReservationController extends Controller
             ->update([
                 'slot_id'=> $request->slot_id,
                 'user_id'=>$request->user_id,
-                'date'=>$request->date
-
+                'start_date'=>$request->start_date,
+                'end_date'=>$request->end_date,
+                'start_time'=>$request->start_time,
+                'end_time'=>$request->end_time,
             ]);
 
         return $reservation;

@@ -91,7 +91,10 @@
                     },
                     {text: 'Name of User', align: 'center', value: 'user.name'},
                     {text: 'Parking Number',  align: 'center',value: 'parking_slot.parking_number'},
-                    {text: 'Date', align: 'center', value: 'date'},
+                    {text: 'Start Date', align: 'center', value: 'date'},
+                    {text: 'End Date', align: 'center', value: 'date'},
+                    {text: 'Start Time', align: 'center', value: 'date'},
+                    {text: 'End Time', align: 'center', value: 'date'},
                     {text: 'Actions',  align: 'center', value: 'action'},
 
                 ],

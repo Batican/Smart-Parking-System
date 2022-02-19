@@ -25,7 +25,10 @@ class CreateReservationsTable extends Migration
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
-            $table->date('date');
+            $table->start_date('date');
+            $table->end_date('date');
+            $table->start_time('time');
+            $table->end_time('time');
             $table->timestamps();
         });
     }
