@@ -16,7 +16,8 @@ class ReservationController extends Controller
         $request->validate([
             'slot_id'=>'required',
             'user_id' =>'required',
-            'date' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
             'start_time' => 'required',
             'end_time' => 'required',
             
