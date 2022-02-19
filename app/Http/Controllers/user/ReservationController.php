@@ -21,7 +21,7 @@ class ReservationController extends Controller
             'end_time' => 'required',
             
         ]);
-        $message = [];
+        $messages = [];
         $startDate = Carbon::parse($request->start_date);
         $endDate = Carbon::parse($request->end_date);
         
