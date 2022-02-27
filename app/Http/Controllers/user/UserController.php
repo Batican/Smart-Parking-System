@@ -18,7 +18,7 @@ class UserController extends Controller
     
     public function show($id)
     {
-        $user = User::with('reservations','parkingSlot.department')->find($id);
+        $user = User::with('reservations.parkingSlot.department')->find($id);
 
         return $user;
     }
