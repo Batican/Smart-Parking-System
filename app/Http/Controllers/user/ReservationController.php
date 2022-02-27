@@ -36,7 +36,7 @@ class ReservationController extends Controller
                 Reservation::create([
                     'slot_id'=> $request->slot_id,
                     'user_id'=>$request->user_id,
-                    'date'=>$request->date,
+                    'date'=>$date,
                     'start_time'=>$request->start_time,
                     'end_time'=>$request->end_time,
                 ]);
