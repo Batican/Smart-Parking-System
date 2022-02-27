@@ -55,7 +55,7 @@
                 { title: 'Departments', icon: 'mdi-office-building', route: '/departments' },
                 { title: 'Parking Slots', icon: 'mdi-bus-stop', route: '/parking_slots' },
                 { title: 'Reservations', icon: 'mdi-book-edit', route: '/reservation' },
-                { title: 'Logs', icon: 'mdi-clipboard-text-clock', route: '/' },
+                { title: 'Logs', icon: 'mdi-clipboard-text-clock', route: '/logs' },
 
             ],
         }),

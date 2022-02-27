@@ -13,10 +13,11 @@ import Backoffice from '../pages/Backoffice.vue';
     import User from '../pages/Backoffice/Users.vue';
     import Reservation from '../pages/Backoffice/Reservations.vue';
     import QrCode from '../pages/Backoffice/QrCode.vue';
-    import Dashboard from '../pages/Backoffice/Dashboard.vue'
-    import departmentView from '../pages/view/Department.vue'
-    import parkingSlotView from '../pages/view/ParkingSlot.vue'
-    import userView from '../pages/view/User.vue'
+    import Dashboard from '../pages/Backoffice/Dashboard.vue';
+    import departmentView from '../pages/view/Department.vue';
+    import parkingSlotView from '../pages/view/ParkingSlot.vue';
+    import userView from '../pages/view/User.vue';
+    import Log from '../pages/Backoffice/Logs.vue';
 
 Vue.use(VueRouter);
 Vue.use(Vuetify);
@@ -87,6 +88,11 @@ const router = new VueRouter({
                     path: '/user-view/:id',
                     name: 'user-view',
                     component: userView
+                },
+                {
+                    path: '/logs',
+                    name: 'Logs',
+                    component: Log
                 },
             ]
         },

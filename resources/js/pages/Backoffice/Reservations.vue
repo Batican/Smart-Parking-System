@@ -91,27 +91,20 @@
                     },
                     {text: 'Name of User', align: 'center', value: 'user.name'},
                     {text: 'Parking Number',  align: 'center',value: 'parking_slot.parking_number'},
-                    {text: 'Start Date', align: 'center', value: 'date'},
-                    {text: 'End Date', align: 'center', value: 'date'},
-                    {text: 'Start Time', align: 'center', value: 'date'},
-                    {text: 'End Time', align: 'center', value: 'date'},
+                    {text: 'Date', align: 'center', value: 'date'},
+                    {text: 'Start Time', align: 'center', value: 'start_time'},
+                    {text: 'End Time', align: 'center', value: 'end_time'},
                     {text: 'Actions',  align: 'center', value: 'action'},
 
                 ],
-                reservation:{
+                reservationForm:{
+                    id:null,
                     user_id: '',
                     slot_id:'',
                     date:'',
                    
                 },
                 addition_edition_dailog: false,
-                reservationForm: {
-                    id:null,
-                    user_id: '',
-                    slot_id:'',
-                    date:'',
-                }
-
             }
         },
         mounted() {
@@ -152,7 +145,7 @@
             },
 
             updateReservation() {
-                if(this.userForm.id){
+                if(this.reservationForm.id){
                     this.$admin.post('admin/v1/reservation/update/'+this.reservationForm.id,this.reservationForm).then(({data}) => {
                         this.initialize()
                         this.successNotify('Updated');

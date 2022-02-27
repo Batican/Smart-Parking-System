@@ -100,7 +100,6 @@
           {name:'College of Education ', abbr:'COE'},
           {name:'College of Engineering and Technology ', abbr:'CET'},
           {name:'College of Information Technology ', abbr:'CIT'},
-          {name:'College of Tourism', abbr:'C=OT'},
           {name:'College of Management ', abbr:'COM'},
           
           

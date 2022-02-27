@@ -27,30 +27,32 @@ class ReservationController extends Controller
         $endDate = Carbon::parse($request->end_date);
         
         for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
+            
+            $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($request->date))->exists();
+            if($exists){
+                $messages[] = "Parking slot is already reserved on this ".$date;
+            }
+            else{
+                $date = Reservation::whereDate('date',Carbon::now());
+            }
+            
+            if($date){
+                return[
+                    'status' => ParkingSlot::RESERVED,
+                ];
+            }
+
+            Reservation::create([
+                'slot_id'=> $request->slot_id,
+                'user_id'=>$request->user_id,
+                'date'=>$request->date,
+                'start_time'=>$request->start_time,
+                'end_time'=>$request->end_time,
+            ]);
+
         }
 
-        $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($request->date))->exists();
-        if($exists){
-            $messages[] = "Parking slot is already reserved on this ".$date;
-        }
-        else{
-            $date = Reservation::whereDate('date',Carbon::now());
-        }
-      
-        if($date){
-            return[
-                'status' => ParkingSlot::RESERVED,
-            ];
-        }
-
-        Reservation::create([
-            'slot_id'=> $request->slot_id,
-            'user_id'=>$request->user_id,
-            'date'=>$request->date,
-            'start_time'=>$request->start_time,
-            'end_time'=>$request->end_time,
-        ]);
-
+        
         return $messages;
     }
 
