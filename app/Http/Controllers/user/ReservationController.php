@@ -41,8 +41,8 @@ class ReservationController extends Controller
                     'end_time'=>$request->end_time,
                 ]);
 
-                $todayDate = Reservation::whereDate('date',Carbon::now());
-                Reservation::where('date',$todayDate)
+                // $todayDate = Reservation::whereDate('date',Carbon::now());
+                Reservation::whereDate('date',Carbon::now())
                 ->update([
                     'status' => ParkingSlot::RESERVED,
                 ]);
