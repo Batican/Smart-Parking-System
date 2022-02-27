@@ -40,6 +40,14 @@ class ReservationController extends Controller
                     'start_time'=>$request->start_time,
                     'end_time'=>$request->end_time,
                 ]);
+
+                $reservation = Reservation::whereDate('date',Carbon::now())->first();
+                ParkingSlot::where('id',$reservation->slot_id)
+                ->update([
+                    'status' => ParkingSlot::RESERVED
+                ]);
+
+
             }
 
         }

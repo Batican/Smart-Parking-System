@@ -18,16 +18,6 @@
                         :loading="loading"
                         class="elevation-1"
                 >   
-                   
-                    <template v-slot:item.generate ="{ item }">
-                        <v-btn x-small class="btn btn-primary mr-2" @click="$router.push('/qr_code/'+ item.id)">Show</v-btn>
-                        <v-btn v-if="!item.qrCode_path" x-small color="teal" outlined @click="generate(item.id)">Generate</v-btn>
-
-                    </template>
-
-                    <template v-slot:item.status ="{ item }">
-                        {{item.status == 1 ? 'Available' : item.status == 2 ? 'Occupied': 'Reserved'}}
-                    </template>
                     
                     <template v-slot:item.action ="{ item }">
                         <v-icon @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
