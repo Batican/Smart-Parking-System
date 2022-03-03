@@ -74,7 +74,6 @@
                 delete_id: null,
                 loading: true,
                 departments: [],
-                title:'',
                 headers: [
                     {
                         text: 'ID',

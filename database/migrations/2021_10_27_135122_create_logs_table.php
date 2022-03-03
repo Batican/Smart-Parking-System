@@ -14,7 +14,7 @@ class CreateLogsTable extends Migration
     public function up()
     {
         Schema::create('logs', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string('name_of_user')->nullable();
             $table->integer('number_of_slot')->nullable();
             $table->string('description')->nullable();

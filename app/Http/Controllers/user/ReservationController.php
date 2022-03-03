@@ -70,7 +70,7 @@ class ReservationController extends Controller
             'status' => ParkingSlot::OCCUPIED,
             'user_id' => $reservation->user_id,
         ]);
-        Reservation::whereDate('date',Carbon::now())->where('user_id', $reservation->user_id)->delete();
+        // Reservation::whereDate('date',Carbon::now())->where('user_id', $reservation->user_id)->delete();
 
         return [
             "Success"=>"Reservation Done!"

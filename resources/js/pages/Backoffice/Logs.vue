@@ -21,7 +21,8 @@
 export default {
     data() {
         return{
-
+            loading: true,
+            logs: [],
             headers: [
                 {
                     text: 'ID',
@@ -29,13 +30,27 @@ export default {
                     sortable: false,
                     value: 'id',
                 },
-                {text: 'Name',  align: 'center',value: 'name'},
-                {text: 'Parking Number',  align: 'center',value: 'abbreviation'},
-                {text: 'Date Time',  align: 'center', value: 'action'},
+                {text: 'Name',  align: 'center',value: 'name_of_user'},
+                {text: 'Parking Number',  align: 'center',value: 'number_of_slot'},
+                {text: 'Description',  align: 'center',value: 'description'},
+                {text: 'Date Time',  align: 'center', value: 'date_time'},
 
             ],
         }
         
     },
+
+    mounted() {
+           this.initialize()
+        },
+
+     methods: {
+            initialize(){
+                this.$admin.get('/admin/v1/log/index').then(({data})=> {
+                    this.logs = data
+                    this.loading = false;
+                })
+            },  
+    }
 }
 </script>
