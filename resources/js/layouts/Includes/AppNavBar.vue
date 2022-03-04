@@ -5,13 +5,9 @@
         persistent
         color="primary"
     >   
-        <v-container>
-            <img src="/images/nwssu.png" alt="logo">
-            <!-- <v-img src="/images/nwssu.png" class="pa-4" dark>
-            </v-img> -->
-        </v-container>
+        <v-img src="/images/nwssu.png" class="pa-4" dark>
+        </v-img>
         
-        <v-divider></v-divider>
         <v-list>
             <v-list-item
                 v-for="item in items"
