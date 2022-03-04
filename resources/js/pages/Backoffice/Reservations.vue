@@ -4,12 +4,6 @@
             <v-card-title class="font-weight-bold">
                 Reservation List
                 <v-spacer></v-spacer>
-                <v-icon
-                    x-large 
-                    @click="addReservation"
-                >
-                    mdi-plus
-                </v-icon>
             </v-card-title>
                 <v-data-table
                         :headers="headers"
