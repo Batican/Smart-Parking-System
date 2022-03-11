@@ -26,6 +26,8 @@ Route::group( ['prefix' => '/v1','middleware' => ['auth:user-api','scopes:user']
     Route::get('dashboard',[LoginController::class, 'userDashboard']);
     Route::post('/logout',[LoginController::class, 'logoutUser']);
 
+
+    Route::get('user/index',[UserController::class, 'index']);
     Route::post('user/update',[UserController::class, 'update']);
     Route::get('user/show/{id}',[UserController::class, 'show']);
 
