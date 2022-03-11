@@ -93,6 +93,11 @@ class ReservationController extends Controller
             'end_time' => 'required',
         ]);
 
+        $st = Carbon::parse($request->start_time);
+        $startTime = $st->toTimeString();
+        $et = Carbon::parse($request->end_time);
+        $endTime = $et->toTimeString();
+        
         $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($request->date))->exists();
         if($exists){
             return [
@@ -105,8 +110,8 @@ class ReservationController extends Controller
                 'slot_id'=> $request->slot_id,
                 'user_id'=>$request->user_id,
                 'date'=>$request->date,
-                'start_time'=>$request->start_time,
-                'end_time'=>$request->end_time,
+                'start_time'=>$startTime,
+                'end_time'=>$endTime,
             ]);
 
         return $reservation;
