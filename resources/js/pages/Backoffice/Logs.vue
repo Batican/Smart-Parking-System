@@ -7,7 +7,7 @@
             </v-card-title>
                 <v-data-table
                         :headers="headers"
-                        :items="logs"
+                        :items="activityLogs"
                         :items-per-page="5"
                         :loading="loading"
                         class="elevation-1"
@@ -22,7 +22,7 @@ export default {
     data() {
         return{
             loading: true,
-            logs: [],
+            activityLogs: [],
             headers: [
                 {
                     text: 'ID',
@@ -47,7 +47,7 @@ export default {
      methods: {
             initialize(){
                 this.$admin.get('/admin/v1/log/index').then(({data})=> {
-                    this.logs = data
+                    this.activityLogs = data
                     this.loading = false;
                 })
             },  
