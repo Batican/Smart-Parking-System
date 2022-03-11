@@ -31,7 +31,7 @@ export default {
                     value: 'id',
                 },
                 {text: 'Name',  align: 'center',value: 'name_of_user'},
-                {text: 'Parking Number',  align: 'center',value: 'number_of_slot'},
+                //{text: 'Parking Number',  align: 'center',value: 'number_of_slot'},
                 {text: 'Description',  align: 'center',value: 'description'},
                 {text: 'Date Time',  align: 'center', value: 'date_time'},
 
@@ -42,7 +42,7 @@ export default {
 
     mounted() {
            this.initialize()
-        },
+    },
 
      methods: {
             initialize(){
