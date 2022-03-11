@@ -23,7 +23,8 @@ class NodeMcuController extends Controller
             $user = User::where('rfid_number', $request->rfid_number)->first();
             $slot = ParkingSlot::where('user_id', $user->id)->exists();
             if($slot){
-                $slot = ParkingSlot::where('user_id', $user->id)->first()
+                $slot = ParkingSlot::where('user_id', $user->id)->first();
+                ParkingSlot::where('user_id', $user->id)
                 ->update([
                 'user_id' => null,
                 'status' => ParkingSlot::AVAILABLE,
@@ -43,10 +44,6 @@ class NodeMcuController extends Controller
                     'date_time'=>$todayDate,
                 ]);
             }
-            // 
-
-            // Reservation::whereDate('date',Carbon::now())->where('user_id', $user->id)->delete();
-
             return [
                 "authorized"=>"Autorized User"
             ];
