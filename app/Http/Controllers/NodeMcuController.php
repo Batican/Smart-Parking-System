@@ -21,9 +21,9 @@ class NodeMcuController extends Controller
 
         if($user){
             $user = User::where('rfid_number', $request->rfid_number)->first();
-            $slot = ParkingSlot::where('user_id', $user->id)->first();
+            $slot = ParkingSlot::where('user_id', $user->id)->exists();
             if($slot){
-                ParkingSlot::where('user_id', $user->id)
+                $slot = ParkingSlot::where('user_id', $user->id)->first()
                 ->update([
                 'user_id' => null,
                 'status' => ParkingSlot::AVAILABLE,
