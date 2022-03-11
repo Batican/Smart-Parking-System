@@ -2,7 +2,7 @@
     <div class="mx-2 my-2">
         <v-card class="mx-auto px-5 pxy-5" outlined>
             <v-card-title class="font-weight-bold">
-                Logs
+                User Logs
                 <v-spacer></v-spacer>
             </v-card-title>
                 <v-data-table
