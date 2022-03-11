@@ -7,7 +7,7 @@
             </v-card-title>
                 <v-data-table
                         :headers="headers"
-                        :items="reservations"
+                        :items="logs"
                         :items-per-page="5"
                         :loading="loading"
                         class="elevation-1"
