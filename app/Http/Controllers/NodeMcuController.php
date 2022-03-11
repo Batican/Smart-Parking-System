@@ -39,7 +39,7 @@ class NodeMcuController extends Controller
             else{
                 Log::create([
                     'name_of_user'=>$user->name,
-                    'number_of_slot'=>$slot->parking_number,
+                    'number_of_slot'=>null,
                     'description'=>'Entered',
                     'date_time'=>$todayDate,
                 ]);
