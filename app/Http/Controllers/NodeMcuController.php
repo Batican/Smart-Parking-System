@@ -34,6 +34,10 @@ class NodeMcuController extends Controller
             // ]);
 
             Reservation::whereDate('date',Carbon::now())->where('user_id', $user->id)->delete();
+
+            return [
+                "authorized"=>"Autorized User"
+            ];
         }
 
         // Log::create([
@@ -43,9 +47,7 @@ class NodeMcuController extends Controller
         //     'date_time'=>$todayDate,
         // ]);
 
-        return [
-            "authorized"=>"Autorized User"
-        ];
+       
     }
 
 }
