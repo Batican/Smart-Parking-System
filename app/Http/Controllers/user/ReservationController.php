@@ -26,11 +26,30 @@ class ReservationController extends Controller
         ]);
         $messages = [];
 
-        $startTime = Carbon::createFromTime($request->start_time,00,00);
-        $endTime  = Carbon::createFromTime($request->end_time,00,00);
+        $startTime = Carbon::createFromTime($request->start_time,00,);
+        $endTime  = Carbon::createFromTime($request->end_time,00,);
      
         $startDate = Carbon::parse($request->start_date);
         $endDate = Carbon::parse($request->end_date);
+
+        if($startDate->eq($endDate)){
+            $reservation = Reservation::create([
+                'slot_id'=> $request->slot_id,
+                'user_id'=>$request->user_id,
+                'date'=>$startDate,
+                'start_time'=>$startTime,
+                'end_time'=>$endTime,
+                'status'=> Reservation::ACTIVE,
+            ]);
+
+            if($startDate->eq(Carbon::now())){
+                ParkingSlot::where('id',$reservation->slot_id)
+                ->update([
+                    'status' => ParkingSlot::RESERVED
+                ]);
+            }
+           
+        }
         
         for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
             
@@ -48,17 +67,19 @@ class ReservationController extends Controller
                     'status'=> Reservation::ACTIVE,
                 ]);
 
-                $reservation = Reservation::whereDate('date',Carbon::now())->first();
-                ParkingSlot::where('id',$reservation->slot_id)
-                ->update([
-                    'status' => ParkingSlot::RESERVED
-                ]);
-
-
             }
 
         }
 
+        $reservations = Reservation::whereDate('date',Carbon::now())->get();
+
+        foreach($reservations as $reservation){
+            ParkingSlot::where('id',$reservation->slot_id)
+            ->update([
+            'status' => ParkingSlot::RESERVED
+        ]);
+        }
+        
         
         return $messages;
     }
@@ -133,6 +154,11 @@ class ReservationController extends Controller
 
         $reservation->update([
             'status'=> Reservation::ARCHIVE,
+
+        ]);
+        ParkingSlot::where('user_id',$reservation->user_id)
+        ->update([
+            'status'=> ParkingSlot::AVAILABLE
         ]);
 
         return $reservation;

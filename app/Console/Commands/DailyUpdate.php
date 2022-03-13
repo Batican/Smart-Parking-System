@@ -44,11 +44,14 @@ class DailyUpdate extends Command
         $todayDate = Carbon::today();
 
             foreach(ParkingSlot::all() as $parkingSlot){
-                $isReserved = $parkingSlot->reservations()->whereDate('date', $todayDate)->exists();
                 
-                $parkingSlot->update([
-                    'status'=> $isReserved ? ParkingSlot::RESERVED : ParkingSlot::AVAILABLE
-                ]);
+                $isReserved = $parkingSlot->reservations()->whereDate('date', $todayDate)->exists();
+
+                if($parkingSlot->status == ParkingSlot::AVAILABLE && $isReserved){
+                    $parkingSlot->update([
+                        'status'=> ParkingSlot::RESERVED 
+                    ]);
+                }
             }
         
         // $reservations = Reservation::whereDate('date',$todayDate)->get();
