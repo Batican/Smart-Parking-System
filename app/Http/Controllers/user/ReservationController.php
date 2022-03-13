@@ -101,7 +101,7 @@ class ReservationController extends Controller
             'date' => 'required',
             'start_time' => 'required',
             'end_time' => 'required',
-            
+            'status' => 'required',
         ]);
 
         $startTime= Carbon::parse($request->start_time)->toTimeString();
