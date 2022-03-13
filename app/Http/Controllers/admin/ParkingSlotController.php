@@ -15,12 +15,7 @@ class ParkingSlotController extends Controller
 {
     public function index()
     {
-        $slot = ParkingSlot::with('department')->withCount([
-            'reservations',
-            'reservations as reserve' => function($query){
-                $query->where('reserve->status', Reservation::ACTIVE);
-            }
-            ])->get();
+        $slot = ParkingSlot::has('reservations',Reservation::ACTIVE)->with('department')->withCount('reservations')->get();
 
         return $slot;
     }
