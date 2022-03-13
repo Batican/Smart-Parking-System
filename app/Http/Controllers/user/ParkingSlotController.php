@@ -11,7 +11,7 @@ class ParkingSlotController extends Controller
 {
     public function index(Request $request)
     {
-        $parkingslots = ParkingSlot::query();
+        $parkingslots = ParkingSlot::query()->with('department');
         if($request->query('department_id') != 0)  {
             $parkingslots
             ->whereHas('department', function ($query) use($request){
