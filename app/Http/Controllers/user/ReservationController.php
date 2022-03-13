@@ -72,10 +72,10 @@ class ReservationController extends Controller
 
     public function done(Request $request)
     {
-        $reservation = Reservation::where('parkingSlot->qrCode_value', $request->qrCode_value)->exists();
+        $reservation = Reservation::where('id', $request->id)->whereDate('date',Carbon::now())->exists();
         if($reservation){
             $reserved = Reservation::where('id', $request->id)->first();
-            $reserved->parkingSlot()->update([
+            ParkingSlot::where('id', $reserved->slot_id)->update([
                 'status' => ParkingSlot::OCCUPIED,
                 'user_id' => $reserved->user_id,
             ]);
@@ -85,7 +85,7 @@ class ReservationController extends Controller
         }
         else{
             return [
-                "Error"=>"QR Code Doesn't Matched!"
+                "Error"=>"Failed!"
             ];
         }
         
