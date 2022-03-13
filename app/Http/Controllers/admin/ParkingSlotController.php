@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ParkingSlot;
+use App\Models\Reservation;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -14,7 +15,7 @@ class ParkingSlotController extends Controller
 {
     public function index()
     {
-        $slot = ParkingSlot::with('department')->withCount('reservations')->get();
+        $slot = ParkingSlot::with('department')->withCount('reservations')->with('status', Reservation::ACTIVE)->get();
 
         return $slot;
     }
