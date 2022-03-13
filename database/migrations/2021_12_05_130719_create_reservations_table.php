@@ -28,6 +28,7 @@ class CreateReservationsTable extends Migration
             $table->date('date');
             $table->time('start_time')->nullable();
             $table->time('end_time')->nullable();
+            $table->integer('status'); // 1 = ACTIVE, 2 = ARCHIVE
             $table->timestamps();
         });
     }

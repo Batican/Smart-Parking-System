@@ -28,9 +28,15 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Department::create([
-            'name'=>'College of Engineering and Technology',
+            'name'=>'College of Engineering and Architecture',
             'color'=>'red',
-            'abbreviation'=>'CET'
+            'abbreviation'=>'CEA'
+        ]);
+
+        Department::create([
+            'name'=>'College of Management',
+            'color'=>'yellow',
+            'abbreviation'=>'COM'
         ]);
 
         Admin::create([

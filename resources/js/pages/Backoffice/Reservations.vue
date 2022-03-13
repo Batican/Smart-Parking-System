@@ -13,6 +13,10 @@
                         class="elevation-1"
                 >   
                     
+                    <template v-slot:item.status ="{ item }">
+                        {{item.status == 1 ? 'Active' : 'Archive'}}
+                    </template>
+
                     <template v-slot:item.action ="{ item }">
                         <v-icon @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
                     </template>
@@ -78,6 +82,7 @@
                     {text: 'Date', align: 'center', value: 'date'},
                     {text: 'Start Time', align: 'center', value: 'start_time'},
                     {text: 'End Time', align: 'center', value: 'end_time'},
+                    {text: 'Status', align: 'center', value: 'status'},
                     {text: 'Actions',  align: 'center', value: 'action'},
 
                 ],

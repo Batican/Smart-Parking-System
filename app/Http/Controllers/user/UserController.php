@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 use App\Models\User;
 
@@ -18,7 +19,9 @@ class UserController extends Controller
     
     public function show($id)
     {
-        $user = User::with('reservations.parkingSlot.department')->find($id);
+        $user = User::with(['reservations'=>function($reservation){
+            return $reservation->where('status',Reservation::ACTIVE)->with('parkingSlot.department');
+        }])->find($id);
 
         return $user;
     }

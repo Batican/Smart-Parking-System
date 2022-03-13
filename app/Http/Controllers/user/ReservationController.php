@@ -20,6 +20,8 @@ class ReservationController extends Controller
             'end_date' => 'required',
             'start_time' => 'required',
             'end_time' => 'required',
+            'status' => 'required',
+            
             
         ]);
         $messages = [];
@@ -43,6 +45,7 @@ class ReservationController extends Controller
                     'date'=>$date,
                     'start_time'=>$startTime,
                     'end_time'=>$endTime,
+                    'status'=> Reservation::ACTIVE,
                 ]);
 
                 $reservation = Reservation::whereDate('date',Carbon::now())->first();
@@ -98,6 +101,7 @@ class ReservationController extends Controller
             'date' => 'required',
             'start_time' => 'required',
             'end_time' => 'required',
+            'status' => 'required',
         ]);
 
         $startTime= Carbon::parse($request->start_time)->toTimeString();
@@ -117,6 +121,7 @@ class ReservationController extends Controller
                 'date'=>$request->date,
                 'start_time'=>$startTime,
                 'end_time'=>$endTime,
+                'status'=>$request->status,
             ]);
 
         return $reservation;
@@ -126,7 +131,9 @@ class ReservationController extends Controller
     public function destroy(Reservation $reservation)
     {
 
-        $reservation->delete();
+        $reservation->update([
+            'status'=> Reservation::ARCHIVE,
+        ]);
 
         return $reservation;
     }
