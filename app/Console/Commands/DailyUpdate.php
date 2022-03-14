@@ -53,12 +53,12 @@ class DailyUpdate extends Command
                     ]);
                 }
 
-                $status = $parkingSlot->withCount([
+                $reservationCount = $parkingSlot->withCount([
                     'reservations' => function($query){
                         $query->where('status',Reservation::ACTIVE)->where('reservations_count', '==', 0);
                     }])->exists();
 
-                if($parkingSlot->status == ParkingSlot::RESERVED && $status){
+                if($parkingSlot->status == ParkingSlot::RESERVED && $reservationCount){
                     $parkingSlot->update([
                         'status' => ParkingSlot::AVAILABLE
                     ]);
