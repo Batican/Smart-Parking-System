@@ -45,7 +45,7 @@ class DailyUpdate extends Command
 
             foreach(ParkingSlot::all() as $parkingSlot){
                 
-                $isReserved = $parkingSlot->reservations()->whereDate('date', $todayDate)->exists();
+                $isReserved = $parkingSlot->reservations()->whereDate('date', $todayDate)->where('status', Reservation::ACTIVE)->exists();
 
                 if($parkingSlot->status == ParkingSlot::AVAILABLE && $isReserved){
                     $parkingSlot->update([
