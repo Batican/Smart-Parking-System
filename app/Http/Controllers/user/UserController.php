@@ -28,7 +28,30 @@ class UserController extends Controller
     }
 
   
-   
+    public function uploadImage($image)
+    {
+        $exploded_base64 = explode(',', $image);
+        $decoded_base64  = base64_decode($exploded_base64[1]);
+        $extention = $this->string_between_two_string($exploded_base64[0], '/', ';');
+        
+        $fileName = 'cus_'.time().'.'.$extention;
+        $path = storage_path('app/public/').$fileName;
+    
+        file_put_contents($path,$decoded_base64);   
+        
+        return $fileName;
+    }
+
+    
+    public function string_between_two_string($str, $starting_word, $ending_word)
+    {
+        $arr = explode($starting_word, $str);
+        if (isset($arr[1])){
+            $arr = explode($ending_word, $arr[1]);
+            return $arr[0];
+        }
+        return '';
+    }
     public function update(Request $request, $id)
     {
         $request->validate([
