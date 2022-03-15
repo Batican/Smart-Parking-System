@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -28,27 +29,37 @@ class UserController extends Controller
 
   
    
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'name'=>'required',
             'type'=>'required',
             'email'=>'required|email',
+           
         ]);
+        
+        $user = User::find($id);
 
         $userUpdate = [
             'name'=> $request->name,
             'type'=> $request->type,
             'email'=> $request->email,
+           
         ];
+
+        if(str_contains($request->image,'base64')){
+            if($user->image){
+                Storage::delete('app/public/updloads/'.$user->image);
+            }
+
+            $userUpdate['image'] =  $this->uploadImage($request->image);
+        }
 
         if($request->password){
             $userUpdate["password"] = bcrypt($request->password);
-            return $userUpdate;
         }
 
-        $user = $request->user()
-            ->update($userUpdate);
+        $user->update($userUpdate);
 
         return $user;
     }
