@@ -42,7 +42,7 @@ class UserController extends Controller
         return $fileName;
     }
 
-    
+
     public function string_between_two_string($str, $starting_word, $ending_word)
     {
         $arr = explode($starting_word, $str);
@@ -58,7 +58,8 @@ class UserController extends Controller
             'name'=>'required',
             'type'=>'required',
             'email'=>'required|email',
-           
+            'rfid_number'=>'required'
+
         ]);
         
         $user = User::find($id);
@@ -67,6 +68,8 @@ class UserController extends Controller
             'name'=> $request->name,
             'type'=> $request->type,
             'email'=> $request->email,
+            'rfid_number'=> (int)$request->rfid_number
+
            
         ];
 
