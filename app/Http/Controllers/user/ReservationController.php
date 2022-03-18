@@ -32,7 +32,9 @@ class ReservationController extends Controller
         $startDate = Carbon::parse($request->start_date);
         $endDate = Carbon::parse($request->end_date);
 
-        if($startDate->eq($endDate)){
+        $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($startDate))->exists();
+
+        if($startDate->eq($endDate) && !$exists){
             $reservation = Reservation::create([
                 'slot_id'=> $request->slot_id,
                 'user_id'=>$request->user_id,
@@ -42,13 +44,16 @@ class ReservationController extends Controller
                 'status'=> Reservation::ACTIVE,
             ]);
 
-            if($startDate->eq(Carbon::now())){
-                ParkingSlot::where('id',$reservation->slot_id)
-                ->update([
+            $parkingSlot = ParkingSlot::where('id', $reservation->slot_id)->first();
+
+            if($startDate->eq(Carbon::now() && $parkingSlot->status == ParkingSlot::AVAILABLE)){
+                $parkingSlot->update([
                     'status' => ParkingSlot::RESERVED
                 ]);
             }
-           
+        }
+        else{
+            $messages[] = "Parking slot is already reserved on this ".$startDate;
         }
         
         for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
@@ -100,6 +105,11 @@ class ReservationController extends Controller
                 'status' => ParkingSlot::OCCUPIED,
                 'user_id' => $reserved->user_id,
             ]);
+            
+            $reserved->update([
+                'status' => Reservation::ARCHIVE,
+            ]);
+
             return [
                 "Success"=>"Parking Slot Occupied!"
             ];
