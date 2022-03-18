@@ -98,21 +98,33 @@ class ReservationController extends Controller
 
     public function done(Request $request)
     {
+      
         $reservation = Reservation::where('id', $request->id)->whereDate('date',Carbon::now())->exists();
+        
         if($reservation){
             $reserved = Reservation::where('id', $request->id)->first();
-            ParkingSlot::where('id', $reserved->slot_id)->update([
-                'status' => ParkingSlot::OCCUPIED,
-                'user_id' => $reserved->user_id,
-            ]);
-            
-            $reserved->update([
-                'status' => Reservation::ARCHIVE,
-            ]);
+            $user = ParkingSlot::where('user_id', $reserved->user_id)->exists();
 
-            return [
-                "Success"=>"Parking Slot Occupied!"
-            ];
+            if($user){
+                ParkingSlot::where('user_id',$reserved->user_id)
+                ->update([
+                    'status' => ParkingSlot::AVAILABLE,
+                    'user_id' => null
+                ]);
+                ParkingSlot::where('id', $reserved->slot_id)->update([
+                    'status' => ParkingSlot::OCCUPIED,
+                    'user_id' => $reserved->user_id,
+                ]);
+    
+                $reserved->update([
+                    'status' => Reservation::ARCHIVE,
+                ]);
+                
+                return [
+                    "Success"=>"Parking Slot Occupied!"
+                ];
+
+            }
         }
         else{
             return [
