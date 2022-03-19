@@ -15,6 +15,12 @@ class Department extends Model
         'color', 
     ];
 
+    protected $appends = ['slot_availlables_count'];
+
+    public function getSlotAvaillableAttributes(){
+        return $this->parkingSlots()->where('status', ParkingSlot::AVAILABLE)->count();
+    }
+
     public function parkingSlots()
     {
         return $this->hasMany(
