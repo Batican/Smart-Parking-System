@@ -17,7 +17,7 @@ class Department extends Model
 
     protected $appends = ['slot_availlables_count'];
 
-    public function getSlotAvaillableAttributes(){
+    public function getSlotAvaillablesCountAttribute(){
         return $this->parkingSlots()->where('status', ParkingSlot::AVAILABLE)->count();
     }
 
