@@ -16,7 +16,8 @@ class ParkingSlot extends Model
     protected $fillable = [
         'qrCode_path',
         'qrCode_value',
-        'parking_number', 
+        'parking_number',
+        'slotFor', 
         'department_id',
         'status', 
         'user_id',

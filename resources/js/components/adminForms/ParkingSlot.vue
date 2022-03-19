@@ -49,6 +49,14 @@
                             </v-select>
 
                             <v-select
+                              :items="['Public', 'Guest']"
+                              label="Slot For"
+                              v-model="form.slotFor"
+                              
+                            >
+                            </v-select>
+
+                            <v-select
                               :items="status"
                               item-text="text"
                               item-value="id"
@@ -98,7 +106,8 @@
                 id:null,
                 parking_number:'',
                 department_id: '',
-                type: ''
+                type: '',
+                slotFor: ''
                
             }
         },

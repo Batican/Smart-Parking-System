@@ -29,6 +29,8 @@ class ParkingSlotController extends Controller
             'parking_number'=>'required',
             'type'=>'required',
             'department_id' =>'required',
+            'slotFor' =>'required',
+            
             
             
         ]);
@@ -36,6 +38,7 @@ class ParkingSlotController extends Controller
         $slot = ParkingSlot::create([
             'parking_number'=> $request->parking_number,
             'type'=>$request->type,
+            'slotFor'=>$request->slotFor,
             'department_id'=>$request->department_id,
             'status'=>ParkingSlot::AVAILABLE,
         ]);
@@ -85,6 +88,7 @@ class ParkingSlotController extends Controller
             'parking_number'=>'required',
             'department_id' =>'required',
             'type'=>'required',
+            'slotFor' =>'required',
             'status' =>'required',
             
         ]);
@@ -94,6 +98,7 @@ class ParkingSlotController extends Controller
                 'parking_number'=> $request->parking_number,
                 'department_id'=>$request->department_id,
                 'type'=>$request->type,
+                'slotFor'=>$request->slotFor,
                 'status'=>$request->status,
 
             ]);

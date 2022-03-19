@@ -95,6 +95,7 @@
                     {text: 'Parking Number',  align: 'center',value: 'parking_number'},
                     {text: 'Department', align: 'center', value: 'department.name'},
                     {text: 'Type', align: 'center', value: 'type'},
+                    {text: 'Slot For', align: 'center', value: 'slotFor'},
                     {text: 'Number of Reservations', align: 'center', value: 'reservations_count'},
                     {text: 'Status', align: 'center', value: 'status'},
                     {text: 'Actions',  align: 'center', value: 'action'},
@@ -103,7 +104,8 @@
                 slot:{
                     parking_number: '',
                     department_id:'',
-                    type:''
+                    type:'',
+                    slotFor:'',
                    
                 },
                 addition_edition_dailog: false,
@@ -111,7 +113,9 @@
                 id:null,
                 parking_number:'',
                 department_id: '',
-                type:''
+                type:'',
+                slotFor:'',
+
                 }
 
             }
@@ -126,7 +130,9 @@
                 id:null,
                 parking_number:'',
                 department_id: '',
-                type:''
+                type:'',
+                slotFor:'',
+
                 }
                 this.$admin.get('/admin/v1/parking_slot/index').then(({data})=> {
                     this.slots = data
@@ -146,6 +152,7 @@
             generate(id){
                 this.$admin.get(`/admin/v1/parking_slot/qrImage/${id}`).then(({data}) => {
                     this.initialize()
+                    this.successNotify('QR Code Generated');
                 });
             },
 
@@ -154,6 +161,9 @@
                 id:null,
                 parking_number:'',
                 department_id: '',
+                type:'',
+                slotFor:'',
+
                 }
                 this.addition_edition_dailog = true
             },
@@ -164,6 +174,7 @@
                     parking_number:slot.parking_number,
                     department_id:slot.department_id,
                     type:slot.type,
+                    slotFor:slot.slotFor,
                     status:slot.status,
                 }
                 this.addition_edition_dailog = true

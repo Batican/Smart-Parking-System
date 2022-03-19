@@ -17,6 +17,7 @@ class CreateParkingSlotsTable extends Migration
             $table->increments('id');
             $table->string('qrCode_path')->nullable();
             $table->string('qrCode_value')->nullable();
+            $table->enum('slotFor',['Public', 'Guest']);
             $table->string('parking_number');
             $table->string('type');
             $table->unsignedInteger('department_id');

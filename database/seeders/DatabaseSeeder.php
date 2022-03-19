@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         User::create([
             'name' => 'dan',
             'email' => 'dan@gmail.com',
-            'type' => 'student',
+            'type' => 'Student',
             'password' => bcrypt(1234),
             'rfid_number' => '010101'
         ]);

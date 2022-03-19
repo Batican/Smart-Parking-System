@@ -33,57 +33,63 @@ class ReservationController extends Controller
         $endDate = Carbon::parse($request->end_date);
 
         $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($startDate))->exists();
-
-        if($startDate->eq($endDate) && !$exists){
-            $reservation = Reservation::create([
-                'slot_id'=> $request->slot_id,
-                'user_id'=>$request->user_id,
-                'date'=>$startDate,
-                'start_time'=>$startTime,
-                'end_time'=>$endTime,
-                'status'=> Reservation::ACTIVE,
-            ]);
-
-            $parkingSlot = ParkingSlot::where('id', $reservation->slot_id)->first();
-
-            if($startDate->eq(Carbon::now() && $parkingSlot->status == ParkingSlot::AVAILABLE)){
-                $parkingSlot->update([
-                    'status' => ParkingSlot::RESERVED
-                ]);
-            }
-        }
-        else{
-            $messages[] = "Parking slot is already reserved on this ".$startDate;
-        }
         
-        for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
-            
-            $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($date))->exists();
-            if($exists){
-                $messages[] = "Parking slot is already reserved on this ".$date;
-            }
-            else{
-                Reservation::create([
+        $reservationCount = Reservation::where('user_id', $request->user_id)->where('status', Reservation::ACTIVE)->get();
+
+        if(count($reservationCount) == 3){
+            $messages[] = "You have reached the maximum reservation count";
+        }else{
+            if($startDate->eq($endDate) && !$exists){
+                $reservation = Reservation::create([
                     'slot_id'=> $request->slot_id,
                     'user_id'=>$request->user_id,
-                    'date'=>$date,
+                    'date'=>$startDate,
                     'start_time'=>$startTime,
                     'end_time'=>$endTime,
                     'status'=> Reservation::ACTIVE,
                 ]);
-
+    
+                $parkingSlot = ParkingSlot::where('id', $reservation->slot_id)->first();
+    
+                if($startDate->eq(Carbon::now() && $parkingSlot->status == ParkingSlot::AVAILABLE)){
+                    $parkingSlot->update([
+                        'status' => ParkingSlot::RESERVED
+                    ]);
+                }
+            }
+            else{
+                $messages[] = "Parking slot is already reserved on this ".$startDate;
+            }
+            
+            for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
+                
+                $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($date))->exists();
+                if($exists){
+                    $messages[] = "Parking slot is already reserved on this ".$date;
+                }
+                else{
+                    Reservation::create([
+                        'slot_id'=> $request->slot_id,
+                        'user_id'=>$request->user_id,
+                        'date'=>$date,
+                        'start_time'=>$startTime,
+                        'end_time'=>$endTime,
+                        'status'=> Reservation::ACTIVE,
+                    ]);
+    
+                }
             }
 
-        }
+            $reservations = Reservation::whereDate('date',Carbon::now())->get();
 
-        $reservations = Reservation::whereDate('date',Carbon::now())->get();
-
-        foreach($reservations as $reservation){
-            ParkingSlot::where('id',$reservation->slot_id)
-            ->update([
-            'status' => ParkingSlot::RESERVED
-        ]);
+            foreach($reservations as $reservation){
+                ParkingSlot::where('id',$reservation->slot_id)
+                ->update([
+                'status' => ParkingSlot::RESERVED
+            ]);
+            }
         }
+        
         
         
         return $messages;

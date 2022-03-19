@@ -24,12 +24,15 @@
                 <p class="ml-3 mb-0 pt-0 font-weight-bold">
                   Type: {{slot.type}}
                 </p>
+                 <p class="ml-3 mb-0 pt-0 font-weight-bold">
+                  Slot For: {{slot.slotFor}}
+                </p>
                 <p class="ml-3 mb-0 pt-0 font-weight-bold">
                   Current Reservation Count: {{slot.reservations_count}}
                 </p>
             </div>
           </div>
-          <v-btn
+          <!-- <v-btn
             @click="editSlot(slot)"
             icon
             x-large
@@ -37,16 +40,16 @@
             <v-icon dark color="black">
               mdi-pencil
             </v-icon>
-          </v-btn>
+          </v-btn> -->
         </div>
         <v-divider elevation="10"></v-divider>
           <v-card-title class="font-weight-bold">
             Reservations
-            <v-spacer></v-spacer>
+            <!-- <v-spacer></v-spacer>
             <v-btn  @click="addReservation(slot)" class="white--text ma-2" dark small>
               <v-icon>mdi-plus</v-icon>
               Add Reservation
-            </v-btn>
+            </v-btn> -->
           </v-card-title>
           <v-card-text>
              <v-data-table

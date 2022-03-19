@@ -9,21 +9,23 @@
                 <v-icon size="100" :color="department.color" dark>mdi-office-building</v-icon>
             </v-avatar>
             <div>
-                <div class="d-flex ">
-                    <p class="ml-3 font-weight-bold">
-                        Name: {{department.name}}
-                    </p>
-               
-                </div>
-                <p class="ml-3 mb-0 pt-0 font-weight-bold">
+              <div class="d-flex ">
+                <p class="ml-3 font-weight-bold">
+                    Name: {{department.name}}
+                </p>
+              </div>
+              <p class="ml-3 mb-0 pt-0 font-weight-bold">
+                Abbreviation: {{department.abbreviation}}
+              </p>
+              <p class="ml-3 mb-0 pt-0 font-weight-bold">
                 Color : {{department.color}}
-                </p>
-                <p class="ml-3 mb-0 pt-0 font-weight-bold">
+              </p>
+              <p class="ml-3 mb-0 pt-0 font-weight-bold">
                 Current Parking Slot Count: {{department.parking_slots_count}}
-                </p>
-            </div>
+              </p>
+            </div>    
           </div>
-          <v-btn
+          <!-- <v-btn
             @click="editDepartment(department)"
             icon
             x-large
@@ -31,8 +33,9 @@
             <v-icon dark color="black">
               mdi-pencil
             </v-icon>
-          </v-btn>
+          </v-btn> --> 
         </div>
+          
         <v-divider elevation="10"></v-divider>
           <v-card-title class="font-weight-bold">
             Parking Slots
@@ -141,6 +144,7 @@
             {text: 'QR Code', align: 'center', value: 'generate'},
             {text: 'Parking Number',  align: 'center',value: 'parking_number'},           
             {text: 'Type', align: 'center', value: 'type'},
+            {text: 'Slot For', align: 'center', value: 'slotFor'},
             {text: 'Status', align: 'center', value: 'status'},
             {text: 'Actions', align: 'center', value: 'action'},
           ],
@@ -159,6 +163,7 @@
                   this.departmentForm = { 
                       id: department.id,
                       name: department.name,
+                      abbr: department.abbreviation,
                       color: department.color,
                       parking_slots_count: department.parking_slots_count,
                   }
@@ -170,6 +175,7 @@
             this.departmentForm = {
                 id:department.id,
                 name:department.name,
+                abbr: department.abbreviation,
                 color:department.color ,
             }
             this.updateDialog = true
@@ -189,6 +195,8 @@
                 id:slot.id,
                 parking_number:slot.parking_number,
                 department_id:slot.department_id,
+                type:slot.type,
+                slotFor:slot.slotFor,
                 status:slot.status,
             }
             this.addDialog = true

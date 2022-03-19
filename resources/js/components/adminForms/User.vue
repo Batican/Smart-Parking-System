@@ -36,7 +36,7 @@
                             ></v-text-field>
 
                             <v-select
-                              :items="['student','teacher']"
+                              :items="['Student','Teacher','Guard']"
                               label="Type of User"
                               v-model="form.type"
                             >

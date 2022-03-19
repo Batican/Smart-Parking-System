@@ -29,7 +29,7 @@
                 </p>
             </div>
           </div>
-          <v-btn
+          <!-- <v-btn
             @click="editUser(user)"
             icon
             x-large
@@ -37,7 +37,7 @@
             <v-icon dark color="black">
               mdi-pencil
             </v-icon>
-          </v-btn>
+          </v-btn> -->
         </div>
         <v-divider elevation="10"></v-divider>
           <v-card-title class="font-weight-bold">
