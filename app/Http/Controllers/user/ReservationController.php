@@ -129,7 +129,19 @@ class ReservationController extends Controller
                 return [
                     "Success"=>"Parking Slot Occupied!"
                 ];
-
+            }
+            else{
+                ParkingSlot::where('id', $reserved->slot_id)->update([
+                    'status' => ParkingSlot::OCCUPIED,
+                    'user_id' => $reserved->user_id,
+                ]);
+    
+                $reserved->update([
+                    'status' => Reservation::ARCHIVE,
+                ]);
+                
+                return [
+                    "Success"=>"Parking Slot Occupied!"
             }
         }
         else{
