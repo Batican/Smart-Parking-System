@@ -26,8 +26,8 @@ class ReservationController extends Controller
         ]);
         $messages = [];
 
-        $startTime = Carbon::createFromTime($request->start_time,00,);
-        $endTime  = Carbon::createFromTime($request->end_time,00,);
+        $startTime = Carbon::createFromTime($request->start_time,00,)->toTimeString();
+        $endTime  = Carbon::createFromTime($request->end_time,00,)->toTimeString();
      
         $startDate = Carbon::parse($request->start_date);
         $endDate = Carbon::parse($request->end_date);
@@ -82,12 +82,12 @@ class ReservationController extends Controller
 
             $reservations = Reservation::whereDate('date',Carbon::now())->get();
 
-            foreach($reservations as $reservation){
-                ParkingSlot::where('id',$reservation->slot_id)
-                ->update([
-                'status' => ParkingSlot::RESERVED
-            ]);
-            }
+            // foreach($reservations as $reservation){
+            //     ParkingSlot::where('id',$reservation->slot_id)
+            //     ->update([
+            //     'status' => ParkingSlot::RESERVED
+            // ]);
+            // }
         }
         
         
@@ -185,18 +185,15 @@ class ReservationController extends Controller
 
         ]);
 
-        $count = ParkingSlot::where('user_id',$reservation->user_id)->withCount([
-            'reservations' => function($query){
-                $query->where('status',Reservation::ACTIVE)->where('reservations_count','=', 0);
-            }])->exists();
-            
-        if($count){
-            ParkingSlot::where('user_id', $reservation->user_id)
-            ->update([
-                'status'=> ParkingSlot::AVAILABLE,
-                'user_id' => null
-            ]);
-        }
+        // $Update = ParkingSlot::where('slot_id', $reservation->slot_id)
+
+        // if($count){
+        //     ParkingSlot::where('user_id', $reservation->user_id)
+        //     ->update([
+        //         'status'=> ParkingSlot::AVAILABLE,
+        //         'user_id' => null
+        //     ]);
+        // }
         
 
         return $reservation;
