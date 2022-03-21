@@ -142,6 +142,7 @@ class ReservationController extends Controller
                 
                 return [
                     "Success"=>"Parking Slot Occupied!"
+                ];
             }
         }
         else{
