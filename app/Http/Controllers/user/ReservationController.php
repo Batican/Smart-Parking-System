@@ -184,11 +184,20 @@ class ReservationController extends Controller
             'status'=> Reservation::ARCHIVE,
 
         ]);
-        // ParkingSlot::where('user_id',$reservation->user_id)
-        // ->update([
-        //     'status'=> ParkingSlot::AVAILABLE,
-        //     'user_id' => null
-        // ]);
+
+        $count = ParkingSlot::where('user_id',$reservation->user_id)->withCount([
+            'reservations' => function($query){
+                $query->where('status',Reservation::ACTIVE)->where('reservations_count','=', 0);
+            }])->exists();
+            
+        if($count){
+            ParkingSlot::where('user_id', $reservation->user_id)
+            ->update([
+                'status'=> ParkingSlot::AVAILABLE,
+                'user_id' => null
+            ]);
+        }
+        
 
         return $reservation;
     }
