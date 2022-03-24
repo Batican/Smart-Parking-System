@@ -12,7 +12,14 @@
                         :loading="loading"
                         class="elevation-1"
                 >   
-                    
+                    <template v-slot:item.start_time ="{ item }">
+                        {{moment(start_time).formatt('hh:mm a')}}
+                    </template>
+
+                    <template v-slot:item.end_time ="{ item }">
+                        {{moment(end_time).formatt('hh:mm a')}}
+                    </template>
+
                     <template v-slot:item.status ="{ item }">
                         {{item.status == 1 ? 'Active' : 'Archive'}}
                     </template>

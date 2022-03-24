@@ -18,6 +18,9 @@ import store from './plugins/store';
 import vuetify from './plugins/vuetify';
 import Axios from './plugins/axios';
 
+import moment from 'moment'
+
+Vue.prototype.moment = moment
 
 import App from './layouts/App.vue';
 Vue.prototype.$admin = Axios

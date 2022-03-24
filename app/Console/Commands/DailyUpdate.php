@@ -59,17 +59,6 @@ class DailyUpdate extends Command
                     ]);
                 }
             }
-        
-        // $reservations = Reservation::whereDate('date',$todayDate)->get();
-
-        // foreach($reservations as $reservation){
-        //     ParkingSlot::where('id',$reservation->slot_id)
-        //     ->update([
-        //         'status' => ParkingSlot::RESERVED,
-
-        //     ]);
-
-        // }
 
         Log::info('Parking slot status updated successfully');
     }
