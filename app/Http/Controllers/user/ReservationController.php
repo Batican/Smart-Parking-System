@@ -26,8 +26,8 @@ class ReservationController extends Controller
         ]);
         $messages = [];
 
-        $startTime = Carbon::parse($request->start_time)->toTimeString();
-        $endTime = Carbon::parse($request->end_time)->toTimeString();
+        $startTime = Carbon::parse($request->start_time);
+        $endTime = Carbon::parse($request->end_time);
 
         $startDate = Carbon::parse($request->start_date);
         $endDate = Carbon::parse($request->end_date);
