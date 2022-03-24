@@ -26,8 +26,8 @@ class CreateReservationsTable extends Migration
                 ->on('users')
                 ->onDelete('cascade');
             $table->date('date');
-            $table->time('start_time')->nullable();
-            $table->time('end_time')->nullable();
+            $table->string('start_time')->nullable();
+            $table->string('end_time')->nullable();
             $table->integer('status'); // 1 = ACTIVE, 2 = ARCHIVE
             $table->timestamps();
         });
