@@ -13,11 +13,11 @@
                         class="elevation-1"
                 >   
                     <template v-slot:item.start_time ="{ item }">
-                        {{moment(start_time).format('hh:mm a')}}
+                        {{moment(item.start_time).format('hh:mm a')}}
                     </template>
 
                     <template v-slot:item.end_time ="{ item }">
-                        {{moment(end_time).format('hh:mm a')}}
+                        {{moment(item.end_time).format('hh:mm a')}}
                     </template>
 
                     <template v-slot:item.status ="{ item }">
