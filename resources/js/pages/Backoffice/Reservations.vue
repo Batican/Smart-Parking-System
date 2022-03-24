@@ -12,7 +12,6 @@
                         :loading="loading"
                         class="elevation-1"
                 >   
-
                     <template v-slot:item.status ="{ item }">
                         {{item.status == 1 ? 'Active' : 'Archive'}}
                     </template>
