@@ -83,7 +83,7 @@ class ReservationController extends Controller
            
         }
         
-        $reservations = Reservation::whereDate('date',Carbon::now())->get();
+        $reservations = Reservation::whereDate('date',Carbon::now())->where('status', Reservation::ACTIVE)->get();
 
         foreach($reservations as $reservation){
             ParkingSlot::where('id',$reservation->slot_id)
