@@ -63,7 +63,7 @@ class ReservationController extends Controller
             
             for ($date = $startDate; $date->lte($endDate); $date->addDay()) {
                 
-                $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($date))->exists();
+                $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($date))->where('status', Reservation::ACTIVE)->exists();
                 if($exists){
                     $messages[] = "Parking slot is already reserved on this ".$date;
                 }
