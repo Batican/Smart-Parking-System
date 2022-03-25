@@ -32,7 +32,7 @@ class ReservationController extends Controller
         $startDate = Carbon::parse($request->start_date);
         $endDate = Carbon::parse($request->end_date);
 
-        $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($startDate))->exists();
+        $exists = Reservation::where('slot_id',$request->slot_id)->whereDate('date',Carbon::parse($startDate))->where('status', Reservation::ACTIVE)->exists();
         
         $reservationCount = Reservation::where('user_id', $request->user_id)->where('status', Reservation::ACTIVE)->get();
 
@@ -80,17 +80,17 @@ class ReservationController extends Controller
                 }
             }
 
-            $reservations = Reservation::whereDate('date',Carbon::now())->get();
-
-            // foreach($reservations as $reservation){
-            //     ParkingSlot::where('id',$reservation->slot_id)
-            //     ->update([
-            //     'status' => ParkingSlot::RESERVED
-            // ]);
-            // }
+           
         }
         
-        
+        $reservations = Reservation::whereDate('date',Carbon::now())->get();
+
+        foreach($reservations as $reservation){
+            ParkingSlot::where('id',$reservation->slot_id)
+            ->update([
+            'status' => ParkingSlot::RESERVED
+        ]);
+        }
         
         return $messages;
     }
