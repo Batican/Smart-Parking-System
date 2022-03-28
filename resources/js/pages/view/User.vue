@@ -42,11 +42,6 @@
         <v-divider elevation="10"></v-divider>
           <v-card-title class="font-weight-bold">
             Reservations
-            <v-spacer></v-spacer>
-            <v-btn  @click="addReservation(user)" class="white--text ma-2" dark small>
-              <v-icon>mdi-plus</v-icon>
-              Add Reservation
-            </v-btn>
           </v-card-title>
           <v-card-text>
              <v-data-table
