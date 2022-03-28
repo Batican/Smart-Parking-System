@@ -98,7 +98,7 @@
         departments: [
           {name:'College of Art and Science ', abbr:'CAS'},
           {name:'College of Education ', abbr:'COE'},
-          {name:'College of Engineering and Technology ', abbr:'CET'},
+          {name:'College of Engineering and Architecture ', abbr:'CEA'},
           {name:'College of Information Technology ', abbr:'CIT'},
           {name:'College of Management ', abbr:'COM'},
           
