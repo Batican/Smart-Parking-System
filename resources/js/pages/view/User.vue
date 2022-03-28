@@ -52,8 +52,16 @@
               item-key="name"
               class="elevation-1"
             >
-              <template v-user:item.action ="{ item }">
-                  <v-icon @click="deleteDialog = true, delete_id = item.id">mdi-delete</v-icon>
+              <template v-slot:item.start_time ="{ item }">
+                  {{moment(item.start_time).format('hh:mm A')}}
+              </template>
+
+              <template v-slot:item.end_time ="{ item }">
+                  {{moment(item.end_time).format('hh:mm A')}}
+              </template>
+
+              <template v-slot:item.status ="{ item }">
+                  {{item.status == 1 ? 'Active' : 'Archive'}}
               </template>
             </v-data-table>
           </v-card-text>
@@ -129,7 +137,9 @@
             },
             {text: 'Parking Slot ID', align: 'center', value: 'slot_id'},
             {text: 'Date', align: 'center', value: 'date'},
-            {text: 'Actions',  align: 'center', value: 'action'},
+            {text: 'Start Time', align: 'center', value: 'start_time'},
+            {text: 'End Time', align: 'center', value: 'end_time'},
+            {text: 'Status', align: 'center', value: 'status'},
           ],
         }
       },
