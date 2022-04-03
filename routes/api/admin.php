@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\AdminController;
+use App\Http\Controllers\admin\AdminLogController;
 use App\Http\Controllers\admin\DashboardController;
 use App\Http\Controllers\admin\DepartmentController;
 use App\Http\Controllers\admin\LogController;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\admin\UserController;
+use App\Models\AdminLogs;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +67,8 @@ Route::group( ['prefix' => '/v1','middleware' => ['auth:admin-api','scopes:admin
 
 
     Route::get('log/index',[LogController::class, 'index']);
+
+    Route::get('adminLogs/index',[AdminLogController::class, 'index']);
 
     Route::post('/logout',[LoginController::class, 'logout']);
 

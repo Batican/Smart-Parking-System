@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
+use App\Models\AdminLogs;
 use App\Models\Department;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
@@ -30,6 +33,18 @@ class DepartmentController extends Controller
             'color'=> $request->color,
             
 
+        ]);
+
+        $dt = Carbon::now();
+        $todayDate = $dt->toDayDateTimeString();
+
+        $admin = Admin::select('admins.*')->find(auth()->guard('admin')->user()->id);
+
+        AdminLogs::create([
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'description' => 'Created Department '. $request->name,
+            'date_time' => $todayDate,
         ]);
 
         return $department;
@@ -59,6 +74,18 @@ class DepartmentController extends Controller
                 'abbreviation' => $request->abbreviation,
                 'color'=>$request->color
             ]);
+        
+        $dt = Carbon::now();
+        $todayDate = $dt->toDayDateTimeString();
+
+        $admin = Admin::select('admins.*')->find(auth()->guard('admin')->user()->id);
+
+        AdminLogs::create([
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'description' => 'Updated Department '. $request->name,
+            'date_time' => $todayDate,
+        ]);
 
         return $department;
     }
@@ -66,6 +93,17 @@ class DepartmentController extends Controller
     
     public function destroy(Department $department)
     {
+        $dt = Carbon::now();
+        $todayDate = $dt->toDayDateTimeString();
+
+        $admin = Admin::select('admins.*')->find(auth()->guard('admin')->user()->id);
+
+        AdminLogs::create([
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'description' => 'Deleted Department '. $department->name,
+            'date_time' => $todayDate,
+        ]);
         $department->delete();
 
         return $department;

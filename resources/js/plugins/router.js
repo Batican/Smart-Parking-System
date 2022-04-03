@@ -18,6 +18,7 @@ import Backoffice from '../pages/Backoffice.vue';
     import parkingSlotView from '../pages/view/ParkingSlot.vue';
     import userView from '../pages/view/User.vue';
     import UserLogs from '../pages/Backoffice/UserLogs.vue'
+    import AdminLogs from '../pages/Backoffice/AdminLogs.vue'
 
 Vue.use(VueRouter);
 Vue.use(Vuetify);
@@ -93,6 +94,11 @@ const router = new VueRouter({
                     path: '/userLogs',
                     name: 'UserLogs',
                     component: UserLogs
+                }, 
+                {
+                    path: '/adminLogs',
+                    name: 'AdminLogs',
+                    component: AdminLogs
                 },
             ]
         },

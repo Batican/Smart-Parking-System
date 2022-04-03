@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Admin;
+use App\Models\AdminLogs;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Dotenv\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class LoginController extends Controller
 {
@@ -53,6 +56,10 @@ class LoginController extends Controller
             'password' => 'required',
         ]);
 
+        $dt = Carbon::now();
+        $todayDate = $dt->toDayDateTimeString();
+
+
         if(auth()->guard('admin')->attempt(['email' => request('email'), 'password' => request('password')])){
 
             config(['auth.guards.api.provider' => 'admin']);
@@ -60,6 +67,13 @@ class LoginController extends Controller
             $admin = Admin::select('admins.*')->find(auth()->guard('admin')->user()->id);
             $success =  $admin;
             $success['token'] =  $admin->createToken('MyApp',['admin'])->accessToken; 
+
+            AdminLogs::create([
+                'name' => $admin->name,
+                'email' => $admin->email,
+                'description' => 'Log In',
+                'date_time' => $todayDate,
+            ]);
 
             return response()->json($success, 200);
         }else{ 
@@ -69,6 +83,19 @@ class LoginController extends Controller
 
     public function logout(Request $request)
     {
+        $dt = Carbon::now();
+        $todayDate = $dt->toDayDateTimeString();
+
+        
+        $admin = Admin::select('admins.*')->find(auth()->guard('admin')->user()->id);
+
+        AdminLogs::create([
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'description' => 'Log Out',
+            'date_time' => $todayDate,
+        ]);
+
         auth()->guard('admin')->logout();
 
         $request->user()->token()->revoke();
@@ -78,9 +105,11 @@ class LoginController extends Controller
 
     public function logoutUser(Request $request)
     {
+
         auth()->guard('user')->logout();
 
         $request->user()->token()->revoke();
+
 
         return "sucess";
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
+use App\Models\ParkedCount;
 use App\Models\ParkingSlot;
 use App\Models\Reservation;
 use App\Models\User;
@@ -104,7 +105,8 @@ class ReservationController extends Controller
 
     public function done(Request $request)
     {
-      
+        $todayDate = Carbon::now()->toDateString();
+
         $reservation = Reservation::where('id', $request->id)->whereDate('date',Carbon::now())->exists();
         
         if($reservation){
@@ -117,9 +119,13 @@ class ReservationController extends Controller
                     'status' => ParkingSlot::AVAILABLE,
                     'user_id' => null
                 ]);
-                ParkingSlot::where('id', $reserved->slot_id)->update([
+                $slot = ParkingSlot::where('id', $reserved->slot_id)->update([
                     'status' => ParkingSlot::OCCUPIED,
                     'user_id' => $reserved->user_id,
+                ]);
+                ParkedCount::create([
+                    'parking_number' =>$slot->parking_number,
+                    'date' => $todayDate,
                 ]);
     
                 $reserved->update([
@@ -131,11 +137,16 @@ class ReservationController extends Controller
                 ];
             }
             else{
-                ParkingSlot::where('id', $reserved->slot_id)->update([
+                $slot = ParkingSlot::where('id', $reserved->slot_id)->update([
                     'status' => ParkingSlot::OCCUPIED,
                     'user_id' => $reserved->user_id,
                 ]);
-    
+                
+                ParkedCount::create([
+                    'parking_number' =>$slot->parking_number,
+                    'date' => $todayDate,
+                ]);
+
                 $reserved->update([
                     'status' => Reservation::ARCHIVE,
                 ]);

@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
+use App\Models\AdminLogs;
 use App\Models\ParkingSlot;
 use App\Models\Reservation;
+use Carbon\Carbon;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -41,6 +44,18 @@ class ParkingSlotController extends Controller
             'slotFor'=>$request->slotFor,
             'department_id'=>$request->department_id,
             'status'=>ParkingSlot::AVAILABLE,
+        ]);
+
+        $dt = Carbon::now();
+        $todayDate = $dt->toDayDateTimeString();
+
+        $admin = Admin::select('admins.*')->find(auth()->guard('admin')->user()->id);
+
+        AdminLogs::create([
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'description' => 'Created Parking Slot # '. $request->parking_number,
+            'date_time' => $todayDate,
         ]);
 
         return $slot;
@@ -103,6 +118,18 @@ class ParkingSlotController extends Controller
 
             ]);
 
+        $dt = Carbon::now();
+        $todayDate = $dt->toDayDateTimeString();
+
+        $admin = Admin::select('admins.*')->find(auth()->guard('admin')->user()->id);
+
+        AdminLogs::create([
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'description' => 'Updated Parking Slot # '. $request->parking_number,
+            'date_time' => $todayDate,
+        ]);
+
         return $slot;
 
     }
@@ -112,7 +139,19 @@ class ParkingSlotController extends Controller
         $image_path = "app/public/images/".$slot->qrCode_path;  // Value is not URL but directory file path
         if(File::exists($image_path)) {
             File::delete($image_path);
-    }
+        }
+
+        $dt = Carbon::now();
+        $todayDate = $dt->toDayDateTimeString();
+
+        $admin = Admin::select('admins.*')->find(auth()->guard('admin')->user()->id);
+
+        AdminLogs::create([
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'description' => 'Deleted Parking Slot # '. $slot->name,
+            'date_time' => $todayDate,
+        ]);
 
         $slot->delete();
 

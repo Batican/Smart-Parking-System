@@ -8,7 +8,7 @@
         <v-row>
             <v-col lg="12" cols="12">
                 <v-row >
-                    <v-col cols="3" v-for="(item,index) in activityLog" :key="index">
+                    <v-col cols="4" v-for="(item,index) in activityLog" :key="index">
                         <v-card elevation="2" class="rounded-lg">
                             <v-card-text class="d-flex justify-space-between align-center">
                                 <div>
@@ -55,8 +55,8 @@
             return {
                 activityLog: [
                     {title: 'Users', description: 'Total current users', value: 0, icon: 'mdi-account-group', color: 'cyan lighten-3'},
-                    {title: 'Departments',description: 'Total current departments',value: 0,icon: 'mdi-office-building', color: 'green darken-2'},
-                    {title: 'Parking Slots',description: 'Total current parking slots',value: 0, icon: 'mdi-bus-stop', color: 'blue-grey darken-1'},
+                    // {title: 'Departments',description: 'Total current departments',value: 0,icon: 'mdi-office-building', color: 'green darken-2'},
+                    {title: 'Parked Vehicles',description: 'Total of parked vehicles today',value: 0, icon: 'mdi-bus-stop', color: 'blue-grey darken-1'},
                     {title: 'Reservations',description: 'Total current reservations',value: 0, icon: 'mdi-book-edit', color: 'blue'},
                 ],
                 reserve:[],
@@ -83,9 +83,10 @@
             initialize(){
                 this.$admin.get('/admin/v1/dashboard/getData').then(({data})=> {
                     this.activityLog[0].value= data.users
-                    this.activityLog[1].value= data.departments
-                    this.activityLog[2].value= data.parking_slots
-                    this.activityLog[3].value= data.reservations
+                    // this.activityLog[1].value= data.departments
+                    // this.activityLog[2].value= data.parking_slots
+                    this.activityLog[1].value= data.reservations
+                    this.activityLog[2].value= data.parked_counts
                     
 
                 })

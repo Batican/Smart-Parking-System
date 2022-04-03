@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Admin;
+use App\Models\AdminLogs;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
@@ -69,6 +72,18 @@ class UserController extends Controller
 
         ]);
 
+        $dt = Carbon::now();
+        $todayDate = $dt->toDayDateTimeString();
+
+        $admin = Admin::select('admins.*')->find(auth()->guard('admin')->user()->id);
+
+        AdminLogs::create([
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'description' => 'Created User '. $request->name,
+            'date_time' => $todayDate,
+        ]);
+
         return $user;
     }
 
@@ -114,6 +129,18 @@ class UserController extends Controller
 
         $user->update($userUpdate);
 
+        $dt = Carbon::now();
+        $todayDate = $dt->toDayDateTimeString();
+
+        $admin = Admin::select('admins.*')->find(auth()->guard('admin')->user()->id);
+
+        AdminLogs::create([
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'description' => 'Update User '. $request->name,
+            'date_time' => $todayDate,
+        ]);
+
         return $user;
     }
 
@@ -123,7 +150,17 @@ class UserController extends Controller
         if($user->image){
             Storage::delete('app/public/updloads/'.$user->image);
         }
-        
+        $dt = Carbon::now();
+        $todayDate = $dt->toDayDateTimeString();
+
+        $admin = Admin::select('admins.*')->find(auth()->guard('admin')->user()->id);
+
+        AdminLogs::create([
+            'name' => $admin->name,
+            'email' => $admin->email,
+            'description' => 'Deleted User '. $user->name,
+            'date_time' => $todayDate,
+        ]);
         $user->delete();
 
         return $user;
