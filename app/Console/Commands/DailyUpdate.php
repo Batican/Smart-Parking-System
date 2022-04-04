@@ -60,6 +60,20 @@ class DailyUpdate extends Command
                 }
             }
 
+            foreach(Reservation::all() as $reservation){
+
+                $isReserved = $reservation->whereDate('date', $todayDate)->where('status', Reservation::ACTIVE)->exists();
+
+                $endTime = Carbon::parse($reservation->end_time);
+
+                if($endTime->lt(Carbon::now()) && $isReserved){
+                    $reservation->update([
+                        'status' => Reservation::ARCHIVE,
+                    ]);
+                }
+
+            }
+
         Log::info('Parking slot status updated successfully');
     }
 }

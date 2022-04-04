@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
         Department::create([
             'name'=>'College of Education',
             'color'=>'blue',
-            'abbreviation'=>'COM'
+            'abbreviation'=>'COE'
         ]);
 
         Admin::create([

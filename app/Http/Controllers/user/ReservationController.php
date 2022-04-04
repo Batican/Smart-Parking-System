@@ -110,50 +110,65 @@ class ReservationController extends Controller
         $reservation = Reservation::where('id', $request->id)->whereDate('date',Carbon::now())->exists();
         
         if($reservation){
+
             $reserved = Reservation::where('id', $request->id)->first();
+            
             $user = ParkingSlot::where('user_id', $reserved->user_id)->exists();
 
-            if($user){
-                ParkingSlot::where('user_id',$reserved->user_id)
-                ->update([
-                    'status' => ParkingSlot::AVAILABLE,
-                    'user_id' => null
-                ]);
-                $slot = ParkingSlot::where('id', $reserved->slot_id)->update([
-                    'status' => ParkingSlot::OCCUPIED,
-                    'user_id' => $reserved->user_id,
-                ]);
-                ParkedCount::create([
-                    'parking_number' =>$slot->parking_number,
-                    'date' => $todayDate,
-                ]);
-    
-                $reserved->update([
-                    'status' => Reservation::ARCHIVE,
-                ]);
-                
-                return [
-                    "Success"=>"Parking Slot Occupied!"
-                ];
-            }
-            else{
-                $slot = ParkingSlot::where('id', $reserved->slot_id)->update([
-                    'status' => ParkingSlot::OCCUPIED,
-                    'user_id' => $reserved->user_id,
-                ]);
-                
-                ParkedCount::create([
-                    'parking_number' =>$slot->parking_number,
-                    'date' => $todayDate,
-                ]);
+            $end_Time = Carbon::parse($reserved->end_time);
+            $now = Carbon::now();
+            $diff_in_minutes = $now->diffInMinutes($end_Time);
 
-                $reserved->update([
-                    'status' => Reservation::ARCHIVE,
-                ]);
-                
+            if($diff_in_minutes <= 5){
+
                 return [
-                    "Success"=>"Parking Slot Occupied!"
+                    "Error"=>"Your reservation is expiring please reserve again!"
                 ];
+            }else{
+
+                if($user){
+                    ParkingSlot::where('user_id',$reserved->user_id)
+                    ->update([
+                        'status' => ParkingSlot::AVAILABLE,
+                        'user_id' => null
+                    ]);
+                    $slot = ParkingSlot::where('id', $reserved->slot_id)->update([
+                        'status' => ParkingSlot::OCCUPIED,
+                        'user_id' => $reserved->user_id,
+                    ]);
+                    ParkedCount::create([
+                        'parking_number' =>$slot->parking_number,
+                        'date' => $todayDate,
+                    ]);
+        
+                    $reserved->update([
+                        'status' => Reservation::ARCHIVE,
+                    ]);
+                    
+                    return [
+                        "Success"=>"Parking Slot Occupied!"
+                    ];
+                }
+                else{
+                    $slot = ParkingSlot::where('id', $reserved->slot_id)->update([
+                        'status' => ParkingSlot::OCCUPIED,
+                        'user_id' => $reserved->user_id,
+                    ]);
+                    
+                    ParkedCount::create([
+                        'parking_number' =>$slot->parking_number,
+                        'date' => $todayDate,
+                    ]);
+    
+                    $reserved->update([
+                        'status' => Reservation::ARCHIVE,
+                    ]);
+                    
+                    return [
+                        "Success"=>"Parking Slot Occupied!"
+                    ];
+                }
+
             }
         }
         else{
