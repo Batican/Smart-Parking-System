@@ -115,16 +115,16 @@ class ReservationController extends Controller
             
             $user = ParkingSlot::where('user_id', $reserved->user_id)->exists();
 
-            $endTime = $reserved->end_time;
-            $now = Carbon::now();
-            $diff_in_minutes = $now->diffInMinutes($endTime);
+            // $end_Time = Carbon::parse($reserved->end_time);
+            // $now = Carbon::now();
+            // $diff_in_minutes = $now->diffInMinutes($end_Time);
 
-            if($diff_in_minutes <= 5){
+            // if($diff_in_minutes <= 5){
 
-                return [
-                    "Error"=>"Your reservation is expiring please reserve again!"
-                ];
-            }else{
+            //     return [
+            //         "Error"=>"Your reservation is expiring please reserve again!"
+            //     ];
+            // }else{
 
                 if($user){
                     ParkingSlot::where('user_id',$reserved->user_id)
@@ -169,7 +169,7 @@ class ReservationController extends Controller
                     ];
                 }
 
-            }
+            // }
         }
         else{
             return [
