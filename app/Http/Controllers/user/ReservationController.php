@@ -132,19 +132,20 @@ class ReservationController extends Controller
                     'status' => ParkingSlot::AVAILABLE,
                     'user_id' => null
                 ]);
+                
                 $slot = ParkingSlot::where('id', $reserved->slot_id)->update([
                     'status' => ParkingSlot::OCCUPIED,
                     'user_id' => $reserved->user_id,
                 ]);
+
+                $reserved->update([
+                    'status' => Reservation::ARCHIVE,
+                ]);
+
                 ParkedCount::create([
                     'parking_number' =>$slot->parking_number,
                     'date' => $todayDate,
                 ]);
-    
-                $reserved->update([
-                    'status' => Reservation::ARCHIVE,
-                ]);
-                
                 return [
                     "Success"=>"Parking Slot Occupied!"
                 ];
@@ -154,16 +155,15 @@ class ReservationController extends Controller
                         'status' => ParkingSlot::OCCUPIED,
                         'user_id' => $reserved->user_id,
                     ]);
-                    
-                    ParkedCount::create([
-                        'parking_number' =>$slot->parking_number,
-                        'date' => $todayDate,
-                    ]);
 
                     $reserved->update([
                         'status' => Reservation::ARCHIVE,
                     ]);
                     
+                    ParkedCount::create([
+                        'parking_number' =>$slot->parking_number,
+                        'date' => $todayDate,
+                    ]);
                     return [
                         "Success"=>"Parking Slot Occupied!"
                     ];
