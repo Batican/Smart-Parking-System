@@ -115,9 +115,9 @@ class ReservationController extends Controller
             
             $user = ParkingSlot::where('user_id', $reserved->user_id)->exists();
 
-            $end_Time = Carbon::parse($reserved->end_time);
+            $endTime = $reserved->end_time;
             $now = Carbon::now();
-            $diff_in_minutes = $now->diffInMinutes($end_Time);
+            $diff_in_minutes = $now->diffInMinutes($endTime);
 
             if($diff_in_minutes <= 5){
 

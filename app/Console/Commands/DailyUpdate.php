@@ -65,8 +65,9 @@ class DailyUpdate extends Command
                 $isReserved = $reservation->whereDate('date', $todayDate)->where('status', Reservation::ACTIVE)->exists();
 
                 $endTime = Carbon::parse($reservation->end_time);
+                $now = Carbon::now();
 
-                if($endTime->lt(Carbon::now()) && $isReserved){
+                if($endTime->lt($now) && $isReserved){
                     $reservation->update([
                         'status' => Reservation::ARCHIVE,
                     ]);
