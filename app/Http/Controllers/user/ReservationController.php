@@ -132,7 +132,7 @@ class ReservationController extends Controller
                     'status' => ParkingSlot::AVAILABLE,
                     'user_id' => null
                 ]);
-                
+
                 $slot = ParkingSlot::where('id', $reserved->slot_id)->update([
                     'status' => ParkingSlot::OCCUPIED,
                     'user_id' => $reserved->user_id,
@@ -146,9 +146,9 @@ class ReservationController extends Controller
                     'parking_number' =>$slot->parking_number,
                     'date' => $todayDate,
                 ]);
-                return [
-                    "Success"=>"Parking Slot Occupied!"
-                ];
+                // return [
+                //     "Success"=>"Parking Slot Occupied!"
+                // ];
             }
                 else{
                     $slot = ParkingSlot::where('id', $reserved->slot_id)->update([
@@ -164,9 +164,9 @@ class ReservationController extends Controller
                         'parking_number' =>$slot->parking_number,
                         'date' => $todayDate,
                     ]);
-                    return [
-                        "Success"=>"Parking Slot Occupied!"
-                    ];
+                    // return [
+                    //     "Success"=>"Parking Slot Occupied!"
+                    // ];
                 }
             // // }
         }
