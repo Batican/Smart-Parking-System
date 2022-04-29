@@ -18,10 +18,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'image',
         'type',
+        'vehicle',
         'password',
         'rfid_number'
     ];
@@ -49,6 +51,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(
             Reservation::class, 
+            'user_id'
+        );
+    }
+
+    public function parked_counts()
+    {
+        return $this->hasMany(
+            ParkedCount::class, 
             'user_id'
         );
     }

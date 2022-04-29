@@ -10,7 +10,14 @@ class ParkedCount extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'parking_number',
         'date'
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

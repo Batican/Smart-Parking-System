@@ -48,8 +48,10 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'=>'required',
+            'first_name'=>'required',
+            'last_name'=>'required',
             'type'=>'required',
+            'vehicle'=>'required',
             'email'=>'required|email',
             'password'=>'required',
             'rfid_number'=>'required'
@@ -62,8 +64,10 @@ class UserController extends Controller
         }
 
         $user = User::create([
-            'name'=> $request->name,
+            'first_name'=> $request->first_name,
+            'last_name'=> $request->last_name,
             'type'=> $request->type,
+            'vehicle'=> $request->vehicle,
             'email'=> $request->email,
             'password'=> bcrypt($request->password),
             'rfid_number'=> (int)$request->rfid_number,
@@ -100,8 +104,10 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name'=>'required',
+            'first_name'=>'required',
+            'last_name'=>'required',
             'type'=>'required',
+            'vehicle'=>'required',
             'email'=>'required|email',
             'rfid_number'=>'required'
         ]);
@@ -109,8 +115,10 @@ class UserController extends Controller
         $user = User::find($id);
 
         $userUpdate = [
-            'name'=> $request->name,
+            'first_name'=> $request->first_name,
+            'last_name'=> $request->last_name,
             'type'=> $request->type,
+            'vehicle'=> $request->vehicle,
             'email'=> $request->email,
             'rfid_number'=> (int)$request->rfid_number
         ];

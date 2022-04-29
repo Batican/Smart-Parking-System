@@ -9,6 +9,7 @@ class ParkingSlot extends Model
 {
     use HasFactory;
     
+    const DISABLE = 0;
     const AVAILABLE = 1;
     const OCCUPIED = 2;
     const RESERVED = 3;

@@ -53,6 +53,7 @@
                 { title: 'Reservations', icon: 'mdi-book-edit', route: '/reservation' },
                 { title: 'Admin Logs', icon: 'mdi-clipboard-text-clock', route: '/adminLogs' },
                 { title: 'User Logs', icon: 'mdi-clipboard-text-clock', route: '/userLogs' },
+                { title: 'System Settings', icon: 'mdi-clipboard-text-clock', route: '/settings' },
 
             ],
         }),

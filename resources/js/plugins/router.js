@@ -19,6 +19,7 @@ import Backoffice from '../pages/Backoffice.vue';
     import userView from '../pages/view/User.vue';
     import UserLogs from '../pages/Backoffice/UserLogs.vue'
     import AdminLogs from '../pages/Backoffice/AdminLogs.vue'
+    import SystemSettings from '../pages/Backoffice/Settings.vue'
 
 Vue.use(VueRouter);
 Vue.use(Vuetify);
@@ -100,9 +101,16 @@ const router = new VueRouter({
                     name: 'AdminLogs',
                     component: AdminLogs
                 },
+                {
+                    path: '/settings',
+                    name: 'SystemSettings',
+                    component: SystemSettings
+                },
+        
             ]
         },
     ]
+    
 });
 
 router.beforeEach(async (to, from, next) => {

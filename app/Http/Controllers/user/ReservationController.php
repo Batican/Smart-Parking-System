@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\user;
 
 use App\Http\Controllers\Controller;
+use App\Models\Log;
 use App\Models\ParkedCount;
 use App\Models\ParkingSlot;
 use App\Models\Reservation;
@@ -27,6 +28,9 @@ class ReservationController extends Controller
         ]);
         $messages = [];
 
+        $dt = Carbon::now();
+        $todayDate = $dt->toDayDateTimeString();
+
         $startTime = Carbon::createFromTime($request->start_time,00);
         $endTime = Carbon::createFromTime($request->end_time,00);
 
@@ -37,7 +41,7 @@ class ReservationController extends Controller
         
         $reservationCount = Reservation::where('user_id', $request->user_id)->where('status', Reservation::ACTIVE)->get();
 
-        if(count($reservationCount) == 3){
+        if(count($reservationCount) == 1){
             $messages[] = "You have reached the maximum reservation count";
         }else{
             if($startDate->eq($endDate) && !$exists){
@@ -84,14 +88,25 @@ class ReservationController extends Controller
            
         }
         
-        $reservations = Reservation::whereDate('date',Carbon::now())->where('status', Reservation::ACTIVE)->get();
+        // $reservations = Reservation::whereDate('date',Carbon::now())->where('status', Reservation::ACTIVE)->get();
 
-        foreach($reservations as $reservation){
-            ParkingSlot::where('id',$reservation->slot_id)
-            ->update([
-            'status' => ParkingSlot::RESERVED
+        // foreach($reservations as $reservation){
+        //     ParkingSlot::where('id',$reservation->slot_id)
+        //     ->update([
+        //     'status' => ParkingSlot::RESERVED
+        // ]);
+        // }
+
+        $slot = ParkingSlot::where('id', $request->slot_id)->first();
+        $user = User::where('id', $request->user_id)->first();
+
+        Log::create([
+            'name_of_user'=>$user->name,
+            'number_of_slot'=>$slot->parking_number,
+            'description'=>'Created a Reservation',
+            'date_time'=>$todayDate,
         ]);
-        }
+
         
         return $messages;
     }
@@ -115,16 +130,7 @@ class ReservationController extends Controller
             
             $user = ParkingSlot::where('user_id', $reserved->user_id)->exists();
 
-            // $end_Time = Carbon::parse($reserved->end_time);
-            // $now = Carbon::now();
-            // $diff_in_minutes = $now->diffInMinutes($end_Time);
-
-            // if($diff_in_minutes <= 5){
-
-            //     return [
-            //         "Error"=>"Your reservation is expiring please reserve again!"
-            //     ];
-            // }else{
+          
 
             if($user){
                 ParkingSlot::where('user_id',$reserved->user_id)
@@ -143,12 +149,11 @@ class ReservationController extends Controller
                 ]);
 
                 ParkedCount::create([
+                    'user_id' =>$reserved->user_id,
                     'parking_number' =>$slot->parking_number,
                     'date' => $todayDate,
                 ]);
-                // return [
-                //     "Success"=>"Parking Slot Occupied!"
-                // ];
+            
             }
                 else{
                     $slot = ParkingSlot::where('id', $reserved->slot_id)->update([
@@ -161,14 +166,13 @@ class ReservationController extends Controller
                     ]);
                     
                     ParkedCount::create([
+                        'user_id' =>$reserved->user_id,
                         'parking_number' =>$slot->parking_number,
                         'date' => $todayDate,
                     ]);
-                    // return [
-                    //     "Success"=>"Parking Slot Occupied!"
-                    // ];
+                  
                 }
-            // // }
+           
         }
         else{
             return [
@@ -223,15 +227,18 @@ class ReservationController extends Controller
 
         ]);
 
-        // $Update = ParkingSlot::where('slot_id', $reservation->slot_id)
+        $dt = Carbon::now();
+        $todayDate = $dt->toDayDateTimeString();
 
-        // if($count){
-        //     ParkingSlot::where('user_id', $reservation->user_id)
-        //     ->update([
-        //         'status'=> ParkingSlot::AVAILABLE,
-        //         'user_id' => null
-        //     ]);
-        // }
+        $user = User::where('id',$reservation->user_id)->first();
+        $slot = ParkingSlot::where('id',$reservation->slot_id)->first();
+
+        Log::create([
+            'name_of_user'=>$user->name,
+            'number_of_slot'=>$slot->parking_number,
+            'description'=>'Cancel Reservation',
+            'date_time'=>$todayDate,
+        ]);
         
 
         return $reservation;

@@ -24,9 +24,15 @@
                             md="6"
                         >
                             <v-text-field
-                                label="Name"
+                                label="First Name"
                                 required
-                                v-model="form.name"
+                                v-model="form.first_name"
+                            ></v-text-field>
+
+                            <v-text-field
+                                label="Last Name"
+                                required
+                                v-model="form.last_name"
                             ></v-text-field>
 
                             <v-text-field
@@ -38,6 +44,13 @@
                             <v-select
                               :items="['Student','Teacher','Guard']"
                               label="Type of User"
+                              v-model="form.type"
+                            >
+                            </v-select>
+
+                             <v-select
+                              :items="['Car','Motor',]"
+                              label="Vehicle Owned"
                               v-model="form.type"
                             >
                             </v-select>
@@ -120,7 +133,10 @@
             required: true,
             default: {
                 id:null,
-                name:'',
+                first_name:'',
+                last_name:'',
+                type:'',
+                vehicle:'',
                 email: '',
                 password: '',
                 rfid_number: '',

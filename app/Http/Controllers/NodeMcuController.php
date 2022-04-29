@@ -14,7 +14,7 @@ class NodeMcuController extends Controller
     public function checkRfid(Request $request){
         
         $user = User::where('rfid_number', $request->rfid_number)->exists();
-        // $slot = ParkingSlot::where('user_id', $user->id)->first();
+      
         $dt = Carbon::now();
         $todayDate = $dt->toDayDateTimeString();
 

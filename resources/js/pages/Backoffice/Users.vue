@@ -4,6 +4,9 @@
             <v-card-title class="font-weight-bold">
                 Users List
                 <v-spacer></v-spacer>
+                <v-btn class="mr-5" color="success"  @click="importDialog = true">
+                    Import Data
+                </v-btn>
                 <v-icon
                     x-large 
                     @click="addUser"
@@ -36,6 +39,8 @@
                 </v-data-table>
         </v-card>
         <UserForm :form="userForm" :dialogState="addition_edition_dailog" @close="addition_edition_dailog = false" @save="addition_edition_dailog = false,updateUser()" />
+        
+        <!-- Delete Dialog -->
         <v-row justify="center">
             <v-dialog
                 v-model="deleteDialog"
@@ -67,6 +72,36 @@
                 </v-card>
             </v-dialog>
         </v-row>
+
+        <!-- Import Dialog -->
+        <v-row justify="center">
+            <v-dialog
+                v-model="importDialog"
+                persistent
+                max-width="400"
+            >
+                <v-card>
+                    <v-card-title  style="font-weight:bold; color:black;">
+                        Import CSV
+                        <v-spacer></v-spacer>
+                            <v-icon @click="importDialog = false" >
+                                mdi-close-circle-outline
+                            </v-icon>
+                    </v-card-title>
+                    <v-divider></v-divider>
+                    <v-card-actions>
+                       <form action="import" method="POST" enctype="multipart/form-data">
+     
+                            <div class="input-group mb-3">
+                                <input type="file" name="file" class="form-control">
+                                
+                                <button class="btn btn-primary ml-2" type="submit">Submit</button>
+                            </div>
+                        </form>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+        </v-row>
     </div>
 </template>
 
@@ -80,6 +115,7 @@
         data() {
             return {
                 deleteDialog: false,
+                importDialog: false,
                 loading: true,
                 users: [],
                 delete_id: null,
@@ -92,15 +128,20 @@
                         value: 'id',
                     },
                     { text: "Image", value: "image" },
-                    {text: 'Name', value: 'name'},
+                    {text: 'First Name', value: 'first_name'},
+                    {text: 'Last Name', value: 'last_name'},
                     {text: 'Type of User', value: 'type'},
+                    {text: 'Vehicle Owned', value: 'vehicle'},
                     {text: 'Email', value: 'email'},
                     {text: 'RFID Number', value: 'rfid_number'},
                     {text: 'Actions', value: 'action'},
 
                 ],
                 user:{
-                    name: '',
+                    first_name: '',
+                    last_name: '',
+                    type:'',
+                    vehicle:'',
                     email:'',
                     password:'',
                     rfid_number:'',
@@ -109,8 +150,10 @@
                 addition_edition_dailog: false,
                 userForm: {
                 id:null,
-                name:'',
+                first_name:'',
+                last_name:'',
                 type:'',
+                vehicle:'',
                 email: '',
                 rfid_number: '',
                 password: '',
@@ -128,8 +171,10 @@
             initialize(){
                 this.userForm = {
                 id:null,
-                name:'',
+                first_name:'',
+                last_name:'',
                 type:'',
+                vehicle:'',
                 email: '',
                 rfid_number: '',
                 password: '',
@@ -154,7 +199,9 @@
             addUser() {
                 this.userForm = {
                 id:null,
-                name:'',
+                first_name:'',
+                last_name:'',
+                vehicle:'',
                 type:'',
                 email: '',
                 rfid_number: '',
@@ -168,8 +215,10 @@
             editUser(user){
                 this.userForm = {
                     id:user.id,
-                    name:user.name,
+                    first_name:user.first_name,
+                    last_name:user.last_name,
                     type:user.type,
+                    vehicle:user.vehicle,
                     email:user.email ,
                     rfid_number:user.rfid_number ,
                     password: '',

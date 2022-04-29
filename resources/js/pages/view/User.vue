@@ -16,7 +16,7 @@
                
                 </div>
                 <p class="ml-3 mb-0 pt-0 font-weight-bold">
-                  Name: {{user.name}}
+                  Name: {{user.first_name}} {{user.last_name}}
                 </p>
                 <p class="ml-3 mb-0 pt-0 font-weight-bold">
                   Email: {{user.email}}

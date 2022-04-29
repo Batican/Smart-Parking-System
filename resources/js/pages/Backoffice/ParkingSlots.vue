@@ -3,7 +3,12 @@
         <v-card class="mx-auto px-5 pxy-5" outlined>
             <v-card-title class="font-weight-bold">
                 Parking Slots List
-                <v-spacer></v-spacer>
+                <v-spacer></v-spacer>   
+                <v-switch
+                    v-model="switch1"
+                    inset
+                    color="red"
+                ></v-switch>
                 <v-icon
                     x-large 
                     @click="addSlot"
@@ -80,6 +85,7 @@
         data() {
             return {
                 delete_id: null,
+                switch1: false,
                 deleteDialog: false,
                 loading: true,
                 slots: [],

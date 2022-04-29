@@ -20,9 +20,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         User::create([
-            'name' => 'dan',
+            'first_name' => 'dan',
+            'last_name' => 'padilla',
             'email' => 'dan@gmail.com',
             'type' => 'Student',
+            'vehicle' => 'Car',
             'password' => bcrypt(1234),
             'rfid_number' => '010101'
         ]);
@@ -48,7 +50,8 @@ class DatabaseSeeder extends Seeder
         Admin::create([
             'name' => 'admin',
             'email' => 'admin@gmail.com',
-            'password' => bcrypt(1234)
+            'password' => bcrypt(1234),
+            'is_super' => False,
         ]);
 
         Artisan::call('passport:install');
